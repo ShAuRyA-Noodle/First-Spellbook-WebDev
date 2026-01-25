@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Shaurya's Paradise | Media Gallery</title>
+
+    <!-- Minimal modern styling -->
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, Arial, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 36px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+
+        iframe, video, img {
+            width: 100%;
+            height: 220px;
+            border-radius: 10px;
+            border: none;
+            object-fit: cover;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🌌 Shaurya's Paradise</h1>
+
+    <div class="gallery">
+
+        <!-- YouTube Embed -->
+        <div class="card">
+            <iframe 
+                src="https://www.youtube.com/embed/r5Kl2nLN2xw"
+                title="YouTube Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            <p>YouTube Video Embed</p>
+        </div>
+
+        <!-- Wikipedia Embed -->
+        <div class="card">
+            <iframe 
+                src="https://en.wikipedia.org/wiki/Taarak_Mehta_Ka_Ooltah_Chashmah"
+                loading="lazy">
+            </iframe>
+            <p>Embedded Website</p>
+        </div>
+
+        <!-- Local Video -->
+        <div class="card">
+            <video src="Feel Like Shit.mp4" controls></video>
+            <p>Local Video File</p>
+        </div>
+
+        <!-- Image -->
+        <div class="card">
+            <img src="Krishna Ji.png" alt="Krishna Ji">
+            <p>Image Display</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

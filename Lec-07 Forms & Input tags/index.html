@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Shaurya Punj | User Form</title>
+
+    <!-- Clean internal styling -->
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 35px 40px;
+            border-radius: 14px;
+            width: 380px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+        }
+
+        .inline {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: #38bdf8;
+            color: #020617;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Form container -->
+    <div class="form-card">
+
+        <h1>Enter Your Details</h1>
+
+        <!-- FORM -->
+        <form method="post" action="/submit">
+
+            <!-- Name field -->
+            <div class="field">
+                <label for="username">Full Name</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your name" 
+                    required
+                >
+            </div>
+
+            <!-- Gender radio buttons -->
+            <div class="field inline">
+                <input type="radio" name="gender" id="male" value="male" required>
+                <label for="male">Male</label>
+
+                <input type="radio" name="gender" id="female" value="female">
+                <label for="female">Female</label>
+            </div>
+
+            <!-- Subscribe checkbox -->
+            <div class="field inline">
+                <input type="checkbox" name="subscribe" id="subscribe" value="yes">
+                <label for="subscribe">Subscribe to receive updates</label>
+            </div>
+
+            <!-- Comment box -->
+            <div class="field">
+                <label for="comment">Your Comments</label>
+                <textarea id="comment" name="comment" rows="4" placeholder="Write here..."></textarea>
+            </div>
+
+            <!-- Dropdown -->
+            <div class="field">
+                <label for="skin">Favorite Vandal Skin</label>
+                <select name="skin" id="skin">
+                    <option value="Reaver">Reaver</option>
+                    <option value="Prime">Prime</option>
+                    <option value="Overdrive">Overdrive</option>
+                </select>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit">Submit</button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

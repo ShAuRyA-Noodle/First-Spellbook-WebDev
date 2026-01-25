@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive design for all devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Shaurya Punj | Personal Details</title>
+
+    <!-- External stylesheet -->
+    <link rel="stylesheet" href="style-01.css">
+
+    <!-- Minimal internal styling -->
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-box {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 30px 35px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Form container -->
+    <div class="form-box">
+
+        <h1>Personal Details</h1>
+
+        <!-- Name -->
+        <div class="field">
+            <label for="username">Full Name</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Enter your name" 
+                required
+            >
+        </div>
+
+        <!-- City -->
+        <div class="field">
+            <label for="city">City</label>
+            <input 
+                type="text" 
+                id="city" 
+                name="city" 
+                placeholder="Enter your city" 
+                required
+            >
+        </div>
+
+        <!-- Pincode -->
+        <div class="field">
+            <label for="pincode">Pincode</label>
+            <input 
+                type="tel" 
+                id="pincode" 
+                name="pincode" 
+                placeholder="Enter your pincode" 
+                pattern="[0-9]{6}" 
+                title="Please enter a valid 6-digit pincode"
+                required
+            >
+        </div>
+
+    </div>
+
+</body>
+</html>

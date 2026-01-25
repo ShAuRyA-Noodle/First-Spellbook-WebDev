@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Shaurya Punj | HTML Media</title>
+
+    <!-- Minimal internal styling -->
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .media-box {
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Video Section -->
+    <div class="media-box">
+        <h2>Video Player</h2>
+        <video 
+            width="400" 
+            controls 
+            poster="Krishna Ji.png" 
+            preload="metadata"
+        >
+            <source src="Feel Like Shit.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Audio Section -->
+    <div class="media-box">
+        <h2>Audio Player</h2>
+        <audio 
+            controls 
+            preload="metadata"
+        >
+            <source src="Melody.mp3" type="audio/mpeg">
+            Your browser does not support the audio tag.
+        </audio>
+    </div>
+
+</body>
+</html>
