@@ -1,25 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding -->
     <meta charset="UTF-8">
+
+    <!-- Responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semantic Tags</title>
+
+    <!-- SEO title -->
+    <title>Shaurya Punj | Semantic HTML Demo</title>
+
+    <!-- Minimal styling for layout clarity -->
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, Arial, sans-serif;
+            background: #020617;
+            color: #e5e7eb;
+        }
+
+        header, nav, main, section, article, aside, footer {
+            padding: 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        header {
+            background: #0f172a;
+        }
+
+        nav {
+            background: #020617;
+        }
+
+        footer {
+            background: #0f172a;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+        }
+
+        figure img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        figcaption {
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+    </style>
 </head>
+
 <body>
-     
+
+    <!-- Header -->
+    <header>
+        <h1>Semantic HTML Demo</h1>
+        <p>By Shaurya Punj</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#">Home</a> | 
+        <a href="#">Articles</a> | 
+        <a href="#">Contact</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="layout">
+
+        <!-- Primary Content -->
+        <section>
+
+            <article>
+                <h2>What is Semantic HTML?</h2>
+                <p>
+                    Semantic HTML uses meaningful tags that describe the purpose of
+                    the content inside them, rather than just how it looks.
+                </p>
+                <time datetime="2026-01-26">Published: 26 January 2026</time>
+            </article>
+
+            <figure>
+                <img src="Krishna Ji.png" alt="Decorative Example Image">
+                <figcaption>Example image inside a semantic figure element.</figcaption>
+            </figure>
+
+        </section>
+
+        <!-- Sidebar -->
+        <aside>
+            <h3>Did You Know?</h3>
+            <p>
+                Search engines and screen readers rely heavily on semantic tags
+                to understand your website structure.
+            </p>
+        </aside>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Shaurya Punj. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
-
-<!-- Rough Notes
-semantic tags are great help improve seo of the website and overall code maintained website is more accssible 
-semantic tags example
-header used to represent top section of the web page
-nav signifies navigation bar
-article indicates self contained peice of content
-section represent thematic grouping of content 
-aside represent content that is tangentially related to the content around it
-footer represent bottom section of the web page usually contains copyright information and contact information
-figure used for embedding multimedia content like images, graphs etc
-figcaption used to provide caption for the content inside figure tag
-main signifies main content of the web page
-time used to represent time related information like date and time -->

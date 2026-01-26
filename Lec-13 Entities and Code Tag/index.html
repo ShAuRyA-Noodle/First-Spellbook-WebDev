@@ -1,30 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding -->
     <meta charset="UTF-8">
+
+    <!-- Responsive layout -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <!-- SEO title -->
+    <title>Shaurya Punj | Quotations & Entities</title>
+
+    <!-- Minimal modern styling -->
+    <style>
+        body {
+            font-family: system-ui, Arial, sans-serif;
+            background: #020617;
+            color: #e5e7eb;
+            padding: 40px;
+        }
+
+        blockquote {
+            font-style: italic;
+            border-left: 4px solid #38bdf8;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        q {
+            color: #38bdf8;
+            font-weight: 500;
+        }
+
+        .highlight {
+            color: pink;
+            font-size: 1.5rem;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
-    <blockquote>
-        Youtube Music is best to listen my fav music &lt;3
+
+    <!-- Block quotation -->
+    <blockquote cite="https://music.youtube.com">
+        YouTube Music is the best to listen to my favorite music &lt;3
     </blockquote>
-    <q>Death can have me when it earns me </q>
-    <br>
-    <font color="pink" size="5">This text is some type of a font</font>
+
+    <!-- Inline quotation -->
+    <p>
+        Famous quote:
+        <q cite="https://en.wikipedia.org/wiki/Kratos">
+            Death can have me when it earns me
+        </q>
+    </p>
+
+    <!-- Styled text instead of <font> -->
+    <p class="highlight underline center">
+        This text is styled using modern CSS (not &lt;font&gt;).
+    </p>
+
 </body>
 </html>
-
-<!-- Rough Notes
-&lt for < and &gt for >
-pre tag is used to display the text as it is in the html page
-&amp for &
-&copy for ©
-&nbsp for space between the text 
-quotation tag blockquote used to enter quotation blockquote is used to specify quotes of other authors and is a special type of quote 
-quote tag "q" is used to quote some sentences 
-**( Doubt)citation is used in quotation q tag and blockquote tag 
-font tag used to enter
-centre tag used to center the text
-u tag is used to underline the text
--->
