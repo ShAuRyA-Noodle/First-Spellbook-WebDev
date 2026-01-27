@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Shaurya Punj | Pseudo-Class Selectors</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #020617;
+            color: #e5e7eb;
+            padding: 40px;
+        }
+
+        /* Pseudo-class: styles the first child <p> inside its parent */
+        div p:first-child {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <p>Hi, I am the 1st sentence.</p>
+        <p>Hi, I am the 2nd sentence.</p>
+    </div>
+
+</body>
+</html>

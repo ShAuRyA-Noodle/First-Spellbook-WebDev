@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="UTF-8">
+
+    <!-- Responsive layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
+    <title>Shaurya Punj | Text Overflow & Wrapping</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #020617;
+            color: #e5e7eb;
+            padding: 40px;
+        }
+
+        h1 {
+            background-color: black;
+            color: yellow;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .box {
+            border: 2px solid #e5e7eb;
+            width: 180px;
+            padding: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .wrap {
+            width: 180px;
+            border: 2px dashed #38bdf8;
+            margin-top: 20px;
+            padding: 10px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Text Fonts</h1>
+
+    <!-- Text clipped with ellipsis -->
+    <p class="box">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique numquam ipsa nesciunt eius atque corrupti.
+    </p>
+
+    <!-- Word breaking example -->
+    <p class="wrap">
+        SupercalifragilisticexpialidociousSuperLongWordWithoutSpaces
+    </p>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaurya Punj | CSS Selectors</title>
+
+    <style>
+        /* ===============================
+           UNIVERSAL SELECTOR
+           =============================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===============================
+           CLASS SELECTOR
+           =============================== */
+        .green {
+            background-color: greenyellow;
+            padding: 10px;
+        }
+
+        /* ===============================
+           ID SELECTOR
+           =============================== */
+        #para {
+            background-color: lightcoral;
+            padding: 10px;
+        }
+
+        /* ===============================
+           CHILD SELECTOR
+           Targets only direct <p> children of <div>
+           =============================== */
+        div > p {
+            background-color: black;
+            color: crimson;
+            padding: 8px;
+        }
+
+        /* ===============================
+           DESCENDANT SELECTOR
+           Targets all <p> inside <span>
+           =============================== */
+        span p {
+            background-color: hotpink;
+            color: royalblue;
+            padding: 8px;
+        }
+
+        /* ===============================
+           PSEUDO-CLASSES FOR LINKS
+           =============================== */
+        a:link {
+            color: deeppink;
+        }
+
+        a:visited {
+            color: orangered;
+        }
+
+        a:hover {
+            background-color: yellow;
+        }
+
+        a:active {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="green">
+        Hi, I am Shaurya Punj. I am a web developer.
+    </div>
+
+    <p id="para">
+        Hello, I will go back home on January 31st.
+    </p>
+
+    <div>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, accusantium.
+        </p>
+
+        <span>
+            <article>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Deserunt fugit excepturi neque! Repudiandae, inventore sequi.
+                </p>
+            </article>
+        </span>
+    </div>
+
+    <br>
+
+    <div>
+        <a target="_blank" href="https://www.youtube.com/">Open YouTube</a>
+    </div>
+
+</body>
+</html>
