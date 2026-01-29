@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | em, rem, vw & vh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* Root font size */
+        html {
+            font-size: 10px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #020617;
+            color: #e5e7eb;
+            padding: 40px;
+        }
+
+        .box {
+            border: 10px solid pink;
+            background-color: aqua;
+            width: 85vw;     /* 85% of viewport width */
+            height: 50vh;    /* 50% of viewport height */
+            padding: 20px;
+            font-size: 20px; /* Parent font-size */
+        }
+
+        .box p {
+            /* Using rem instead of em */
+            font-size: 2rem; /* 2 × root font-size (10px × 2 = 20px) */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, nesciunt aperiam!
+            Culpa soluta sequi itaque harum, corrupti laudantium enim! Cumque.
+        </p>
+    </div>
+
+    <div>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit, illo.
+    </div>
+
+</body>
+</html>

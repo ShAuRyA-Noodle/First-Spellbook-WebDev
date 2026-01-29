@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | Viewport, Min-Height & Percentages</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #020617;
+            color: #e5e7eb;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 30px;
+        }
+
+        .box {
+            background-color: crimson;
+            border: 5px solid black;
+            width: 80vw;             /* 80% of viewport width */
+            min-height: 80vh;        /* minimum 80% of viewport height */
+            margin: 10px auto;       /* center horizontally */
+            padding: 20px;
+        }
+
+        .box p {
+            width: 45%;              /* 45% of parent (.box) width */
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        Hola, I am Shaurya Punj in a box.
+
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, nam ipsam? Quas optio iste eligendi exercitationem eveniet! Quam blanditiis facere culpa dicta id libero illum iste iusto, debitis ea dignissimos…
+        </p>
+    </div>
+
+</body>
+</html>

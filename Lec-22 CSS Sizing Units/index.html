@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | Viewport Units & Centering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* Reset default browser spacing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #020617;
+            color: #e5e7eb;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 40px;
+        }
+
+        /* Centered box using vw */
+        .box {
+            border: 5px solid black;
+            width: 50vw;              /* 50% of viewport width */
+            margin: 0 auto;           /* centers block element */
+            background-color: coral;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+        }
+
+        /* Container using vw & vh */
+        .container {
+            border: 5px solid green;
+            width: 65vw;              /* 65% of viewport width */
+            height: 50vh;             /* 50% of viewport height */
+            margin: 25px auto;
+            background-color: chartreuse;
+            padding: 15px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        Shaurya Punj
+    </div>
+
+    <div class="container">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi magnam porro ab hic rerum explicabo in eveniet
+        et incidunt esse eum autem, sunt quos? Error?
+    </div>
+
+</body>
+</html>

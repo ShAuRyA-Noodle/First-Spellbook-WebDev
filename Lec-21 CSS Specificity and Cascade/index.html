@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | CSS Specificity & Cascade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        /* Element selector (specificity: 1) */
+        div {
+            background-color: pink;
+        }
+
+        /* Class selector (specificity: 10) */
+        .red {
+            background-color: red;
+        }
+
+        /* Attribute selector (specificity: 10) */
+        [data-x="a"] {
+            background-color: green;
+        }
+
+        /* Class selector (specificity: 10) */
+        .orange {
+            background-color: orangered;
+        }
+
+        /* Compound selector (specificity = element(1) + class(10) = 11) */
+        div.purple {
+            background-color: purple;
+            color: chartreuse !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div 
+        class="red purple orange" 
+        data-x="a" 
+        style="color: navy;"
+    >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem eius omnis, dolore incidunt,
+        consequatur aspernatur magni, fugiat molestiae provident mollitia quia. Optio quaerat
+        laboriosam facere?
+    </div>
+
+</body>
+</html>
