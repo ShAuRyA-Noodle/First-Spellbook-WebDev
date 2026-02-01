@@ -1,0 +1,69 @@
+* {
+    box-sizing: border-box;
+    font-family: system-ui, Arial, sans-serif;
+}
+
+body {
+    background: #e0f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Card */
+.card {
+    width: 340px;
+    background: #b2ebf2;
+    border: 2px solid #4dd0e1;
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* Profile image */
+.profile {
+    width: 180px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+/* Tags */
+.tags span {
+    display: inline-block;
+    background: #00acc1;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin: 5px;
+    font-weight: bold;
+}
+
+/* Description */
+.description {
+    background: #e0f7fa;
+    color: #004d40;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 15px 0;
+    height: 80px;
+    overflow: auto;
+    font-size: 14px;
+}
+
+/* Button */
+.read-more {
+    border: none;
+    background: #4dd0e1;
+    color: #004d40;
+    padding: 10px 25px;
+    border-radius: 999px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.read-more:hover {
+    background: #26c6da;
+}

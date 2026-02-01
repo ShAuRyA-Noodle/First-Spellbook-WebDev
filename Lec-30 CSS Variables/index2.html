@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | Advanced CSS Variables</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* ============================
+           Global CSS Variables
+           ============================ */
+        :root {
+            --primary-color: crimson;
+            --secondary-color: rgb(255, 81, 0);
+            --accent-color: purple;
+            --default-padding: 20px;
+        }
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #020617;
+            color: #020617;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            background-color: var(--primary-color);
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .nav li {
+            list-style: none;
+            padding: var(--default-padding);
+            border: 3px solid var(--accent-color);
+            margin: 10px;
+        }
+
+        /* Local variable override */
+        .nav li:first-child {
+            --primary-color: rgb(81, 0, 255);
+            background-color: var(--primary-color);
+            color: deeppink;
+        }
+
+        /* Content area */
+        .container {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul class="nav">
+        <li>Home</li>
+        <li>Contact</li>
+        <li>About</li>
+    </ul>
+
+    <div class="container">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam animi sint, a ea, qui assumenda ipsa
+            tempora praesentium illo voluptate, esse ullam incidunt facere vel voluptatibus? Quasi est hic ducimus!
+        </p>
+    </div>
+
+</body>
+</html>

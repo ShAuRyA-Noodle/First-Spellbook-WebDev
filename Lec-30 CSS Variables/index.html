@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | CSS Variables</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* ============================
+           Global CSS Variables
+           ============================ */
+        :root {
+            --primary-color: rgb(32, 247, 204);
+            --secondary-color: rgb(161, 245, 228);
+            /* --tertiary-color: rgb(255, 102, 0); */
+        }
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #020617;
+        }
+
+        /* Navigation bar */
+        .nav {
+            background-color: var(--primary-color);
+        }
+
+        ul {
+            display: flex;
+            list-style: none;
+        }
+
+        ul li {
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        ul li:first-child {
+            background-color: black;
+            color: chartreuse;
+        }
+
+        /* Main content */
+        .container {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <ul>
+            <li>Play Music</li>
+            <li>Post Human Horror NEX-Gen</li>
+            <li>Drop Dead Merch</li>
+            <li>Contact</li>
+        </ul>
+    </nav>
+
+    <section class="container" style="color: red; font-weight: 700; font-family: cursive;">
+We're just a room full of strangers Looking for something to save us Alone together, we're dying to live and we're living to die Dying to live, living to die It never stops, can't erase this So cross out my eyes, tear the pages 'Cause you and I we're just dying to live and we're living to die Dying to live, living to die It never stops, it don't
+    </section>
+
+</body>
+</html>

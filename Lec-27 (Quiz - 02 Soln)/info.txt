@@ -1,0 +1,1 @@
+This lecture contains the solution to the exercise given in Lecture 20. A new tip explained in this lecture has already been added as a comment in the Lecture 20 code, and apart from that, no new concepts were introduced in this lecture.
