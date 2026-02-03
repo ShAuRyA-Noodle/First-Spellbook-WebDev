@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shaurya Punj | Advanced CSS Grid</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ================= GRID CONTAINER ================= */
+.container{
+    border:3px solid black;
+    width:100vw;
+    height:100vh;
+    display:grid;
+
+    /* Grid layout structure using named areas */
+    grid-template-areas:
+        "nav nav nav"
+        "side article article"
+        "footer footer footer";
+
+    /* Fixed grid size for demonstration */
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: repeat(2, 100px);
+
+    /* Space between grid cells */
+    gap:50px;
+
+    /* Center the entire grid inside the container */
+    place-content:center;
+}
+
+/* ================= GRID ITEMS ================= */
+.item{
+    border:3px solid red;
+    background:#f3f4f6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:fantasy;
+}
+
+/* Individual grid item alignment example */
+.item1{
+    align-self:flex-start;
+    justify-self:flex-end;
+    background:aquamarine;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="item item1">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+</div>
+
+</body>
+</html>

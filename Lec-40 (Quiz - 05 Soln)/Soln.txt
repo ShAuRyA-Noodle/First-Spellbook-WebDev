@@ -1,0 +1,1 @@
+The changes have been implemented in the Lecture 37 ‘Shaurya Punj’ text code. Please refer to that version for the updated implementation. Apart from that, this lecture was enjoyable, and I am steadily improving at building websites.

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shaurya Punj | CSS Grid</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ================= GRID CONTAINER ================= */
+.container{
+    border:3px solid black;
+    display:grid;
+
+    /* Two columns: 100px and 140px */
+    grid-template-columns: 100px 140px;
+
+    /* Three rows of 100px each */
+    grid-template-rows: 100px 100px 100px;
+
+    gap:10px;
+    padding:10px;
+}
+
+/* ================= GRID ITEMS ================= */
+.item{
+    border:3px solid red;
+    background:#f3f4f6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* Place item explicitly on grid */
+.item4{
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: rgb(124, 255, 255);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item item4">4</div>
+    <div class="item">5</div>
+</div>
+
+</body>
+</html>

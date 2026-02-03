@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shaurya Punj | CSS Float</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    *{
+        box-sizing:border-box;
+        margin:0;
+        padding:0;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+
+    /* Float the image so text flows around it */
+    .card img{
+        float:left;
+        width:250px;
+        margin:10px;
+    }
+
+    /* flow-root prevents float overflow */
+    .card{
+        border:3px solid black;
+        padding:10px;
+        display:flow-root;
+        background:#f8fafc;
+    }
+
+    .cards{
+        border:2px solid red;
+        padding:10px;
+        margin:10px 0;
+        background:#fff;
+    }
+
+    /* Stop floating for the 3rd card */
+    .cards:nth-child(3){
+        clear:left;
+        background:#8eb3f6;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <img src="Chainsmokers.png" alt="The Chainsmokers">
+
+    <div class="cards">The Chainsmokers</div>
+
+    <div class="cards">
+        Bring Me The Horizon
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae sed ut eius doloremque, ad necessitatibus tempora obcaecati odio veritatis commodi placeat id error a dolores unde molestias laboriosam repellendus quibusdam…
+        </p>
+    </div>
+
+    <div class="cards">5 Seconds of Summer</div>
+</div>
+
+</body>
+</html>

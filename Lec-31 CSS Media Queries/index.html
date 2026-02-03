@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | CSS Media Queries</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* ===============================
+           Base Styles (Default Desktop)
+           =============================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: crimson;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
+        }
+
+        .boxes {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .box {
+            background-color: black;
+            padding: 15px;
+            width: 300px;
+            height: 100px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        /* ===============================
+           Mobile Screens (≤ 400px)
+           =============================== */
+        @media only screen and (max-width: 400px) {
+
+            body {
+                background-color: hotpink;
+            }
+
+            /*
+              When the screen width becomes 400px or smaller,
+              the flex row layout changes into a vertical column layout.
+              This is extremely useful for mobile responsiveness.
+            */
+            .boxes {
+                flex-direction: column;
+            }
+        }
+
+        /* ===============================
+           Landscape Orientation
+           =============================== */
+        @media only screen and (orientation: landscape) {
+
+            /*
+              If the width of the device is greater than its height,
+              it is considered landscape mode.
+              This media query targets that scenario.
+            */
+            body {
+                background-color: purple;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Hi, I am Shaurya Punj</h2>
+
+    <div class="boxes">
+        <div class="box">HI</div>
+        <div class="box">Shaurya</div>
+        <div class="box">Punj</div>
+    </div>
+
+</body>
+</html>

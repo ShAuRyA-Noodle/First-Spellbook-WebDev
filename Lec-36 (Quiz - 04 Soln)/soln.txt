@@ -1,0 +1,1 @@
+This lecture contains the solution to Mini Project 2 from Lecture 33, which I have already completed. The navigation bar of the test website looks great—feel free to take a look. No new concepts were introduced in this lecture.

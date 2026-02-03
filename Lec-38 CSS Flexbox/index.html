@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shaurya Punj | CSS Flexbox</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#020617;
+    padding:20px;
+}
+
+/* ================= FLEX CONTAINER ================= */
+.container{
+    border:3px solid crimson;
+    height:80vh;
+    display:flex;
+
+    /* Main-axis alignment (horizontal by default) */
+    /* justify-content:center; */
+
+    /* Cross-axis alignment (vertical) */
+    align-items:center;
+
+    /* Allow items to wrap to next line if space runs out */
+    flex-wrap:wrap;
+
+    /* Space between flex items */
+    gap:30px;
+}
+
+/* ================= FLEX ITEMS ================= */
+.box{
+    width:70px;
+    height:20px;
+    background:blueviolet;
+    border:3px solid greenyellow;
+
+    /* Default: all items grow equally */
+    flex-grow:1;
+}
+
+/* Change order of items */
+.order-1{ order:1; }
+.order-2{ order:2; }
+.order-3{ order:3; }
+
+/* Grows faster than others */
+.item{
+    flex-grow:2;
+}
+
+/* Shrinks faster when space is limited */
+.item2{
+    flex-shrink:2;
+}
+
+/* Override alignment for a single item */
+.item3{
+    align-self:flex-start;
+}
+</style>
+</head>
+
+<body>
+
+<main>
+    <div class="container">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box item"></div>
+        <div class="box item2"></div>
+        <div class="box item3"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shaurya Punj | Advanced CSS Selectors</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    *{
+        box-sizing:border-box;
+        font-family:'Segoe UI', Tahoma, sans-serif;
+    }
+
+    /* First child inside .boxes */
+    .boxes :first-child{
+        background-color: chartreuse;
+    }
+
+    /* First letter styling */
+    .box::first-letter{
+        color: crimson;
+        font-size: 45px;
+        font-weight: bold;
+    }
+
+    /* Universal selector inside boxes */
+    .boxes *{
+        background-color: rgb(249, 184, 160);
+        border: 3px solid hotpink;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    /* Grouping selectors */
+    p, a, [data-color="prism"]{
+        margin-top: 40px;
+    }
+
+    /* Pseudo elements */
+    .boxes::before{
+        content: "Shaurya Punj is a good boy and he loves someone. ";
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .boxes::after{
+        content: " Punj is a naughty boy and he loves someone.";
+        display: block;
+        margin-top: 10px;
+        font-style: italic;
+    }
+
+    /* Selected text */
+    ::selection{
+        background-color: rgb(146, 253, 253);
+        color: black;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="boxes">
+    <div class="box">
+        Hi I am Shaurya Punj. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    </div>
+
+    <div class="box" data-color="prism">
+        My best friend is Vasu Gupta
+    </div>
+
+    <div class="box">
+        I am going to be a rich person
+    </div>
+</div>
+
+</body>
+</html>

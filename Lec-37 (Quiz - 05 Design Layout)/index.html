@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Shaurya Punj | Project 03</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI', Tahoma, sans-serif;
+}
+
+body{
+    background:#f8b483;
+}
+
+/* ================= NAVIGATION ================= */
+.navigation{
+    position:sticky;
+    top:0;
+    background:hotpink;
+    border:2px solid black;
+    display:flex;
+    justify-content:center;
+    padding:20px;
+    z-index:10;
+}
+
+.navigation ul{
+    display:flex;
+    gap:15px;
+}
+
+.navigation li{
+    list-style:none;
+    border:2px solid crimson;
+    padding:8px 20px;
+    border-radius:15px;
+    background:#fff;
+    cursor:pointer;
+}
+
+/* ================= MAIN LAYOUT ================= */
+.box2{
+    background:#64ff64;
+    border:3px solid black;
+    margin:15px;
+    padding:15px;
+}
+
+.inbox{
+    display:inline-block;
+    width:45%;
+    height:70vh;
+    border:3px solid black;
+    margin:10px;
+}
+
+.inbox.one{ background:#f85172; }
+.inbox.two{ background:#f3f33d; }
+
+/* ================= PROMO ================= */
+.promo{
+    margin:20px;
+    padding:15px;
+    background:black;
+    color:yellow;
+    font-size:22px;
+    border-radius:10px;
+    text-align:center;
+}
+
+/* ================= FOOTER ================= */
+.footer{
+    background:#a47bfd;
+    border:3px solid black;
+    text-align:center;
+    padding:10px;
+}
+
+/* ================= FLOATING IMAGE ================= */
+.bmth{
+    position:fixed;
+    bottom:110px;
+    right:25px;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navigation">
+    <ul>
+        <li>Home</li>
+        <li>Shop</li>
+        <li>Contact Us</li>
+    </ul>
+</nav>
+
+<section class="box2">
+    <div class="inbox one"></div>
+    <div class="inbox two"></div>
+</section>
+
+<div class="promo">
+    My favourite music band is Bring Me The Horizon and I love listening to their music because it calms my mind.
+</div>
+
+<footer class="footer">
+    All Rights Reserved 2025-2026 — Shaurya Punj
+</footer>
+
+<div class="bmth">
+    <img src="Bmth sempiternal.png" width="100">
+</div>
+
+</body>
+</html>
