@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 
+        Ensures responsive behavior across devices
+        by controlling viewport scaling.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CSS Transitions</title>
+
+    <style>
+        /* ===============================
+           Container Styling
+           Acts as the parent reference
+        =============================== */
+        .container {
+            width: 80vw;
+            height: 80vh;
+            background-color: rgb(248, 61, 98);
+            padding: 20px;
+        }
+
+        /* ===============================
+           Box Element
+           This element demonstrates transitions
+        =============================== */
+        .box {
+            width: 185px;
+            height: 100px;
+            background-color: rgb(0, 157, 255);
+
+            /*
+                CSS Transition Shorthand Syntax:
+                transition: property duration timing-function delay;
+
+                Here:
+                • all → applies transition to all animatable properties
+                • 2s → transition duration
+                • cubic-bezier → custom easing curve
+                • 1s → delay before transition starts
+            */
+            transition: all 0.5s cubic-bezier(0.44, 0.7, 1, 0.45) 1s;
+        }
+
+        /* ===============================
+           Transformed State
+           Applies movement, scaling, and color change
+        =============================== */
+        .translate {
+            transform: translateX(110px) translateY(60px) scale(1.5);
+
+            background-color: deepskyblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- 
+            Applying the 'translate' class triggers
+            the transition automatically.
+        -->
+        <div class="box" onclick="this.classList.toggle('translate')"></div>
+    </div>
+
+</body>
+
+</html>
+
+<!--
+Rough Notes (Professionally Explained)
+
+• A CSS transition is created using FOUR core properties:
+  1. transition-property – which CSS property will animate
+  2. transition-duration – how long the animation takes
+  3. transition-timing-function – speed curve of animation
+  4. transition-delay – delay before animation starts
+
+• These four properties can be written individually
+  OR combined into a single shorthand transition property.
+
+• To fine-tune transitions:
+  → Open browser DevTools
+  → Inspect the element
+  → Use the built-in transition editor
+  → Adjust easing curves visually for smoother animations
+
+• Transitions work best with:
+  transform, opacity, background-color, and color
+  because they are performance-optimized by the browser.
+-->

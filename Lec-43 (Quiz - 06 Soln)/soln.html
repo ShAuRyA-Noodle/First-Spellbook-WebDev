@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UltraEdit Navigation Clone</title>
+
+  <style>
+    /* ===============================
+       Global Reset & Base Styles
+    =============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* ===============================
+       Navigation Bar Container
+    =============================== */
+    nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 18px 0;
+    }
+
+    /* ===============================
+       Logo Section
+    =============================== */
+    .logo img {
+      width: 164px;
+      cursor: pointer;
+    }
+
+    /* ===============================
+       Right Navigation Menu
+    =============================== */
+    .right ul {
+      display: flex;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .right ul li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      color: #222;
+    }
+
+    /* Adds spacing between text and dropdown arrow */
+    .right ul li span {
+      padding-right: 4px;
+    }
+
+    /* Language icon styling */
+    .right ul li img {
+      width: 26px;
+    }
+
+    /* ===============================
+       Hover Effects (UX polish)
+    =============================== */
+    .right ul li:hover {
+      color: #007bff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===============================
+       Website Header
+  =============================== -->
+  <header>
+    <nav>
+
+      <!-- Logo -->
+      <div class="logo">
+        <img src="https://www.ultraedit.com/wp-content/uploads/2023/01/Dark-logo.png" alt="UltraEdit Logo">
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="right">
+        <ul>
+
+          <!-- Menu Item -->
+          <li>
+            <span>Products</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9L12 15L18 9" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </li>
+
+          <li>
+            <span>Pricing</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9L12 15L18 9" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </li>
+
+          <li>
+            <span>Resources</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9L12 15L18 9" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </li>
+
+          <li>
+            <span>About Us</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9L12 15L18 9" stroke="#141B34" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </li>
+
+          <!-- Language Icon -->
+          <li>
+            <img src="https://www.ultraedit.com/wp-content/themes/Divi_Child/img/Lang.png" alt="Language Selector">
+          </li>
+
+        </ul>
+      </div>
+
+    </nav>
+  </header>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+/* ===============================
+   Global Reset & Base Styling
+================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  padding: 40px;
+}
+
+/* ===============================
+   Wrapper Layout
+================================ */
+
+.wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 40px;
+  justify-items: center;
+}
+
+/* ===============================
+   Box Containers
+================================ */
+
+.box {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===============================
+   Common Blue Element Style
+================================ */
+
+.blue {
+  width: 80px;
+  height: 80px;
+  background-color: #4f46e5;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  /* Smooth animation for transforms */
+  transition: transform 0.4s ease;
+}
+
+/* ===============================
+   2D TRANSFORMS
+================================ */
+
+/* Scale on X-axis */
+.scaleX:hover {
+  transform: scaleX(1.5);
+}
+
+/* Scale on Y-axis */
+.scaleY:hover {
+  transform: scaleY(1.5);
+}
+
+/* Scale on both axes */
+.scale:hover {
+  transform: scale(1.4);
+}
+
+/* Translate X */
+.translateX:hover {
+  transform: translateX(25px);
+}
+
+/* Translate Y */
+.translateY:hover {
+  transform: translateY(25px);
+}
+
+/* Translate both axes */
+.translate:hover {
+  transform: translate(20px, 20px);
+}
+
+/* Matrix (2D transform) */
+.matrix:hover {
+  transform: matrix(1, 0.3, 0.3, 1, 10, 10);
+}
+
+/* Rotate (Z-axis) */
+.rotate:hover {
+  transform: rotate(45deg);
+}
+
+/* Skew both axes */
+.skew:hover {
+  transform: skew(20deg, 10deg);
+}
+
+/* Skew X-axis */
+.skewX:hover {
+  transform: skewX(25deg);
+}
+
+/* Skew Y-axis */
+.skewY:hover {
+  transform: skewY(25deg);
+}
+
+/* ===============================
+   3D TRANSFORMS
+================================ */
+
+/* Matrix 3D */
+.matrix3d:hover {
+  transform: matrix3d(
+    1, 0, 0, 0,
+    0, 1, 0.3, 0,
+    0, 0.3, 1, 0,
+    10, 10, 10, 1
+  );
+}
+
+/* Translate in 3D space */
+.translate3d:hover {
+  transform: translate3d(20px, 20px, 40px);
+}
+
+/* Rotate around Y-axis */
+.rotateY:hover {
+  transform: rotateY(60deg);
+}
+
+/* Rotate around X-axis */
+.rotateX:hover {
+  transform: rotateX(60deg);
+}
+
+/* Translate on Z-axis */
+.translateZ:hover {
+  transform: translateZ(50px);
+}
+
+/* ===============================
+   3D Perspective (IMPORTANT)
+================================ */
+
+/* Perspective applied to parent for 3D visibility */
+.box {
+  perspective: 600px;
+}

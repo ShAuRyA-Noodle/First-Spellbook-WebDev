@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaurya Punj | Navbar Layout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body{
+            background-color: rgb(250, 216, 216);
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 90px;
+            background-color: white;
+            border-bottom: 2px solid black;
+        }
+
+        /* Logo */
+        .logo img{
+            height: 60px;
+        }
+
+        /* Navigation links */
+        .nav-links{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a{
+            text-decoration: none;
+            color: black;
+            font-weight: 500;
+        }
+
+        /* Icons */
+        .icons{
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .icons img{
+            height: 32px;
+            cursor: pointer;
+        }
+
+        /* Hover effect */
+        .nav-links a:hover{
+            color: crimson;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <!-- Logo -->
+    <div class="logo">
+        <img src="youtube.svg.png" alt="YouTube Logo">
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="https://www.youtube.com/premium" target="_blank">Products</a>
+        <a href="https://support.google.com/youtube/answer/12340107" target="_blank">For Business</a>
+        <a href="https://studio.youtube.com" target="_blank">Resources</a>
+        <a href="https://support.google.com/youtube" target="_blank">Support</a>
+        <a href="https://en.wikipedia.org/wiki/YouTube" target="_blank">Our Company</a>
+    </div>
+
+    <!-- Icons -->
+    <div class="icons">
+        <a href="https://translate.google.co.in/" target="_blank">
+            <img src="Language.png" alt="Language">
+        </a>
+        <a href="https://www.youtube.com/" target="_blank">
+            <img src="Search.png" alt="Search">
+        </a>
+    </div>
+
+</nav>
+
+</body>
+</html>

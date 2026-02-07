@@ -1,0 +1,1 @@
+In Lecture 43, we discussed the solution to Mini Project 04. Some modifications were made to the sample solution created by Shaurya Punj. To review the CodeWithHarry reference solution, please check the HTML file inside the Lecture 41 folder.
