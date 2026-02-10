@@ -1,0 +1,1 @@
+Mongoose is java script based library creates connection between mongoDB and node js 

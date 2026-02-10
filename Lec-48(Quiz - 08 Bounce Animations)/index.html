@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================================
+         Document Configuration
+    ========================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Ball Animation</title>
+
+    <style>
+        /* =========================================================
+           Container
+           Serves as the animation playground. Positioned relative
+           so the animated element can use absolute positioning.
+        ========================================================== */
+        .container {
+            width: 85vw;
+            height: 500px;
+            background-color: rgb(252, 47, 88);
+            position: relative;
+            overflow: hidden; /* Prevents element overflow during animation */
+        }
+
+        /* =========================================================
+           Animated Element (Ball)
+           Combines horizontal motion and vertical bounce animations.
+        ========================================================== */
+        .ball {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+
+            /*
+                Multiple animations applied simultaneously:
+
+                1. horizontalMove → moves the element horizontally
+                2. verticalBounce → creates bouncing motion
+
+                animation syntax:
+                animation: name duration timing-function iteration-count;
+            */
+            animation:
+                horizontalMove 5s linear infinite,
+                verticalBounce 1s ease-out infinite alternate;
+        }
+
+        /* =========================================================
+           Horizontal Movement Animation
+           Moves the element from left to right while transitioning
+           its background color.
+        ========================================================== */
+        @keyframes horizontalMove {
+            from {
+                left: 0%;
+                background-color: chartreuse;
+            }
+
+            to {
+                left: 100%;
+                background-color: rgb(255, 255, 49);
+            }
+        }
+
+        /* =========================================================
+           Vertical Bounce Animation
+           Alternates between bottom and top positions to simulate
+           bouncing motion.
+        ========================================================== */
+        @keyframes verticalBounce {
+            from {
+                bottom: 0%;
+            }
+
+            to {
+                bottom: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         Animation Structure
+    ========================================================== -->
+    <div class="container">
+        <div class="ball"></div>
+    </div>
+
+</body>
+</html>

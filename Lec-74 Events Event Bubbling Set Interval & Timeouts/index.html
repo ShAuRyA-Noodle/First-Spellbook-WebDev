@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events and Event Bubbling</title>
+
+    <style>
+        .box {
+            border: 3px solid black;
+            width: 300px;
+            padding: 15px;
+            margin: 10px;
+        }
+
+        .container {
+            padding: 15px;
+            margin: 15px;
+            background-color: black;
+        }
+
+        .childcontainer {
+            padding: 15px;
+            margin: 25px;
+            background-color: rgb(255, 240, 74);
+        }
+
+        .child {
+            border: 3px solid black;
+            margin: 25px;
+            padding: 20px;
+            width: 400px;
+            background-color: rgb(196, 255, 235);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">Hello Madame</div>
+    <button id="btn">Login</button>
+
+    <div class="container">
+        <section class="childcontainer">
+            <div class="child">Hi I am Shaurya Punj</div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

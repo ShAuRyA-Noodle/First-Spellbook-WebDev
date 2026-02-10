@@ -1,0 +1,11 @@
+to solve the problems of not building multiple html files for each new blogpost html files we will use the template engine to solve the problem and in particular we will use ejs 
+
+
+to search a word in the webpage use the shortcut ctrl+f or command+f in mac os and type the word and we will get all the similar words in the webpage as results 
+
+
+https://github.com/mde/ejs/wiki/Using-EJS-with-Express 
+above link is given to tell how to use ejs with express 
+
+
+if we want to create a separate navbar html file and use it in different ejs files we can use the include command and use it whenever we want 

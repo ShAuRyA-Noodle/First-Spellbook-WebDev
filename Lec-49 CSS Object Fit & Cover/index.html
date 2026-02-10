@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================================
+         Document Meta Configuration
+    ========================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Object Fit Demonstration</title>
+
+    <style>
+        /* =========================================================
+           Image Container
+           Defines a fixed-size layout box to demonstrate how
+           different object-fit behaviors affect image rendering.
+        ========================================================== */
+        .image-container {
+            width: 450px;
+            height: 550px;
+            border: 3px solid #000;
+            background-color: azure;
+            overflow: hidden;
+        }
+
+        /* =========================================================
+           Image Styling
+           Demonstrates object-fit and object-position behavior.
+
+           object-fit options:
+           - cover   : fills the container fully (image may crop)
+           - contain : ensures the full image is visible (may leave space)
+           - fill    : stretches image to match container
+           - none    : original image size
+           - scale-down : smallest between none and contain
+
+           object-position:
+           Controls which portion of the image is visible inside
+           the container when cropping occurs.
+        ========================================================== */
+        .image-container img {
+            width: 100%;
+            height: 100%;
+
+            /* Ensures the full image remains visible while maintaining aspect ratio */
+            object-fit: contain;
+
+            /* Adjusts the visible focus area of the image */
+            object-position: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         Demonstration Layout
+    ========================================================== -->
+    <div class="image-container">
+        <img src="Chainsmokers album cover.png" alt="Chainsmokers album cover">
+    </div>
+
+</body>
+</html>

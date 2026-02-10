@@ -1,0 +1,7 @@
+how to handle get request , post request , delete request , put request 
+concept of chaining and how to serve static files in express
+to launch the website hosted by express on google type localhost:3000
+nodemon is used to auto restart the server and we dont have to relaunch the server
+browser jis request ko by default use karta hai woh ek get request hai
+to send username and password and protect it and have some privacy we use the post request 
+to make a post request we use the same syntax as app.get just we change the app.get to app.post

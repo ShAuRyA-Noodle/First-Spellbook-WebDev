@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================================
+         Document Meta Configuration
+    ========================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Demonstration</title>
+
+    <style>
+        /* =========================================================
+           Background Container
+           Demonstrates controlled placement, scaling, and clipping
+           behavior of background images.
+        ========================================================== */
+        .background-container {
+            width: 690px;
+            height: 700px;
+            border: 2px solid #000;
+
+            /*
+                background-image:
+                Defines the image resource used as the element's
+                background.
+            */
+            background-image: url("https://c4.wallpaperflare.com/wallpaper/306/100/947/thelema-unicursal-hexagram-space-universe-purple-bring-me-the-horizon-wallpaper-preview.jpg");
+
+            /*
+                background-position:
+                Centers the image horizontally and vertically.
+                Accepts keywords (center, top, left, etc.) or
+                coordinate values.
+            */
+            background-position: center;
+
+            /*
+                background-repeat:
+                Prevents the default tiling behavior when the
+                image is smaller than the container.
+            */
+            background-repeat: no-repeat;
+
+            /*
+                background-size:
+                Ensures the image scales proportionally while
+                covering the container area.
+                (Recommended production default)
+            */
+            background-size: cover;
+
+            /*
+                background-clip:
+                Specifies how far the background extends:
+                - border-box  : includes border
+                - padding-box : excludes border
+                - content-box : only content area
+            */
+            background-clip: padding-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         Demonstration Element
+    ========================================================== -->
+    <div class="background-container"></div>
+
+</body>
+</html>

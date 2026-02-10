@@ -1,0 +1,5 @@
+MongoDB is document based database
+Database is collection of structured information
+
+My SQL is a relational database in relational database we make tables and inside tables we make rows & columns every datapoint can be reference to another datapoint in another table 
+we can use MongoDB from GUI (MongoDB compass) or we can use it from MongoDB in the vs code by locally connecting it 

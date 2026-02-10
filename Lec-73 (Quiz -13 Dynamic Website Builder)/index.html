@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise - 03</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .card {
+            display: flex;
+            gap: 15px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            width: 600px;
+        }
+
+        .thumbnail {
+            position: relative;
+        }
+
+        .thumbnail img {
+            width: 200px;
+            border-radius: 6px;
+        }
+
+        .duration {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 6px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .info h3 {
+            margin: 0;
+        }
+
+        .meta {
+            color: gray;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="cardContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

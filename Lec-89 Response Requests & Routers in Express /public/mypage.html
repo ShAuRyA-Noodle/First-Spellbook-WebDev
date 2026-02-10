@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP Method Testing</title>
+</head>
+
+<body>
+  <h2>HTTP Request Testing Console</h2>
+
+  <script>
+    /**
+     * --------------------------------------------------------------
+     * HTTP Request Testing Utility
+     * --------------------------------------------------------------
+     * This script demonstrates sending different HTTP requests
+     * (POST, PUT, DELETE) to the backend server using the Fetch API.
+     *
+     * A reusable helper function is used to avoid code repetition
+     * and to maintain clean, scalable structure — a standard
+     * production-level practice.
+     * --------------------------------------------------------------
+     */
+
+    /**
+     * Sends an HTTP request using the specified method
+     * @param {string} method - HTTP method (POST, PUT, DELETE)
+     */
+    async function sendRequest(method) {
+      try {
+        const response = await fetch("/", {
+          method: method,
+        });
+
+        const result = await response.text();
+        console.log(`${method} response:`, result);
+      } catch (error) {
+        console.error(`${method} request failed:`, error);
+      }
+    }
+
+    /**
+     * Execute requests
+     */
+    sendRequest("POST");
+    sendRequest("PUT");
+    sendRequest("DELETE");
+  </script>
+</body>
+</html>

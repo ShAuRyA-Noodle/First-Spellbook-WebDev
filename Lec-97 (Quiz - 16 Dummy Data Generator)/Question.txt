@@ -1,0 +1,10 @@
+Generate a dummy data called in a format in a collection called employees in a database called company 
+
+{
+    Name : ,
+    Salary : ,
+    City : , 
+    isManager : 
+}
+
+Generate 10 Such records add a button generate to generate the data and add create an express app with mongoose

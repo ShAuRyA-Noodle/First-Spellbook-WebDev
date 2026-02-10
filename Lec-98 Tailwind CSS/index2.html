@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CDN (development only) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Compiled Tailwind production stylesheet -->
+  <link rel="stylesheet" href="src/output.css" />
+
+  <title>Responsive Tailwind Layout</title>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gray-50">
+
+  <!--
+    ----------------------------------------------------------------
+    Navigation Bar
+    Responsive layout:
+    - Mobile: stacked layout
+    - Medium screens and above: horizontal navigation
+    ----------------------------------------------------------------
+  -->
+  <nav class="bg-blue-500 text-white flex flex-col md:flex-row items-center md:justify-around py-3">
+
+    <div class="text-lg font-semibold mb-2 md:mb-0">
+      Shaurya Punj
+    </div>
+
+    <ul class="flex space-x-6 text-sm md:text-base">
+      <li class="hover:underline cursor-pointer">Home</li>
+      <li class="hover:underline cursor-pointer">Shop</li>
+      <li class="hover:underline cursor-pointer">Contact Us</li>
+      <li class="hover:underline cursor-pointer">About</li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <section class="max-w-6xl mx-auto px-4 py-6">
+      <div class="rounded-lg shadow-sm p-6 bg-yellow-300 sm:bg-pink-400">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Tempora alias eos voluptatibus ipsam, possimus adipisci
+          reiciendis non, repellat harum consectetur consequatur
+          voluptas? Modi, nulla asperiores?
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-200 text-center py-3 text-sm text-gray-700">
+    © 2026 Shaurya Punj. All rights reserved.
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================================
+         Document Meta Configuration
+    ========================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Filter Effects Demonstration</title>
+
+    <style>
+        /* =========================================================
+           Layout Container
+           Provides spacing and layout structure for the examples.
+        ========================================================== */
+        .container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* =========================================================
+           Image Variant 1
+           Demonstrates opacity filtering which controls
+           the transparency level of the image.
+           
+           opacity values:
+           1   = fully visible
+           0   = fully transparent
+        ========================================================== */
+        .image-opacity {
+            width: 300px;
+            filter: opacity(0.8);
+        }
+
+        /* =========================================================
+           Image Variant 2
+           Demonstrates the drop-shadow filter, which creates
+           a shadow based on the shape of the image rather than
+           its rectangular bounding box.
+           
+           Syntax:
+           drop-shadow(offset-x offset-y blur-radius color)
+        ========================================================== */
+        .image-shadow {
+            width: 300px;
+            filter: drop-shadow(20px 20px 25px gold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         Demonstration Section
+    ========================================================== -->
+    <div class="container">
+        <img 
+            class="image-opacity"
+            src="https://i.pinimg.com/736x/49/14/43/491443422f624ac45a93c70a5aa78a0c.jpg"
+            alt="Chainsmokers promotional image">
+
+        <img 
+            class="image-shadow"
+            src="https://hips.hearstapps.com/hmg-prod/images/2019-dodge-challenger-srt-hellcat-redeye-comparison-104-1581425446.jpg"
+            alt="Dodge Challenger car image">
+    </div>
+
+</body>
+</html>

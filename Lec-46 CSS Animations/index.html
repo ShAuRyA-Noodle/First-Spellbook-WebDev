@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================================
+         Meta Configuration
+         Ensures proper character encoding and responsive scaling
+    ========================================================== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CSS Animation Demonstration</title>
+
+    <style>
+        /* =========================================================
+           Layout Container
+           Defines the animation playground area
+        ========================================================== */
+        .container {
+            width: 80vw;
+            height: 75vh;
+            background-color: rgb(130, 53, 254);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================================================
+           Animated Box
+           This element demonstrates multiple animations running
+           simultaneously (translation + rotation).
+        ========================================================== */
+        .box {
+            width: 250px;
+            height: 150px;
+            text-align: center;
+            line-height: 150px;
+            font-weight: bold;
+            color: #000;
+
+            /*
+                animation property shorthand syntax:
+
+                animation:
+                name duration timing-function delay iteration-count
+                direction fill-mode;
+
+                Multiple animations can be applied by separating
+                them with commas.
+            */
+
+            animation:
+                slideAndColorChange 3s ease-in-out 1s 1 forwards,
+                rotateSequence 5s ease-in-out 2s;
+        }
+
+        /* =========================================================
+           Animation 1: Horizontal movement + color transition
+           - Moves the element horizontally
+           - Changes the background color during the transition
+        ========================================================== */
+        @keyframes slideAndColorChange {
+            from {
+                background-color: rgb(255, 53, 93);
+                transform: translateX(0);
+            }
+
+            to {
+                background-color: rgb(255, 255, 49);
+                transform: translateX(1000px);
+            }
+        }
+
+        /* =========================================================
+           Animation 2: Progressive rotational animation
+           Rotates the element across multiple intermediate states
+           to create smoother visual motion.
+        ========================================================== */
+        @keyframes rotateSequence {
+            0%   { transform: rotate(50deg); }
+            20%  { transform: rotate(120deg); }
+            50%  { transform: rotate(200deg); }
+            80%  { transform: rotate(290deg); }
+            100% { transform: rotate(350deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- =========================================================
+         Animation Demo Structure
+    ========================================================== -->
+    <div class="container">
+        <div class="box">
+            Shaurya Punj
+        </div>
+    </div>
+</body>
+</html>

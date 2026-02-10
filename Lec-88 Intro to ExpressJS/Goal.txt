@@ -1,0 +1,5 @@
+Why do i need to use express JS ?
+why use nodemon and what is its usecase
+installing Express@4
+request parameters and queries
+static files

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOM Update Demo</title>
+
+  <style>
+    .box {
+      background-color: crimson;
+      color: white;
+      height: 125px;
+      width: 150px;
+      margin: 15px;
+      padding: 10px;
+      border: 3px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box box1">I am Box 1</div>
+  <div class="box box2">I am Box 2</div>
+  <div class="box box3">I am Box 3</div>
+
+  <script>
+    /**
+     * Updates the text content of a selected element
+     * after a specified delay.
+     *
+     * @param {string} selector - CSS selector of the element
+     * @param {string} text - New text to display
+     * @param {number} delay - Delay in milliseconds
+     */
+    function updateBox(selector, text, delay) {
+      setTimeout(() => {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = text;
+      }, delay);
+    }
+
+    // Scheduled updates
+    updateBox(".box1", "Hello from Box 1", 1000);
+    updateBox(".box2", "Hello from Box 2", 2000);
+    updateBox(".box3", "Hello from Box 3", 3000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =========================================================
+         Document Meta Configuration
+    ========================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Object Model Demo</title>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         Page Content
+    ========================================================== -->
+    <div class="container">
+        <div class="box">
+            Hi, I am Shaurya Punj inside a box.
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================
+           DOM (Document Object Model)
+           The DOM represents the entire HTML document as a tree
+           of JavaScript objects that can be accessed and modified
+           dynamically.
+        ========================================================== */
+
+        /* Update page title dynamically */
+        document.title = "Shaurya Punj";
+
+        /* Inspect document properties */
+        console.log("Document Title:", document.title);
+        console.log("Document Body:", document.body);
+
+        /*
+           Inline style manipulation using JavaScript
+           (Direct DOM styling)
+        */
+        document.body.style.backgroundColor = "crimson";
+
+        /* =========================================================
+           BOM (Browser Object Model)
+           The window object represents the browser environment
+           and contains the document object.
+        ========================================================== */
+        console.log("Window Object:", window);
+        console.log("Window Document:", window.document);
+        console.log("Window Document Body:", window.document.body);
+    </script>
+
+</body>
+</html>

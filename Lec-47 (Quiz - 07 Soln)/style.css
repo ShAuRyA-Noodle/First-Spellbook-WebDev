@@ -1,0 +1,116 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: white;
+}
+
+.navi {
+    border: 3px solid white;
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.right ul {
+    display: flex;
+    gap: 40px;
+}
+
+.right ul li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.right ul li span {
+    padding: 0 5px;
+}
+
+.box {
+    border: 2px solid black;
+    margin: 10px;
+    width: 320px;
+    height: 280px;
+    margin: 15px;
+    text-align: center;
+    background-color: rgb(237, 237, 237);
+}
+
+.box h5 {
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 100;
+}
+
+.download {
+    padding: 10px;
+    margin: 80px;
+    margin-top: 100px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgb(72, 251, 72);
+}
+
+.downbox {
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+}
+
+.grid {
+    border: 1px solid white;
+    max-width: 80vw;
+    height: 1600px;
+    margin: auto;
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: 400px 400px 400px;
+    grid-template-rows: 400px 400px 400px 400px;
+    background-color: white;
+    justify-content: center;
+    align-content: center;
+    /* overflow-y: auto; */
+}
+
+.mid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    /* text-align: center; */
+}
+
+.mid h1 {
+    font-weight: 100;
+}
+
+.mid2 {
+    text-align: center;
+    font-size: larger;
+}
+
+.poki {
+    border: 3px solid black;
+    margin-top: 100px;
+    margin-left: 500px;
+    margin-right: 500px;
+    border-radius: 9px;
+    background-color: aqua;
+    padding: 10px;
+}
+
+.poki a {
+    text-decoration: none;
+    color: black;
+}
+/* media screen wali cheez doubt hai jab thoda free time milega to isko improve upon karlio */
+/* @media screen and (max-width:1000px){
+    .grid {
+        background-color: red;
+    }
+    
+} */

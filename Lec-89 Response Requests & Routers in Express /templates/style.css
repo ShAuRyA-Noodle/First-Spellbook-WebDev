@@ -1,0 +1,17 @@
+/**
+ * ---------------------------------------------------------------
+ * Global Typography Styling
+ * ---------------------------------------------------------------
+ * External stylesheets improve maintainability and allow multiple
+ * pages to share consistent visual styling.
+ * ---------------------------------------------------------------
+ */
+
+.mantra-text {
+  background-color: rgb(117, 255, 177);
+  color: rgb(0, 64, 255);
+  padding: 12px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  border-radius: 6px;
+}

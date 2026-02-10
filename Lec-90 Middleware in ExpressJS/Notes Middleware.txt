@@ -1,0 +1,15 @@
+We have total 5 types of middlewares
+application level middleware -> app.use wala jo hai woh ek application middleware hai
+router level middleware -> jo humne blog.js ke andar middleware bnaya hai woh ek router level middleware hai it works only in specific router
+error handling middleware -> agar koi error aajaye to hume use kis tarike se handle karna hai we define that in this 
+example for its syntax is on (https://expressjs.com/en/guide/using-middleware.html)
+built in middleware -> used to handle static files
+examples are 
+express.static used to serve static assets such as html files,video,images etc...
+express.json resolve incoming requests with json payloads
+express.urlencoded resolve incoming requests with urlencoded payloads
+
+third party middleware -> use 3rd party middlewares to add functionality into express apps as npm install cookie-parser
+
+
+middleware can be used to help us in logins and cookie handlings can be check if user is logged in or not

@@ -1,0 +1,2 @@
+Figma is used for designing the visual layout of a website, while HTML, CSS, and other programming languages are used to develop and implement the design.
+This lecture provided me with a solid introductory understanding of Figma, and I am now interested in learning more about it. To continue building my skills, I have saved several YouTube courses for further study. After completing them, I plan to practice by designing three websites for my favorite companies or public figures, applying the concepts I learn throughout the process.

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counter Example</title>
+</head>
+
+<body>
+
+  <div id="counter">0</div>
+  <button id="btn">Increment Counter</button>
+
+  <script>
+    /**
+     * Counter Increment Logic
+     * Uses textContent instead of innerHTML for safer
+     * and more efficient DOM updates.
+     */
+
+    const counterElement = document.getElementById("counter");
+    const buttonElement = document.getElementById("btn");
+
+    buttonElement.addEventListener("click", () => {
+      const currentValue = Number(counterElement.textContent);
+      counterElement.textContent = currentValue + 1;
+    });
+  </script>
+
+</body>
+</html>
