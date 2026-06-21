@@ -31,6 +31,7 @@
     "path-to-regexp": "^8.4.0",
     "picomatch": "^4.0.4",
     "qs": "^6.14.2",
-    "lodash": "^4.18.0"
+    "lodash": "^4.18.0",
+    "esbuild": "^0.28.1"
   }
 }
