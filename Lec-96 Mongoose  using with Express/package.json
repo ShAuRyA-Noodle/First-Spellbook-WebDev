@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.2",
-    "mongoose": "^8.13.2"
+    "mongoose": "^8.24.1"
   },
   "overrides": {
     "brace-expansion": "^2.0.3",
