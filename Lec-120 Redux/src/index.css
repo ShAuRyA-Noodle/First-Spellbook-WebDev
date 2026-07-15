@@ -1,68 +1,165 @@
+/* ============================================================
+   Redux Console — design tokens
+   Domain: a broadcast/control-room console. One transmitter
+   (the store), many receivers (components) tuned to the same
+   signal. Dark "console" mode is the primary expression; a
+   "daylight lab" variant answers prefers-color-scheme: light.
+   ============================================================ */
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: dark;
+
+  /* ---- surfaces (elevation ladder — each step a few % lighter) ---- */
+  --bg-canvas: #0a0b10;
+  --bg-surface-1: #12141c;   /* panels */
+  --bg-surface-2: #171a24;   /* raised: log terminal, topology nodes */
+  --bg-surface-3: #1d2130;   /* highest: active node, popover */
+  --bg-inset: #0d0e14;       /* inputs — recessed, receives content */
+
+  /* ---- borders (progression: subtle -> emphasis) ---- */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-standard: rgba(255, 255, 255, 0.10);
+  --border-emphasis: rgba(255, 255, 255, 0.17);
+  --border-focus: #a689ff;
+
+  /* ---- text hierarchy ---- */
+  --text-primary: #edeff5;
+  --text-secondary: #a3a9ba;
+  --text-tertiary: #767c8e;
+  --text-muted: #4c5162;
+
+  /* ---- signal (single accent, used with intent) ---- */
+  --signal: #8a63f5;
+  --signal-strong: #a689ff;
+  --signal-soft: rgba(138, 99, 245, 0.16);
+  --signal-ring: rgba(138, 99, 245, 0.45);
+
+  /* ---- directional semantics (increment / decrement cues only) ---- */
+  --polarity-pos: #34d399;
+  --polarity-pos-soft: rgba(52, 211, 153, 0.14);
+  --polarity-neg: #f87171;
+  --polarity-neg-soft: rgba(248, 113, 113, 0.14);
+
+  /* ---- radius ladder ---- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* ---- spacing (base unit 4px) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---- type ---- */
+  --font-sans: "Segoe UI", ui-sans-serif, system-ui, -apple-system, "Inter", Avenir, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 160ms;
+  --duration-med: 420ms;
+
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* Daylight lab variant — same console language, ambient light instead
+   of a dim room. Structure and accent hue stay identical; only
+   lightness/contrast invert. */
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+
+    --bg-canvas: #f3f2f8;
+    --bg-surface-1: #ffffff;
+    --bg-surface-2: #f8f7fc;
+    --bg-surface-3: #efedf9;
+    --bg-inset: #ecebf4;
+
+    --border-subtle: rgba(20, 16, 40, 0.07);
+    --border-standard: rgba(20, 16, 40, 0.12);
+    --border-emphasis: rgba(20, 16, 40, 0.20);
+    --border-focus: #6d3ff0;
+
+    --text-primary: #1a1a24;
+    --text-secondary: #4d5061;
+    --text-tertiary: #767a8c;
+    --text-muted: #9a9dad;
+
+    --signal: #6d3ff0;
+    --signal-strong: #5b2fe0;
+    --signal-soft: rgba(109, 63, 240, 0.10);
+    --signal-ring: rgba(109, 63, 240, 0.35);
+
+    --polarity-pos: #0f9d67;
+    --polarity-pos-soft: rgba(15, 157, 103, 0.10);
+    --polarity-neg: #d94848;
+    --polarity-neg-soft: rgba(217, 72, 72, 0.10);
+  }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+body {
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  background-image:
+    radial-gradient(circle at 12% -10%, var(--signal-soft), transparent 45%),
+    radial-gradient(circle at 88% 0%, var(--signal-soft), transparent 40%);
+  background-repeat: no-repeat;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--signal-strong);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3, p {
+  margin: 0;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+::selection {
+  background: var(--signal-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

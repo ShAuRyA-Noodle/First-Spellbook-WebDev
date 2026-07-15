@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d0d11"/>
+      <stop offset="55%" stop-color="#101014"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <radialGradient id="glowBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5B9CFF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#5B9CFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowGreen" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#39D98A" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#39D98A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowAmber" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F5A524" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#F5A524" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+
+  <circle cx="230" cy="180" r="260" fill="url(#glowBlue)"/>
+  <circle cx="620" cy="470" r="240" fill="url(#glowGreen)"/>
+  <circle cx="980" cy="150" r="230" fill="url(#glowAmber)"/>
+
+  <!-- network graph: nodes connected by edges, representing Link / Image / Script working together -->
+  <g stroke-width="1.4" fill="none" opacity="0.85">
+    <line x1="230" y1="180" x2="470" y2="300" stroke="#5B9CFF" stroke-opacity="0.55"/>
+    <line x1="470" y1="300" x2="620" y2="470" stroke="#39D98A" stroke-opacity="0.55"/>
+    <line x1="620" y1="470" x2="820" y2="330" stroke="#F5A524" stroke-opacity="0.55"/>
+    <line x1="820" y1="330" x2="980" y2="150" stroke="#F5A524" stroke-opacity="0.55"/>
+    <line x1="470" y1="300" x2="820" y2="330" stroke="rgba(255,255,255,0.18)"/>
+    <line x1="230" y1="180" x2="620" y2="470" stroke="rgba(255,255,255,0.1)"/>
+    <line x1="980" y1="150" x2="620" y2="470" stroke="rgba(255,255,255,0.1)"/>
+  </g>
+
+  <g>
+    <circle cx="230" cy="180" r="7" fill="#5B9CFF"/>
+    <circle cx="230" cy="180" r="14" fill="none" stroke="#5B9CFF" stroke-opacity="0.4"/>
+    <circle cx="470" cy="300" r="5" fill="#ffffff" fill-opacity="0.8"/>
+    <circle cx="620" cy="470" r="7" fill="#39D98A"/>
+    <circle cx="620" cy="470" r="14" fill="none" stroke="#39D98A" stroke-opacity="0.4"/>
+    <circle cx="820" cy="330" r="5" fill="#ffffff" fill-opacity="0.8"/>
+    <circle cx="980" cy="150" r="7" fill="#F5A524"/>
+    <circle cx="980" cy="150" r="14" fill="none" stroke="#F5A524" stroke-opacity="0.4"/>
+  </g>
+
+  <text x="60" y="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="rgba(255,255,255,0.32)" letter-spacing="2">NEXT.LAB // OPTIMIZATION PIPELINE</text>
+</svg>

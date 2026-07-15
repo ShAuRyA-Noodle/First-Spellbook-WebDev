@@ -2,32 +2,150 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Token world: this demo's whole point is "a browser form talks to a real
+  Node.js process." The palette leans into that split on purpose —
+  a quiet, paper-toned client side and a near-black, phosphor-lit server
+  side — so the UI itself telegraphs which half of the code is running
+  where before you read a single label.
+*/
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  color-scheme: dark;
+
+  /* canvas + surface elevation (whisper-quiet steps, same hue throughout) */
+  --bg: #08080c;
+  --surface-1: #101017;
+  --surface-2: #17171f;
+  --surface-inset: #0a0a10;
+
+  /* border progression: subtle -> default -> strong -> focus */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.11);
+  --border-strong: rgba(255, 255, 255, 0.2);
+
+  /* text hierarchy */
+  --text-primary: #f3f3f6;
+  --text-secondary: #b7b7c3;
+  --text-tertiary: #83838f;
+  --text-muted: #56565f;
+
+  /* the "signal" — the one accent, standing for data on the wire */
+  --accent: #22d3ee;
+  --accent-strong: #67e8f9;
+  --accent-dim: rgba(34, 211, 238, 0.14);
+
+  /* semantic: proof-of-write (phosphor green), in-flight (amber), error */
+  --success: #4ade80;
+  --success-dim: rgba(74, 222, 128, 0.13);
+  --pending: #fbbf24;
+  --pending-dim: rgba(251, 191, 36, 0.14);
+  --danger: #f87171;
+  --danger-dim: rgba(248, 113, 113, 0.13);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  border-color: var(--border-default);
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent-strong);
+}
+
+/* Deliberate tap feedback comes from our own focus/active states, not the
+   browser's default gray flash. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom scrollbar for the terminal panel — kept understated */
+.console-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.console-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.console-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Blinking terminal cursor — the trailing edge of the server console */
+@keyframes blink-cursor {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.blink-cursor {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* Wire pulse — a signal travelling from the client card to the server card
+   while the action is in flight. This is the demo's signature motion:
+   it's the only place motion appears, and it always means "on the wire." */
+@keyframes wire-pulse {
+  0% {
+    stroke-dashoffset: 24;
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.35;
+  }
+}
+.wire-pulse {
+  animation: wire-pulse 1.1s linear infinite;
+}
+
+/* Quiet rise-in for freshly appended log lines / confirmation states */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise-in {
+  animation: rise-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

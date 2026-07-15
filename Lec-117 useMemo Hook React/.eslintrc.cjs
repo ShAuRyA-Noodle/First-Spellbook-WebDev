@@ -17,5 +17,10 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // This project is plain JS (no TypeScript, no `prop-types` dependency).
+    // Internal presentational components stay in the same file as `App`
+    // and are not part of any public API, so PropTypes validation would
+    // just be dead weight without a real type-checking story behind it.
+    'react/prop-types': 'off',
   },
 }

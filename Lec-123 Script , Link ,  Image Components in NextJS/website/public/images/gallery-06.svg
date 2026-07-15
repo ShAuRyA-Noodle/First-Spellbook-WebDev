@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8F4726"/>
+      <stop offset="100%" stop-color="#221D18"/>
+    </linearGradient>
+    <filter id="grain5">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.045 0"/>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g5)"/>
+  
+    <path d="M0,500 C 100,440 200,560 300,500 C 400,440 500,560 600,500 C 700,440 800,560 800,500" fill="none" stroke="#FAF6F0" stroke-opacity="0.4" stroke-width="4"/>
+    <path d="M0,600 C 100,540 200,660 300,600 C 400,540 500,660 600,600 C 700,540 800,660 800,600" fill="none" stroke="#FAF6F0" stroke-opacity="0.22" stroke-width="3"/>
+    <path d="M0,700 C 100,640 200,760 300,700 C 400,640 500,760 600,700 C 700,640 800,760 800,700" fill="none" stroke="#FAF6F0" stroke-opacity="0.12" stroke-width="2"/>
+  
+  <rect width="800" height="1000" filter="url(#grain5)"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#FAF6F0" stroke-opacity="0.18"/>
+  <text x="28" y="954" font-family="ui-sans-serif, system-ui" font-size="15" letter-spacing="2" fill="#FAF6F0" fill-opacity="0.75">06 — TIDAL LINES</text>
+</svg>

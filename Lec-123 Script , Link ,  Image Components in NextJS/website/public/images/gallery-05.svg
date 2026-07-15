@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FAF6F0"/>
+      <stop offset="100%" stop-color="#E7C7B4"/>
+    </linearGradient>
+    <filter id="grain4">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.045 0"/>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g4)"/>
+  <path d="M 470 500 L 660 500 L 647.27469423674 580.3444185374863 L 466.57395614066075 521.6311896062463 Z" fill="#8F4726" fill-opacity="0.12"/><path d="M 449.49747468305833 549.4974746830583 L 583.8477631085024 683.8477631085024 L 518.0375299322822 731.6616962889757 L 431.7793349817683 562.3704566931857 Z" fill="#8F4726" fill-opacity="0.15"/><path d="M 400 570 L 400 760 L 319.6555814625137 747.27469423674 L 378.3688103937537 566.5739561406608 Z" fill="#8F4726" fill-opacity="0.18"/><path d="M 350.50252531694167 549.4974746830583 L 216.15223689149767 683.8477631085024 L 168.33830371102437 618.0375299322822 L 337.62954330681424 531.7793349817683 Z" fill="#8F4726" fill-opacity="0.21"/><path d="M 330 500 L 140 500.00000000000006 L 152.72530576326008 419.6555814625136 L 333.42604385933925 478.3688103937537 Z" fill="#8F4726" fill-opacity="0.24"/><path d="M 350.50252531694167 450.50252531694167 L 216.1522368914976 316.15223689149764 L 281.9624700677178 268.33830371102437 L 368.2206650182317 437.62954330681424 Z" fill="#8F4726" fill-opacity="0.27"/><path d="M 400 430 L 399.99999999999994 240 L 480.34441853748626 252.72530576326005 L 421.6311896062463 433.42604385933925 Z" fill="#8F4726" fill-opacity="0.3"/><path d="M 449.49747468305833 450.50252531694167 L 583.8477631085022 316.15223689149764 L 631.6616962889757 381.9624700677178 L 462.37045669318576 468.2206650182317 Z" fill="#8F4726" fill-opacity="0.32999999999999996"/>
+  <rect width="800" height="1000" filter="url(#grain4)"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#FAF6F0" stroke-opacity="0.18"/>
+  <text x="28" y="954" font-family="ui-sans-serif, system-ui" font-size="15" letter-spacing="2" fill="#FAF6F0" fill-opacity="0.75">05 — APERTURE, F/2.8</text>
+</svg>

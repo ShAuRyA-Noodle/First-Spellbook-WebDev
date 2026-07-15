@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101014"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <pattern id="grid4" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg4)"/>
+  <rect width="640" height="480" fill="url(#grid4)"/>
+  <rect x="0.5" y="0.5" width="639" height="479" fill="none" stroke="rgba(255,255,255,0.08)"/>
+  
+    <path d="M0,260 C 80,180 160,340 240,260 C 320,180 400,340 480,260 C 560,180 640,340 640,260" fill="none" stroke="#39D98A" stroke-opacity="0.65" stroke-width="3"/>
+    <path d="M0,300 C 80,220 160,380 240,300 C 320,220 400,380 480,300 C 560,220 640,380 640,300" fill="none" stroke="#39D98A" stroke-opacity="0.35" stroke-width="2"/>
+  
+  <text x="24" y="440" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="rgba(255,255,255,0.4)" letter-spacing="1.5">05 / STRATEGY.NODE</text>
+  <text x="24" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#39D98A" fill-opacity="0.85" letter-spacing="1.5">GREEN</text>
+</svg>

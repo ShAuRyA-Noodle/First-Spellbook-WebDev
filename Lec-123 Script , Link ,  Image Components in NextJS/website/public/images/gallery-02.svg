@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A2314"/>
+      <stop offset="100%" stop-color="#221D18"/>
+    </linearGradient>
+    <filter id="grain1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.045 0"/>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g1)"/>
+  
+    <g stroke="#E7C7B4" stroke-opacity="0.5" stroke-width="2" fill="none">
+      <line x1="120" y1="1000" x2="120" y2="260"/>
+      <line x1="260" y1="1000" x2="260" y2="140"/>
+      <line x1="400" y1="1000" x2="400" y2="340"/>
+      <line x1="540" y1="1000" x2="540" y2="200"/>
+      <line x1="680" y1="1000" x2="680" y2="420"/>
+    </g>
+    <rect x="80" y="240" width="80" height="60" fill="#FAF6F0" fill-opacity="0.15"/>
+  
+  <rect width="800" height="1000" filter="url(#grain1)"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#FAF6F0" stroke-opacity="0.18"/>
+  <text x="28" y="954" font-family="ui-sans-serif, system-ui" font-size="15" letter-spacing="2" fill="#FAF6F0" fill-opacity="0.75">02 — STRUCTURE STUDY I</text>
+</svg>

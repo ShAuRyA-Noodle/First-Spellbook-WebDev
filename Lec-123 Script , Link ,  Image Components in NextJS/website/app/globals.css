@@ -3,31 +3,66 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: #faf6f0;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: #221d18;
+  /* fine paper grain — pure CSS, no network/image dependency */
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.13  0 0 0 0 0.11  0 0 0 0 0.09  0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+::selection {
+  background: rgba(177, 90, 52, 0.22);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .eyebrow {
+    @apply font-sans text-[11px] uppercase tracking-wideish text-ink-faint;
+  }
+
+  .frame-number {
+    @apply font-sans text-[11px] tracking-wideish text-ink-faint tabular-nums;
+  }
+
+  /* Visible keyboard focus everywhere, in the studio's own accent color. */
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-clay/70 focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  * ,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/*
+  Hand-written (not @apply) on purpose: this class is toggled from
+  public/scripts/booking-widget.js — a plain file outside Tailwind's content
+  scan — by the next/script lazyOnload demo on /contact. A literal CSS rule
+  here is always present in the compiled stylesheet, regardless of what
+  Tailwind's JIT scanner does or doesn't see in that external script.
+*/
+.pill-ready {
+  background-color: rgba(177, 90, 52, 0.14);
+  color: #8f4726;
+}
+

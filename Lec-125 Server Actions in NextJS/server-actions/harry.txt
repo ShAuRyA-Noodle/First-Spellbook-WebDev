@@ -1,1 +1,6 @@
-Name is Harry and Address is India
+# harry.txt
+# Written by the Server Action in actions/form.js via Node's fs module.
+# Every form submission appends one line below with fs.appendFile — proof
+# the handler actually runs on the server, not in the browser.
+
+[2026-07-15T09:00:00.000Z] Name: Harry — Address: India

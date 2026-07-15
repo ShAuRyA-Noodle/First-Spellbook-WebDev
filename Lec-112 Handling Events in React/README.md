@@ -2,15 +2,16 @@
 
 ## Overview
 
-Events are how a user interface comes alive. Every click, keystroke, hover, and form entry is an **event**, and React gives you a clean, declarative way to respond to all of them. Instead of manually calling `document.addEventListener(...)` the way you would in vanilla JavaScript, React lets you attach handlers **directly in JSX** using camelCased props such as `onClick`, `onChange`, and `onMouseOver`.
+Events are how a user interface comes alive. Every click, keystroke, hover, and form entry is an **event**, and React gives you a clean, declarative way to respond to all of them. Instead of manually calling `document.addEventListener(...)` the way you would in vanilla JavaScript, React lets you attach handlers **directly in JSX** using camelCased props such as `onClick`, `onChange`, `onMouseOver`, `onFocus`, and `onBlur`.
 
-Under the hood, React does not hand you the browser's raw event. It wraps it in a **SyntheticEvent** — a cross-browser wrapper that behaves identically in every browser and exposes the same familiar API (`e.target`, `e.preventDefault()`, `e.target.value`, and so on). This means you write your event logic once and it works everywhere.
+Under the hood, React does not hand you the browser's raw event. It wraps it in a **SyntheticEvent** — a cross-browser wrapper that behaves identically in every browser and exposes the same familiar API (`e.target`, `e.clientX`, `e.preventDefault()`, and so on). This means you write your event logic once and it works everywhere.
 
-This lecture's project is a small but dense Vite + React app that demonstrates the complete event-handling story:
+This lecture's project is now an **Events Playground** — a small, self-contained Vite + React app you can click, hover, focus, and type into, while a live on-screen console prints exactly what fired and why. It demonstrates the full event-handling story:
 
-1. **Click events** — a button wired to a handler function.
-2. **Mouse events** — a hover handler on a `<div>` (left commented out in the code so the alert doesn't fire constantly while testing).
-3. **Change events + controlled inputs** — two text inputs (`email` and `phone`) whose values live in React state, updated by a **single shared `handleChange` function** using the event object, object spread, and computed property names.
+1. **Click events** — a button wired to a handler with no arguments, plus a row of buttons that pass a custom argument through an inline arrow function.
+2. **Mouse events** — a hover-reactive "signal pad" using `onMouseOver` / `onMouseOut`, paired with `onFocus` / `onBlur` so keyboard users get the same feedback (hover has no keyboard equivalent).
+3. **Change events + controlled inputs** — three fields (`email`, `phone`, `message`) whose values live in one React state object, updated by a **single shared `handleChange` function** using the event object, object spread, and computed property names.
+4. **A live event log** — every interaction above is pushed into an on-screen console (timestamped, color-tagged by event type) instead of a blocking `alert()`, so you can *see* the event object's effects instead of just being told about them.
 
 By the end of these notes you will understand not just *how* to wire up an event, but *why* React events work the way they do — including the classic beginner traps like `onClick={handler()}` and logging state immediately after calling a setter.
 
@@ -19,13 +20,14 @@ By the end of these notes you will understand not just *how* to wire up an event
 ## What You'll Learn
 
 - What **synthetic events** are and why React uses them instead of raw browser events.
-- How to attach event handlers in JSX with **camelCase props**: `onClick`, `onMouseOver`, `onChange`.
+- How to attach event handlers in JSX with **camelCase props**: `onClick`, `onMouseOver`, `onMouseOut`, `onFocus`, `onBlur`, `onChange`.
 - The critical difference between **passing a handler reference** (`onClick={handleClick}`) and **calling the handler** (`onClick={handleClick()}`) — and why the second one is almost always a bug.
-- How to receive and use the **event object** (`e`) inside a handler, especially `e.target.name` and `e.target.value`.
+- How to **pass a custom argument to a handler** by wrapping the call in an inline arrow function: `onClick={() => handleClickWithAmount(5, e)}`.
+- How to receive and use the **event object** (`e`) inside a handler — `e.target.name`, `e.target.value`, `e.clientX`, `e.clientY`.
 - What a **controlled input** is: `value` driven by state, `onChange` writing back to state.
 - How to manage **multiple form fields with one state object and one handler**, using the spread operator (`...form`) and **computed property names** (`[e.target.name]`).
-- Why `console.log(form)` right after `setForm(...)` prints the **old** value (state updates are asynchronous/batched).
-- How to update state from events with `useState`.
+- Why logging `form` right after `setForm(...)` prints the **old** value (state updates are asynchronous/batched) — and how to log the up-to-date value instead.
+- Why `onMouseOver` has **no keyboard equivalent**, and how pairing it with `onFocus` / `onBlur` (plus `tabIndex`) keeps hover-driven UI accessible.
 
 ---
 
@@ -40,13 +42,13 @@ Lec-112 Handling Events in React/
 ├── public/                 # Static assets served as-is (e.g. vite.svg)
 └── src/
     ├── main.jsx            # React entry point; mounts <App /> into #root under StrictMode
-    ├── App.jsx             # ★ The lecture code — all event handling lives here
-    ├── App.css             # Component-level styles (Vite template defaults)
-    ├── index.css           # Global styles, incl. the .red class used by the hover demo
-    └── assets/             # Bundled assets (react.svg)
+    ├── App.jsx             # ★ The lecture code — the entire Events Playground lives here
+    ├── App.css             # Playground layout + component styles (panels, buttons, console)
+    ├── index.css            # Design tokens (colors, spacing, type), global reset
+    └── assets/             # Bundled assets (react.svg — unused by the playground itself)
 ```
 
-The only file that matters for the lecture concepts is **`src/App.jsx`** — everything else is standard Vite + React scaffolding.
+The only file that matters for the lecture concepts is **`src/App.jsx`** — everything else is styling or standard Vite + React scaffolding.
 
 ---
 
@@ -54,27 +56,25 @@ The only file that matters for the lecture concepts is **`src/App.jsx`** — eve
 
 ### 1. Synthetic Events: React's Cross-Browser Event Wrapper
 
-When you write this in `App.jsx`:
+Every handler in this project receives `e`, the SyntheticEvent:
 
 ```jsx
 const handleChange = (e) => {
-    // setName(e.target.value)
-    setForm({...form, [e.target.name]:e.target.value})
-    console.log(form)
-  }
+  const { name, value } = e.target
+  const nextForm = { ...form, [name]: value }
+  setForm(nextForm)
+  pushLog('change', `${name} -> "${value}"`)
+}
 ```
 
-…the `e` that React passes to your function is **not** the native DOM event. It is a `SyntheticEvent` — React's normalized wrapper around the native event. Key points:
+Key points about `e`:
 
-- It has the **same interface** as a native event: `e.target`, `e.currentTarget`, `e.preventDefault()`, `e.stopPropagation()`, etc.
+- It has the **same interface** as a native event: `e.target`, `e.currentTarget`, `e.clientX`/`e.clientY`, `e.preventDefault()`, `e.stopPropagation()`, etc.
 - It is **normalized across browsers**, so quirks between Chrome, Firefox, Safari, and older browsers disappear.
 - If you ever need the raw browser event, it's available as `e.nativeEvent`.
 - React attaches its listeners through **event delegation** at the root of your app rather than on every individual DOM node, which is more efficient.
 
-In this project, the synthetic event is used in `handleChange` to read two things off the input element that fired the event:
-
-- `e.target.name` → the input's `name` attribute (`'email'` or `'phone'`)
-- `e.target.value` → whatever text the user has typed so far
+This project reads different things off `e` depending on the event: `e.target.name` / `e.target.value` for form fields, `e.clientX` / `e.clientY` for mouse position.
 
 ### 2. Attaching Handlers in JSX: camelCase Props
 
@@ -84,19 +84,22 @@ In plain HTML you'd write `onclick="doSomething()"` (lowercase, a string). In Re
 <button onClick={handleClick}>Click me</button>
 ```
 
-The three event props this lecture demonstrates:
+The event props this project demonstrates:
 
-| JSX prop      | Fires when…                                   | Used on            |
-|---------------|-----------------------------------------------|--------------------|
-| `onClick`     | The user clicks the element                   | the `<button>`     |
-| `onMouseOver` | The pointer moves onto the element            | the red `<div>` (commented out) |
-| `onChange`    | The value of an input changes (each keystroke in React) | both `<input>` fields |
+| JSX prop      | Fires when…                                              | Used on                          |
+|---------------|-----------------------------------------------------------|-----------------------------------|
+| `onClick`     | The user clicks the element                                | the "Click me" and `+1/+5/+10` buttons, and "Clear log" |
+| `onMouseOver` | The pointer moves onto the element                          | the "Mouse Events" panel (bubbles from the signal pad) |
+| `onMouseOut`  | The pointer moves off the element                           | the "Mouse Events" panel |
+| `onFocus`     | The element receives keyboard/programmatic focus            | the signal pad (keyboard equivalent of hover) |
+| `onBlur`      | The element loses focus                                     | the signal pad |
+| `onChange`    | The value of an input changes (each keystroke in React)     | the `email`, `phone`, and `message` fields |
 
 Note: in React, `onChange` on a text input fires on **every keystroke** (it behaves like the native `input` event), not only when the field loses focus like the native HTML `change` event.
 
 ### 3. Passing a Handler Reference vs Calling It — `onClick={handler}` vs `onClick={handler()}`
 
-This is the single most important line in the file:
+This is the single most important habit in the file:
 
 ```jsx
 <button onClick={handleClick}>Click me</button>
@@ -106,79 +109,101 @@ Notice there are **no parentheses** after `handleClick`. We are passing the **fu
 
 Compare the two forms:
 
-- `onClick={handleClick}` ✅ — "Hey React, here is a function. Call it **when the button is clicked**."
-- `onClick={handleClick()}` ❌ — "Call `handleClick` **right now, during render**, and pass whatever it returns (here `undefined`) to `onClick`."
+- `onClick={handleClick}` — "Hey React, here is a function. Call it **when the button is clicked**."
+- `onClick={handleClick()}` — "Call `handleClick` **right now, during render**, and pass whatever it returns (here `undefined`) to `onClick`."
 
-With the broken second form, the alert would pop up **immediately when the component renders**, and clicking the button afterwards would do nothing. Worse, if the handler updates state, calling it during render triggers a re-render, which calls it again… producing an **infinite render loop**.
+With the broken second form, the log entry would appear **immediately when the component renders**, and clicking the button afterwards would do nothing. Worse, if the handler updates state, calling it during render triggers a re-render, which calls it again… producing an **infinite render loop**.
 
-**What if you need to pass arguments?** This project's handlers don't take custom arguments, so the plain reference is perfect. But when you *do* need to pass something, you can't write `onClick={doThing("hello")}` (that calls it immediately). The standard pattern is to wrap the call in an **arrow function**, which is itself just a reference that React invokes on click:
+### 4. Passing Arguments: the Arrow-Function Wrapper
 
-```jsx
-onClick={() => doThing("hello")}
-```
-
-The arrow function is the reference; the call to `doThing("hello")` only happens when React invokes that arrow function.
-
-### 4. `onClick` in Action: the Click Handler
-
-The handler definition (verbatim from `App.jsx`):
+The plain `handleClick` above takes no arguments — the reference is all you need. But the `+1 / +5 / +10` buttons all call the *same* handler with a *different* number:
 
 ```jsx
-const handleClick = () => {
-    alert("Hey I am clicked")
-  }
-```
+const INCREMENTS = [1, 5, 10]
 
-And where it's wired up:
-
-```jsx
-<div className="button">
-        <button onClick={handleClick}>Click me</button>
-      </div>
-```
-
-Flow: the user clicks → React's delegated listener catches the native event → React creates a SyntheticEvent → React calls `handleClick` → the browser shows the alert `"Hey I am clicked"`. The handler here ignores the event object because it doesn't need any information about the event — it just reacts to the fact that a click occurred.
-
-### 5. `onMouseOver`: Mouse Events (the Commented-Out Demo)
-
-The lecture also demonstrates a hover handler:
-
-```jsx
-const handleMouseOver = () => {
-    alert("Hey I am a mouse over")
-  }
-```
-
-It was attached to a red `<div>`, which is currently **commented out** in the JSX:
-
-```jsx
-{/* <div className="red" onMouseOver={handleMouseOver}>
-        I am a red div
-      </div> */}
-```
-
-(Also note the JSX comment syntax: `{/* ... */}` — you cannot use plain `<!-- -->` HTML comments inside JSX.)
-
-The `.red` class it references is defined globally in `src/index.css`:
-
-```css
-.red{
-  background-color: red;
-  color: white;
-  height: 233px;
-  width: 344px;
+const handleClickWithAmount = (amount, e) => {
+  setClickCount((current) => current + amount)
+  pushLog('click', `+${amount} pressed at (${e.clientX}, ${e.clientY}) via an inline arrow fn`)
 }
 ```
 
-Why is it commented out? Because `onMouseOver` fires **every time the pointer enters the element** (and, unlike `onMouseEnter`, it also bubbles from children). An `alert()` on hover is extremely annoying while developing — every stray mouse movement over the div blocks the page with a popup. It's left in the source as a teaching artifact: uncomment it, hover over the red box, and you'll see `"Hey I am a mouse over"`. Then comment it right back.
+```jsx
+<div className="btn-row" role="group" aria-label="Increment counter">
+  {INCREMENTS.map((amount) => (
+    <button
+      key={amount}
+      type="button"
+      className="btn btn-ghost"
+      onClick={(e) => handleClickWithAmount(amount, e)}
+    >
+      +{amount}
+    </button>
+  ))}
+</div>
+```
 
-### 6. `onChange`, the Event Object, and Controlled Inputs
+You can't write `onClick={handleClickWithAmount(amount, e)}` — that calls it immediately during render, and `e` does not even exist yet at that point. The fix is to wrap the call in an **inline arrow function**: `(e) => handleClickWithAmount(amount, e)`. That arrow function is itself the reference React stores; the call to `handleClickWithAmount` only happens when React invokes the arrow function on click, passing React's own event object in as `e`.
 
-The two inputs (verbatim):
+### 5. `onClick` in Action: the Click Handlers
 
 ```jsx
-<input type="text" name='email' value={form.email?form.email:"" } onChange={handleChange} />
-      <input type="text" name='phone' value={form.phone?form.phone:"" } onChange={handleChange} /> 
+const handleClick = () => {
+  pushLog('click', 'Click me pressed (no arguments passed)')
+}
+```
+
+Flow: the user clicks → React's delegated listener catches the native event → React creates a SyntheticEvent → React calls `handleClick` → a new line appears in the on-screen event log. This handler ignores the event object entirely because it doesn't need any information about the click — it just reacts to the fact that one occurred.
+
+### 6. `onMouseOver` / `onMouseOut`, and Why They Need `onFocus` / `onBlur` Too
+
+```jsx
+const handleMouseOver = (e) => {
+  setIsHovering(true)
+  setHoverSource('pointer')
+  setHoverPos({ x: e.clientX, y: e.clientY })
+  pushLog('mouseover', `pointer entered the signal pad at (${e.clientX}, ${e.clientY})`)
+}
+
+const handleMouseOut = () => {
+  setIsHovering(false)
+  pushLog('mouseout', 'pointer left the signal pad')
+}
+```
+
+These are attached to the whole "Mouse Events" `<section>`, so `onMouseOver` fires as soon as the pointer crosses into the panel, and `onMouseOut` fires when it leaves.
+
+The catch: **`onMouseOver` has no keyboard equivalent.** A keyboard-only user can Tab around the page all day and never trigger it, because there is no "hover" concept without a pointer. This project deliberately treats that as a teaching moment instead of hiding it — the signal pad is also given `tabIndex={0}` plus `onFocus` / `onBlur` handlers that mirror the same UI state:
+
+```jsx
+const handleFocus = () => {
+  setIsHovering(true)
+  setHoverSource('keyboard')
+  pushLog('focus', 'signal pad focused via keyboard (mouseover has no keyboard equivalent)')
+}
+
+const handleBlur = () => {
+  setIsHovering(false)
+  pushLog('blur', 'signal pad blurred')
+}
+```
+
+Press Tab until the pad is focused and you'll see the same visual "signal detected" feedback a mouse user gets from hovering — just sourced from a different event pair.
+
+### 7. `onChange`, the Event Object, and Controlled Inputs
+
+The `email` field, verbatim (`phone` and `message` follow the identical pattern with `type="tel"` and a `<textarea>` respectively):
+
+```jsx
+<input
+  id="email"
+  name="email"
+  type="email"
+  autoComplete="off"
+  spellCheck="false"
+  placeholder="ada@lovelace.dev"
+  value={form.email ?? ''}
+  onChange={handleChange}
+/>
 ```
 
 These are **controlled inputs** — the gold-standard React form pattern. A controlled input has two halves:
@@ -188,11 +213,11 @@ These are **controlled inputs** — the gold-standard React form pattern. A cont
 
 The data flows in a loop: **state → `value` → user types → `onChange` → `setForm` → new state → new `value`**. If you provided `value` without `onChange`, the input would be frozen (read-only), and React would warn you in the console.
 
-Note the ternary in the `value` prop: `form.email ? form.email : ""`. Since `form` starts as an **empty object** (`useState({})`), `form.email` is `undefined` on the first render. Passing `undefined` as `value` would make the input **uncontrolled**, and React would throw the famous warning: *"A component is changing an uncontrolled input to be controlled."* The ternary guarantees the value is always a string — `""` until the user types something.
+Note `form.email ?? ''`. Since `form` starts as an **empty object** (`useState({})`), `form.email` is `undefined` on the first render. Passing `undefined` as `value` would make the input **uncontrolled**, and React would throw the famous warning: *"A component is changing an uncontrolled input to be controlled."* The `??` (nullish coalescing) guarantees the value is always a string — `''` until the user types something.
 
-### 7. One Handler, Many Fields: Spread + Computed Property Names
+### 8. One Handler, Many Fields: Spread + Computed Property Names
 
-Instead of writing a separate handler and a separate `useState` for every field, the lecture stores the whole form in **one state object**:
+Instead of writing a separate handler and a separate `useState` for every field, the project stores the whole form in **one state object**:
 
 ```jsx
 const [form, setForm] = useState({})
@@ -202,19 +227,20 @@ const [form, setForm] = useState({})
 
 ```jsx
 const handleChange = (e) => {
-    // setName(e.target.value)
-    setForm({...form, [e.target.name]:e.target.value})
-    console.log(form)
-  }
+  const { name, value } = e.target
+  const nextForm = { ...form, [name]: value }
+  setForm(nextForm)
+  pushLog('change', `${name} -> "${value}"`)
+}
 ```
 
-This one line — `setForm({...form, [e.target.name]:e.target.value})` — packs three big JavaScript/React ideas:
+This one line — `{ ...form, [name]: value }` — packs three big JavaScript/React ideas:
 
 1. **Immutability via spread (`...form`)**: React state must never be mutated in place. `{...form}` creates a *brand-new object* containing all existing keys, so React can detect the change and re-render. Without the spread, typing in the phone field would **erase** whatever you'd typed in the email field, because the new object would contain only the phone key.
-2. **Computed property names (`[e.target.name]`)**: the square brackets mean "use the *value* of this expression as the key." If the user typed in the input with `name='email'`, this becomes the key `"email"`; if they typed in `name='phone'`, it becomes `"phone"`. That's why one handler can serve any number of inputs — the input's own `name` attribute routes the value to the right slot in state.
-3. **The event object as the data source**: `e.target` is the exact `<input>` element that fired the event, so `e.target.value` is always the current text of *that* field.
+2. **Computed property names (`[name]`)**: the square brackets mean "use the *value* of this expression as the key." If the user typed in the input with `name="email"`, this becomes the key `"email"`; if they typed in `name="phone"`, it becomes `"phone"`. That's why one handler can serve any number of inputs — the input's own `name` attribute routes the value to the right slot in state.
+3. **The event object as the data source**: `e.target` is the exact `<input>` (or `<textarea>`) element that fired the event, so `e.target.value` is always the current text of *that* field. Destructuring `const { name, value } = e.target` pulls both out in one line.
 
-Type "a" into the email box and then "9" into the phone box, and state evolves like this:
+Type "a" into the email box, then "9" into the phone box, and state evolves like this:
 
 ```
 {}                                  // initial
@@ -222,120 +248,98 @@ Type "a" into the email box and then "9" into the phone box, and state evolves l
 { email: "a", phone: "9" }          // after typing in phone
 ```
 
-The commented-out lines show the *simpler* version taught first — one string of state per field:
+You can watch this exact evolution live in the **"form state (live)"** panel next to the inputs — it renders `JSON.stringify(form, null, 2)` on every render, so there is no need to open DevTools to see what state actually contains.
+
+### 9. State Updates Are Asynchronous (the Stale-Log Trap — and the Fix)
+
+The single most common beginner bug in this lecture used to be:
 
 ```jsx
-// const [name, setName] = useState("Harry")
+// The old, buggy version — do not do this:
+setForm({ ...form, [e.target.name]: e.target.value })
+console.log(form)   // prints the OLD form, not the one you just set!
 ```
+
+`setForm` does **not** change `form` immediately. It *schedules* a re-render; only on that next render does the `form` variable (a `const` captured by this closure) hold the new object. Inside the *current* call to `handleChange`, `form` is still the old snapshot. This is intentional — React batches state updates for performance — and it's one of the most common sources of beginner confusion.
+
+The fix used throughout this project is to **build the next value in a local variable first**, pass that to the setter, and log/use *that* variable instead of the stale state:
 
 ```jsx
-// setName(e.target.value)
+const handleChange = (e) => {
+  const { name, value } = e.target
+  const nextForm = { ...form, [name]: value }   // 1. compute the next value
+  setForm(nextForm)                              // 2. schedule the state update
+  pushLog('change', `${name} -> "${value}"`)      // 3. use fresh data, not stale `form`
+}
 ```
 
-That works fine for one input, but scales terribly: ten fields would mean ten `useState` calls and ten handlers. The object-based `form` pattern replaces all of that with one state and one handler.
-
-### 8. State Updates from Events Are Asynchronous (the `console.log` Surprise)
-
-Look closely at `handleChange` again:
-
-```jsx
-setForm({...form, [e.target.name]:e.target.value})
-    console.log(form)
-```
-
-If you type "a" into the email field and check the console, it prints `{}` — **not** `{ email: "a" }`. Type "ab" and it prints `{ email: "a" }`. The log is always **one keystroke behind**.
-
-Why? `setForm` does **not** change `form` immediately. It *schedules* a re-render; only on that next render does the `form` variable (a `const` captured by this closure) hold the new object. Inside the current handler, `form` is still the old snapshot. This is intentional — React batches state updates for performance — and it's one of the most common sources of beginner confusion. If you need to see the freshly computed value, log the object you passed to the setter, or log `form` in the component body (it runs on every render).
+`nextForm` (and `value`) are correct the instant they're computed — they don't depend on the asynchronous re-render the way reading `form` again in the same closure would. The event log always shows the field name and the character that was *just* typed, never a value one keystroke behind.
 
 ---
 
-## Full Code Walkthrough: `src/App.jsx` Line by Line
+## Full Code Walkthrough: `src/App.jsx`
 
-Here is the entire file, followed by a line-by-line commentary:
+The file is organized top to bottom as: constants → state → the `pushLog` helper → one handler per event type → JSX. Rather than reproduce all ~280 lines here, this section walks through it section by section — open `src/App.jsx` alongside these notes.
+
+**Imports & constants**
 
 ```jsx
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef, useState } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-  // const [name, setName] = useState("Harry")
-  const [form, setForm] = useState({})
-
-  const handleClick = () => {
-    alert("Hey I am clicked")
-  }
-
-  const handleMouseOver = () => {
-    alert("Hey I am a mouse over")
-  }
-
-  const handleChange = (e) => {
-    // setName(e.target.value)
-    setForm({...form, [e.target.name]:e.target.value})
-    console.log(form)
-  }
-
-  return (
-    <>
-      <div className="button">
-        <button onClick={handleClick}>Click me</button>
-      </div>
-
-      {/* <div className="red" onMouseOver={handleMouseOver}>
-        I am a red div
-      </div> */}
-
-      <input type="text" name='email' value={form.email?form.email:"" } onChange={handleChange} />
-      <input type="text" name='phone' value={form.phone?form.phone:"" } onChange={handleChange} /> 
-    </>
-  )
-}
-
-export default App
+const MAX_LOG_ENTRIES = 30
+const INCREMENTS = [1, 5, 10]
 ```
 
-| Line(s) | Code | Explanation |
-|---------|------|-------------|
-| 1 | `import { useState } from 'react'` | Named import of the `useState` hook — the tool that lets a function component hold state between renders. |
-| 2 | `import reactLogo from './assets/react.svg'` | Leftover from the Vite template. Imports the React logo as an asset URL. **Not used** in the JSX below. |
-| 3 | `import viteLogo from '/vite.svg'` | Also template leftover. The leading `/` means it comes from the `public/` folder. **Not used** either. |
-| 4 | `import './App.css'` | Pulls in the component's stylesheet as a side-effect import. |
-| 6 | `function App() {` | The component itself — a plain JavaScript function that returns JSX. |
-| 7 | `const [count, setCount] = useState(0)` | State from the original template counter. **Declared but never used** in this lecture's UI — a harmless leftover. |
-| 8 | `// const [name, setName] = useState("Harry")` | Commented-out state from the *first* version of the lesson: a single string state controlling a single input. Kept to show the progression to the object-based approach. |
-| 9 | `const [form, setForm] = useState({})` | The star of the show: **one object holds the entire form**. It starts empty; keys (`email`, `phone`) appear as the user types. |
-| 11–13 | `const handleClick = () => { alert("Hey I am clicked") }` | Click handler, defined as an arrow function stored in a `const`. Ignores the event object; just fires an alert. |
-| 15–17 | `const handleMouseOver = () => { alert("Hey I am a mouse over") }` | Hover handler for the red div demo. Currently unused because its div is commented out (lines 31–33). |
-| 19–23 | `const handleChange = (e) => { ... }` | The shared change handler. Takes the synthetic event `e`, builds a new form object with spread + computed key, schedules the state update, then logs the (still old) `form`. |
-| 25 | `return (` | Beginning of the JSX the component renders. |
-| 26 / 37 | `<>` … `</>` | A **Fragment** — lets the component return multiple sibling elements (`div`, two `input`s) without adding a wrapper node to the DOM. |
-| 27–29 | `<div className="button"><button onClick={handleClick}>Click me</button></div>` | The click demo. Note `className` (not `class` — `class` is a reserved word in JavaScript) and the handler passed **by reference, without parentheses**. |
-| 31–33 | `{/* <div className="red" onMouseOver={handleMouseOver}> ... */}` | The hover demo, commented out with JSX comment syntax so alerts don't fire on every mouse movement. Uncomment to try it; the `.red` styles live in `index.css`. |
-| 35 | `<input type="text" name='email' value={form.email?form.email:"" } onChange={handleChange} />` | Controlled email input. `name='email'` is what `e.target.name` reads; the ternary keeps `value` a string (never `undefined`). |
-| 36 | `<input type="text" name='phone' value={form.phone?form.phone:"" } onChange={handleChange} />` | Controlled phone input — identical wiring, different `name`, **same handler**. This is the payoff of the computed-property pattern. |
-| 41 | `export default App` | Default export so `main.jsx` can import and render the component. |
+No `reactLogo` / `viteLogo` imports — the original Vite template's unused logo imports were removed, since nothing in this UI renders them.
+
+**State** — `form` is the controlled-input source of truth, `clickCount` is driven by the `+1/+5/+10` buttons, `isHovering` / `hoverPos` / `hoverSource` back the signal pad, and `log` / `logIdRef` back the event console:
+
+```jsx
+const [form, setForm] = useState({})
+
+const [clickCount, setClickCount] = useState(0)
+
+const [isHovering, setIsHovering] = useState(false)
+const [hoverPos, setHoverPos] = useState({ x: 0, y: 0 })
+const [hoverSource, setHoverSource] = useState(null) // 'pointer' | 'keyboard'
+
+const [log, setLog] = useState([])
+const logIdRef = useRef(0)
+```
+
+There is no leftover `count` / `setCount` from the original Vite counter template, and no commented-out `name` / `setName` scaffolding — both were removed as flagged. `clickCount` replaces the old unused counter with one that is actually wired to visible UI (the `+1/+5/+10` buttons).
+
+**The `pushLog` helper** timestamps and prepends a new entry to the log, capping it at `MAX_LOG_ENTRIES` so the list can't grow unbounded during a long session:
+
+```jsx
+const pushLog = (type, detail) => {
+  logIdRef.current += 1
+  const now = new Date()
+  const time = `${now.toLocaleTimeString('en-GB', { hour12: false })}.${String(
+    now.getMilliseconds(),
+  ).padStart(3, '0')}`
+  setLog((prev) => [{ id: logIdRef.current, type, detail, time }, ...prev].slice(0, MAX_LOG_ENTRIES))
+}
+```
+
+**The six handlers** — `handleClick`, `handleClickWithAmount`, `handleMouseOver`, `handleMouseOut`, `handleFocus`, `handleBlur`, `handleChange` — are covered individually in the Concept Deep-Dives above.
+
+**The JSX** renders, top to bottom:
+
+1. A skip link (`<a href="#main-content">`) for keyboard users.
+2. A `<header>` with the title, a one-line explainer, and a small "idle / live" status indicator that pulses every time a new event is logged.
+3. A `<main>` grid with three panels: **Click Events**, **Mouse Events**, and **Controlled Inputs** (which also renders the live `form` state as formatted JSON).
+4. A full-width **Event Log** console at the bottom — a `role="log"` region that lists every event fired, newest first, color-tagged by type, with a "Clear log" button.
 
 ### Supporting Files (Brief)
 
-- **`src/main.jsx`** — the boot file. It grabs `<div id="root">` from `index.html` and renders `<App />` inside `<React.StrictMode>`:
-
-  ```jsx
-  ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-  )
-  ```
-
-  StrictMode is a development-only helper that double-invokes renders to surface impure code. It does not affect event handling behavior in production.
-
-- **`index.html`** — the single page Vite serves. Contains `<div id="root"></div>` and `<script type="module" src="/src/main.jsx"></script>`.
-- **`vite.config.js`** — minimal config: `plugins: [react()]` enables JSX transformation and Fast Refresh.
-- **`package.json`** — project name `video-112`; React 18.2, Vite 5; scripts covered below.
-- **`src/App.css` / `src/index.css`** — mostly Vite template styling; `index.css` additionally defines the `.red` class for the hover demo.
+- **`src/main.jsx`** — the boot file. It grabs `<div id="root">` from `index.html` and renders `<App />` inside `<React.StrictMode>`. Unchanged from the original — StrictMode is a development-only helper that double-invokes renders to surface impure code and does not affect event-handling behavior in production.
+- **`index.html`** — the single page Vite serves. Now carries a descriptive `<title>`, a meta description, and light/dark `theme-color` tags that match the app's own color scheme.
+- **`vite.config.js`** — minimal config: `plugins: [react()]` enables JSX transformation and Fast Refresh. Unchanged.
+- **`package.json`** — project name `video-112`; React 18.2, Vite 5; scripts covered below. Unchanged (no new dependencies were added — everything above is plain React + CSS).
+- **`src/index.css`** — the design tokens (color, spacing, type scale) for both light and dark mode, plus a minimal global reset.
+- **`src/App.css`** — the playground's layout and component styles: header, panel grid, buttons, the signal pad, the form + state inspector, and the event-log console.
 
 ---
 
@@ -365,11 +369,14 @@ Prerequisite: Node.js (v18+ recommended) with npm.
 
 Things to try once it's running:
 
-- Click **"Click me"** → alert appears.
-- Type into the **email** and **phone** inputs while the DevTools console is open → watch the `form` object grow (and notice it's always one keystroke behind — see Deep-Dive #8).
-- Uncomment the red div (lines 31–33 of `App.jsx`) → hover it → alert appears. Re-comment it before continuing.
+- Click **"Click me"** → a `click` entry appears in the event log.
+- Click **+1 / +5 / +10** → watch the counter change and the log show the exact pixel coordinates of each click (from `e.clientX` / `e.clientY`).
+- Hover the **Mouse Events** panel → the signal pad lights up and pulses. Move off → it fires `mouseout`.
+- Press **Tab** until the signal pad is focused (no mouse) → the same pad lights up via `onFocus`, proving hover and focus are two different event pairs with overlapping purpose.
+- Type into **email / phone / message** → watch the **"form state (live)"** JSON panel update on every keystroke, and a `change` entry appear in the log for each one.
+- Click **"Clear log"** to empty the console and start fresh.
 
-Other available scripts: `npm run build` (production build), `npm run preview` (serve the build), `npm run lint` (ESLint).
+Other available scripts: `npm run build` (production build), `npm run preview` (serve the build), `npm run lint` (ESLint — configured with `--max-warnings 0`, so the project is expected to lint completely clean).
 
 ---
 
@@ -377,30 +384,41 @@ Other available scripts: `npm run build` (production build), `npm run preview` (
 
 1. **React event props are camelCase and take functions**: `onClick={fn}`, `onChange={fn}`, `onMouseOver={fn}` — never strings like in HTML.
 2. **Pass the reference, don't call it.** `onClick={handleClick}` hands React a function to call later; `onClick={handleClick()}` runs it immediately during render.
-3. **`e` is a SyntheticEvent** — a normalized, cross-browser wrapper. `e.target.name` and `e.target.value` are your form-handling workhorses.
-4. **Controlled inputs** pair `value` (state → UI) with `onChange` (UI → state), making React state the single source of truth.
-5. **One object + one handler scales to any form**, thanks to `{...form, [e.target.name]: e.target.value}` — spread preserves the other fields, the computed key routes the new value.
-6. **State setters are asynchronous.** The state variable in the current closure keeps its old value until the next render; don't expect `console.log(form)` right after `setForm(...)` to show the update.
-7. **Never pass `undefined` as a controlled `value`** — default missing fields to `""` (the code uses a ternary for this).
+3. **Wrap in an arrow function to pass arguments.** `onClick={() => handleClickWithAmount(5, e)}` — the arrow function is the reference; the inner call only happens when React invokes it.
+4. **`e` is a SyntheticEvent** — a normalized, cross-browser wrapper. `e.target.name`, `e.target.value`, `e.clientX`, `e.clientY` are your everyday tools.
+5. **Controlled inputs** pair `value` (state → UI) with `onChange` (UI → state), making React state the single source of truth.
+6. **One object + one handler scales to any form**, thanks to `{...form, [name]: value}` — spread preserves the other fields, the computed key routes the new value.
+7. **State setters are asynchronous.** The state variable in the current closure keeps its old value until the next render — compute the next value into a local variable and use *that*, rather than re-reading the stale state right after calling its setter.
+8. **Never pass `undefined` as a controlled `value`** — default missing fields to `''` (this project uses `??`).
+9. **Hover has no keyboard equivalent.** Any UI driven by `onMouseOver` should also answer to `onFocus` (and `onMouseOut` to `onBlur`) so keyboard users get equivalent feedback.
 
 ## Common Pitfalls
 
 - **`onClick={handleClick()}`** — calling instead of passing. Fires on render, does nothing on click, and can cause infinite loops if the handler sets state.
-- **Forgetting the spread**: `setForm({[e.target.name]: e.target.value})` (without `...form`) wipes out every other field each keystroke.
-- **Mutating state directly**: `form.email = e.target.value` changes the object without telling React — no re-render happens. Always build a new object.
-- **Reading state right after setting it**: `console.log(form)` after `setForm(...)` shows the *previous* value. This is expected, not a bug.
+- **`onClick={handleClickWithAmount(5)}`** — same mistake, but for a handler that takes an argument. Wrap it: `onClick={() => handleClickWithAmount(5, e)}`.
+- **Forgetting the spread**: `setForm({ [name]: value })` (without `...form`) wipes out every other field each keystroke.
+- **Mutating state directly**: `form.email = value` changes the object without telling React — no re-render happens. Always build a new object.
+- **Reading state right after setting it**: `setForm(nextForm); console.log(form)` shows the *previous* value, because `setForm` schedules a re-render rather than mutating in place. Log the local variable you just built instead (`nextForm`), or read state in the component body where it's always current.
 - **`value` without `onChange`**: the input becomes read-only and React logs a warning. Controlled inputs need both halves.
-- **`undefined` initial values**: starting `form` as `{}` means `form.email` is `undefined` at first; feed the input `""` instead (via the ternary) to avoid the "uncontrolled to controlled" warning.
+- **`undefined` initial values**: starting `form` as `{}` means `form.email` is `undefined` at first; feed the input `''` instead (via `??`) to avoid the "uncontrolled to controlled" warning.
 - **Using `class` or lowercase `onclick` in JSX**: JSX needs `className` and camelCase event props.
-- **HTML comments in JSX**: `<!-- -->` breaks; use `{/* ... */}` like the red-div block does.
+- **Hover-only interactions**: wiring UI feedback to `onMouseOver` alone leaves keyboard users with no way to trigger it. Pair it with `onFocus` (and `onMouseOut` with `onBlur`) as this project's signal pad does.
 
 ## Practice Exercises
 
-1. **Restore the hover demo.** Uncomment the red `<div>` in `App.jsx`, but replace the `alert` in `handleMouseOver` with a `console.log` so it doesn't block the page. Then try switching `onMouseOver` to `onMouseOut` and observe the difference.
-2. **Break it on purpose.** Change the button to `onClick={handleClick()}` and reload. Explain exactly what you observe and why. Then change it back.
-3. **Add a third field.** Add an `<input type="text" name='address' ... />` wired to the same `handleChange`, following the same `value` ternary pattern. Notice you don't have to touch the handler at all.
-4. **Display the state.** Render `<p>Email: {form.email}</p>` and `<p>Phone: {form.phone}</p>` below the inputs so the state is visible live as you type — no console needed.
-5. **Fix the stale log.** Change `handleChange` so the console always shows the *up-to-date* form. (Hint: build the new object in a variable first — `const newForm = {...form, [e.target.name]: e.target.value}` — then pass it to `setForm` and log it. Or log `form` in the component body instead.)
+1. **Add a fourth field.** Add an `<input type="text" name="address" ... />` wired to the same `handleChange`, following the same `value ?? ''` pattern. Notice you don't have to touch the handler or the state-inspector panel at all — both already generalize.
+2. **Break it on purpose.** Change the "Click me" button to `onClick={handleClick()}` and reload. Explain exactly what you observe (when does the log entry appear?) and why. Then change it back.
+3. **Reintroduce the stale-log bug.** In `handleChange`, temporarily change `pushLog('change', ...)` to log `form.email` instead of the freshly-read `value`. Type a few characters and watch the log fall one keystroke behind. Then revert it and explain why building `nextForm` first avoids the problem.
+4. **Add a new event type.** Wire `onDoubleClick` to the "Click me" button (a new handler, e.g. `handleDoubleClick`) that calls `pushLog('dblclick', ...)`. Give the new event type its own color in `App.css` by adding a `.console-entry-dblclick` rule.
+5. **Try it with only a keyboard.** Unplug your mouse (or just don't touch it) and Tab through the whole page. Confirm you can reach and activate every control, and that the signal pad still gives you feedback via `onFocus`/`onBlur`.
+
+---
+
+## Design Notes
+
+This version intentionally moved away from `alert()`-based feedback. Blocking dialogs interrupt the browser's event loop and only show one message at a time — they hide the fact that events carry rich data (coordinates, field names, values). The on-screen **event log console** shows that data continuously and lets multiple events queue up visibly, which is a better teaching aid for *what actually happens* when an event fires. `console.log` calls were similarly replaced by `pushLog(...)` calls that route into the same on-screen console (open your browser DevTools if you'd still like to inspect the raw event object via `e.nativeEvent`).
+
+Controlled inputs are used throughout on purpose, even though "prefer uncontrolled inputs" is common general performance advice — the entire point of this lecture is to demonstrate the `value` + `onChange` round-trip through React state, which requires a controlled component.
 
 ---
 

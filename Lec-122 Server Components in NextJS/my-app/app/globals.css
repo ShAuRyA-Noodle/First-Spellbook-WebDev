@@ -2,32 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Token palette — "control room console" theme.
+  Every color traces back to one of: canvas/panel (surface elevation),
+  ink (text hierarchy), line (border hierarchy), or the two accent
+  diodes — server (phosphor green, stdout) and client (violet, hydration).
+*/
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --canvas: 9 10 12;
+  --panel-0: 14 16 19;
+  --panel-1: 19 22 26;
+  --panel-2: 25 29 34;
+
+  --text-primary: 237 240 243;
+  --text-secondary: 163 171 181;
+  --text-tertiary: 118 126 138;
+  --text-muted: 82 89 99;
+
+  --border: 255 255 255;
+  --border-strong: 255 255 255;
+  --border-emphasis: 255 255 255;
+
+  --server: 61 220 151;
+  --server-dim: 15 41 32;
+
+  --client: 167 139 250;
+  --client-dim: 33 27 58;
+
+  --warn: 251 191 36;
+  --warn-dim: 46 35 10;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  border-color: rgb(var(--border) / 0.08);
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: rgb(var(--canvas));
+  color: rgb(var(--text-primary));
+  font-feature-settings: "cv11", "ss01";
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .border-hairline {
+    border-color: rgb(var(--border) / 0.08);
+  }
+  .border-hairline-strong {
+    border-color: rgb(var(--border-strong) / 0.16);
+  }
+  .border-hairline-emphasis {
+    border-color: rgb(var(--border-emphasis) / 0.28);
+  }
+
+  .diode {
+    box-shadow: 0 0 0 3px rgb(var(--server) / 0.12);
+  }
+  .diode-client {
+    box-shadow: 0 0 0 3px rgb(var(--client) / 0.14);
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(
+        to right,
+        rgb(var(--border) / 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgb(var(--border) / 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
+
+/* Respect reduced-motion preferences for the pulsing diodes / transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,11 +1,74 @@
+/* ---------------------------------------------------------------------- */
+/* Design tokens                                                          */
+/* A "signal lab" palette: near-black circuit-board dark mode by default, */
+/* a clean daylight-lab light mode via prefers-color-scheme, and a single */
+/* phosphor-green accent that carries the product identity in both.      */
+/* ---------------------------------------------------------------------- */
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+
+  --font-sans: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'JetBrains Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  /* spacing — 4px base unit */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --text-2xs: 11px;
+  --text-xs: 12.5px;
+  --text-sm: 14px;
+  --text-base: 15.5px;
+  --text-md: 17px;
+  --text-lg: 21px;
+  --text-2xl: 34px;
+
+  /* surfaces — dark (default) */
+  --bg: #0a0f0c;
+  --bg-surface-1: #10160f;
+  --bg-surface-2: #161d19;
+  --bg-surface-3: #1c2521;
+  --bg-input: #0d130f;
+
+  /* borders — low-opacity so they disappear until needed */
+  --border-subtle: rgba(148, 255, 195, 0.08);
+  --border: rgba(148, 255, 195, 0.16);
+  --border-strong: rgba(148, 255, 195, 0.3);
+  --border-focus: #57e8a8;
+
+  /* text hierarchy */
+  --text-primary: #eaf3ee;
+  --text-secondary: #a9c2b3;
+  --text-tertiary: #74897c;
+  --text-muted: #4c5c52;
+
+  /* brand + semantic */
+  --accent: #4fe6a4;
+  --accent-strong: #7dffc0;
+  --accent-contrast: #05130c;
+  --accent-soft: rgba(79, 230, 164, 0.12);
+  --signal-blue: #5fc9ff;
+  --signal-amber: #ffbd5c;
+  --signal-violet: #c9a6ff;
+  --danger: #ff7a7a;
+
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--text-primary);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,63 +76,76 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.red{
-  background-color: red;
-  color: white;
-  height: 233px;
-  width: 344px;
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f5f8f6;
+    --bg-surface-1: #ffffff;
+    --bg-surface-2: #eef2ef;
+    --bg-surface-3: #e3eae5;
+    --bg-input: #eef2ef;
+
+    --border-subtle: rgba(13, 40, 26, 0.06);
+    --border: rgba(13, 40, 26, 0.13);
+    --border-strong: rgba(13, 40, 26, 0.24);
+    --border-focus: #1f9d63;
+
+    --text-primary: #10231a;
+    --text-secondary: #3d5347;
+    --text-tertiary: #647567;
+    --text-muted: #93a398;
+
+    --accent: #1f9d63;
+    --accent-strong: #167a4c;
+    --accent-contrast: #ffffff;
+    --accent-soft: rgba(31, 157, 99, 0.1);
+    --signal-blue: #1470b8;
+    --signal-amber: #b5730a;
+    --signal-violet: #7a4fd1;
+    --danger: #c73a3a;
+  }
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* ---------------------------------------------------------------------- */
+/* Reset                                                                   */
+/* ---------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+button,
+input,
+textarea {
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  color: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+a {
+  color: var(--accent);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--accent-strong);
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text-primary);
 }

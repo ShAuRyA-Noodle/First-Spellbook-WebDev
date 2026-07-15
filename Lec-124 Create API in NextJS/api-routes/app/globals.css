@@ -2,32 +2,359 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Design world: a desktop adding machine.
+  Ivory chassis plastic, an inset seafoam LCD glass, a physical amber "="
+  key, and a printed paper tape that logs every request/response pair.
+  Every token below is named for that world, not for generic UI slots.
+*/
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  color-scheme: light;
+
+  /* Chassis (surfaces) */
+  --chassis: #f2ede2;
+  --chassis-raised: #fbf8f2;
+  --chassis-inset: #e7dfcd;
+
+  /* Ink (text hierarchy) */
+  --ink-primary: #2b2621;
+  --ink-secondary: #6b6357;
+  --ink-tertiary: #948c7d;
+  --ink-muted: #b6ad9c;
+
+  /* Borders */
+  --border: rgba(43, 38, 33, 0.14);
+  --border-soft: rgba(43, 38, 33, 0.08);
+  --border-strong: rgba(43, 38, 33, 0.26);
+  --ring: #c2621e;
+
+  /* LCD glass */
+  --lcd-bg: #cfe0d0;
+  --lcd-bg-deep: #b9d2ba;
+  --lcd-digit: #234a34;
+  --lcd-digit-dim: #234a3466;
+
+  /* Amber "=" key + semantics */
+  --accent: #d9752c;
+  --accent-strong: #b85f1f;
+  --accent-ink: #fff7ee;
+  --success: #3f7d54;
+  --success-bg: #e3ede4;
+  --danger: #b8442f;
+  --danger-bg: #f4e3de;
+
+  /* Paper tape */
+  --tape: #f6efdd;
+  --tape-line: rgba(43, 38, 33, 0.16);
+
+  --shadow-key: 0 1px 0 rgba(43, 38, 33, 0.28), 0 6px 14px rgba(43, 38, 33, 0.14);
+  --shadow-panel: 0 1px 2px rgba(43, 38, 33, 0.06), 0 12px 28px rgba(43, 38, 33, 0.10);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    color-scheme: dark;
+
+    --chassis: #1d1a16;
+    --chassis-raised: #26221c;
+    --chassis-inset: #141210;
+
+    --ink-primary: #f2ede2;
+    --ink-secondary: #c7bfae;
+    --ink-tertiary: #948c7d;
+    --ink-muted: #665f52;
+
+    --border: rgba(242, 237, 226, 0.12);
+    --border-soft: rgba(242, 237, 226, 0.07);
+    --border-strong: rgba(242, 237, 226, 0.22);
+    --ring: #f0964d;
+
+    --lcd-bg: #16241a;
+    --lcd-bg-deep: #0e1912;
+    --lcd-digit: #7fe6a4;
+    --lcd-digit-dim: #7fe6a466;
+
+    --accent: #e8873f;
+    --accent-strong: #f5a15c;
+    --accent-ink: #241408;
+    --success: #6cc98a;
+    --success-bg: #1c2f22;
+    --danger: #e3806a;
+    --danger-bg: #341d18;
+
+    --tape: #201c16;
+    --tape-line: rgba(242, 237, 226, 0.14);
+
+    --shadow-key: 0 1px 0 rgba(0, 0, 0, 0.5), 0 6px 16px rgba(0, 0, 0, 0.45);
+    --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.3), 0 20px 40px rgba(0, 0, 0, 0.35);
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink-primary);
+  background: var(--chassis);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Focus ring — one consistent treatment for every interactive element */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- Device shell ---------- */
+
+.device {
+  background: var(--chassis-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-panel);
+  padding: 1.75rem;
+}
+
+.device-screws::before,
+.device-screws::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  opacity: 0.5;
+}
+
+/* ---------- LCD readout ---------- */
+
+.lcd {
+  background: linear-gradient(180deg, var(--lcd-bg) 0%, var(--lcd-bg-deep) 100%);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.18), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  padding: 1.1rem 1.25rem;
+}
+
+.lcd-formula {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--lcd-digit-dim);
+  min-height: 1.1em;
+}
+
+.lcd-digits {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: clamp(2.25rem, 8vw, 3rem);
+  line-height: 1.1;
+  color: var(--lcd-digit);
+  text-shadow: 0 0 18px var(--lcd-digit-dim);
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+
+.lcd-digits[data-state="error"] {
+  color: var(--danger);
+  text-shadow: none;
+}
+
+.lcd-digits[data-state="pending"] {
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ---------- Input wells + keys ---------- */
+
+.well {
+  background: var(--chassis-inset);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.well:focus-within {
+  border-color: var(--ring);
+}
+
+.well input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--ink-primary);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0.6rem 0.85rem;
+}
+
+.well input::placeholder {
+  color: var(--ink-muted);
+}
+
+.well input:focus {
+  outline: none;
+}
+
+.well input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.key-equals {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow-key);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 1.4rem;
+  transition: transform 80ms ease, box-shadow 80ms ease, background 120ms ease;
+}
+
+.key-equals:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+
+.key-equals:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 rgba(43, 38, 33, 0.28), 0 2px 6px rgba(43, 38, 33, 0.14);
+}
+
+.key-equals:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Status pill ---------- */
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+}
+
+.status-dot[data-state="loading"] {
+  background: var(--accent);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.status-dot[data-state="success"] {
+  background: var(--success);
+}
+
+.status-dot[data-state="error"] {
+  background: var(--danger);
+}
+
+/* ---------- Paper tape ---------- */
+
+.tape-panel {
+  background: var(--chassis-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-panel);
+}
+
+.tape-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.tape-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tape-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+}
+
+.tape-entry {
+  background: var(--tape);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  position: relative;
+  overflow-wrap: anywhere;
+}
+
+.tape-entry::before {
+  /* perforation: a dashed tear-line across the top of each receipt line */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  border-top: 1px dashed var(--tape-line);
+}
+
+.tape-entry:first-child::before {
+  display: none;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.status-pill[data-ok="true"] {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.status-pill[data-ok="false"] {
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

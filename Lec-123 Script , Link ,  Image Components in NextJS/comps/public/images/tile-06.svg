@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101014"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <pattern id="grid5" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg5)"/>
+  <rect width="640" height="480" fill="url(#grid5)"/>
+  <rect x="0.5" y="0.5" width="639" height="479" fill="none" stroke="rgba(255,255,255,0.08)"/>
+  <path d="M 380 240 L 490 240 L 473.82059891922336 312.38247956606233 L 374.28962314796115 265.54675749390435 Z" fill="#F5A524" fill-opacity="0.25"/><path d="M 350 291.9615242270663 L 405 387.22431864335454 L 334.2252333664937 409.40378607241576 L 325.02067059993897 299.7895715549703 Z" fill="#F5A524" fill-opacity="0.33"/><path d="M 290 291.9615242270663 L 235.00000000000006 387.2243186433546 L 180.40463444727033 337.0213065063534 L 270.73104745197776 274.2428140610659 Z" fill="#F5A524" fill-opacity="0.41000000000000003"/><path d="M 260 240 L 150 240.00000000000003 L 166.17940108077664 167.61752043393773 L 265.71037685203885 214.45324250609565 Z" fill="#F5A524" fill-opacity="0.49"/><path d="M 290 188.03847577293368 L 234.99999999999994 92.77568135664546 L 305.7747666335063 70.59621392758427 L 314.97932940006103 180.21042844502975 Z" fill="#F5A524" fill-opacity="0.5700000000000001"/><path d="M 350 188.03847577293368 L 405 92.77568135664544 L 459.5953655527296 142.97869349364652 L 369.26895254802224 205.75718593893407 Z" fill="#F5A524" fill-opacity="0.65"/>
+  <text x="24" y="440" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="rgba(255,255,255,0.4)" letter-spacing="1.5">06 / RENDER.NODE</text>
+  <text x="24" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#F5A524" fill-opacity="0.85" letter-spacing="1.5">AMBER</text>
+</svg>

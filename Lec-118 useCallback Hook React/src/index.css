@@ -1,11 +1,67 @@
+/* ---------------------------------------------------------------------
+   Design tokens — "signal bench" console.
+   Dark is the default surface (an instrument bench at night); a light
+   variant follows prefers-color-scheme. Surfaces share one neutral hue
+   and only shift in lightness; signal/pulse colors are the deliberate
+   exception because each one encodes a distinct, real piece of information
+   (which control drives it, whether it fired or was skipped).
+   --------------------------------------------------------------------- */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color-scheme: dark light;
+
+  /* spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* type */
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Avenir, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono",
+    monospace;
+
+  /* surfaces (dark, default) */
+  --bg-canvas: #0a0c0f;
+  --bg-surface: #10131a;
+  --bg-surface-2: #161a22;
+  --bg-surface-3: #1d222c;
+  --bg-inset: #0c0e13;
+
+  /* borders */
+  --border-hairline: rgba(255, 255, 255, 0.07);
+  --border-soft: rgba(255, 255, 255, 0.11);
+  --border-emphasis: rgba(255, 255, 255, 0.2);
+  --border-focus: #ffb454;
+
+  /* text hierarchy */
+  --text-primary: rgba(255, 255, 255, 0.94);
+  --text-secondary: rgba(255, 255, 255, 0.66);
+  --text-tertiary: rgba(255, 255, 255, 0.46);
+  --text-muted: rgba(255, 255, 255, 0.28);
+
+  /* signal + pulse accents */
+  --signal-count: #5ee1c9;
+  --signal-count-soft: rgba(94, 225, 201, 0.14);
+  --signal-adjective: #b98cff;
+  --signal-adjective-soft: rgba(185, 140, 255, 0.14);
+  --signal-unrelated: #93a0b4;
+  --signal-unrelated-soft: rgba(147, 160, 180, 0.12);
+  --pulse-fire: #ffb454;
+  --pulse-fire-soft: rgba(255, 180, 84, 0.16);
+  --pulse-skip: #55d68a;
+  --pulse-skip-soft: rgba(85, 214, 138, 0.14);
+
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,56 +69,70 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-canvas: #f2f3f6;
+    --bg-surface: #ffffff;
+    --bg-surface-2: #f7f8fa;
+    --bg-surface-3: #edeff3;
+    --bg-inset: #eceef2;
+
+    --border-hairline: rgba(15, 23, 42, 0.07);
+    --border-soft: rgba(15, 23, 42, 0.12);
+    --border-emphasis: rgba(15, 23, 42, 0.22);
+    --border-focus: #b45309;
+
+    --text-primary: rgba(15, 23, 42, 0.94);
+    --text-secondary: rgba(15, 23, 42, 0.64);
+    --text-tertiary: rgba(15, 23, 42, 0.46);
+    --text-muted: rgba(15, 23, 42, 0.3);
+
+    --signal-count: #0f8f7c;
+    --signal-count-soft: rgba(15, 143, 124, 0.1);
+    --signal-adjective: #7c3aed;
+    --signal-adjective-soft: rgba(124, 58, 237, 0.1);
+    --signal-unrelated: #5b6472;
+    --signal-unrelated-soft: rgba(91, 100, 114, 0.1);
+    --pulse-fire: #b45309;
+    --pulse-fire-soft: rgba(180, 83, 9, 0.12);
+    --pulse-skip: #15803d;
+    --pulse-skip-soft: rgba(21, 128, 61, 0.12);
+  }
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+body {
+  min-width: 320px;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  color: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+button:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+a {
+  color: var(--signal-count);
 }

@@ -1,0 +1,134 @@
+/* ---------------------------------------------------------------------
+   The render probe — the one card the whole demo points at. Signature
+   moment: a keyframed amber glow ("probe-flash") fires exactly once per
+   real render, keyed off renderCount so React remounts (and thus replays)
+   it only when a render genuinely happened. If memo() skips a render,
+   this file's code never runs, so there is nothing here to fake it.
+   --------------------------------------------------------------------- */
+
+.navbar-probe {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.probe-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--pulse-fire);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .probe-flash {
+    animation: probe-flash-play 650ms ease-out;
+  }
+}
+
+@keyframes probe-flash-play {
+  0% {
+    opacity: 1;
+    box-shadow: inset 0 0 0 1px var(--pulse-fire), 0 0 24px var(--pulse-fire-soft);
+  }
+  100% {
+    opacity: 0;
+    box-shadow: inset 0 0 0 1px var(--pulse-fire), 0 0 0 var(--pulse-fire-soft);
+  }
+}
+
+.probe-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.probe-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pulse-fire);
+  box-shadow: 0 0 6px var(--pulse-fire);
+}
+
+.probe-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.probe-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.probe-readout {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+}
+
+.probe-count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--pulse-fire);
+}
+
+.probe-count-label {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+}
+
+.probe-copy {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.probe-copy strong {
+  color: var(--text-primary);
+}
+
+.probe-tag-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  transition: border-color 140ms ease;
+}
+
+.probe-tag-btn:hover {
+  border-color: var(--border-emphasis);
+}
+
+.probe-tag-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.probe-tag-value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}

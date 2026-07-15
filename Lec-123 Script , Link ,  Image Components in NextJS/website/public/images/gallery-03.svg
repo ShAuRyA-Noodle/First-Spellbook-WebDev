@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E7C7B4"/>
+      <stop offset="100%" stop-color="#8F4726"/>
+    </linearGradient>
+    <filter id="grain2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.045 0"/>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g2)"/>
+  
+    <g fill="#FAF6F0">
+      <circle cx="220" cy="300" r="46" fill-opacity="0.18"/>
+      <circle cx="360" cy="220" r="70" fill-opacity="0.12"/>
+      <circle cx="560" cy="360" r="34" fill-opacity="0.22"/>
+      <circle cx="480" cy="560" r="90" fill-opacity="0.1"/>
+      <circle cx="650" cy="700" r="55" fill-opacity="0.16"/>
+    </g>
+    <ellipse cx="400" cy="560" rx="150" ry="230" fill="#221D18" fill-opacity="0.55"/>
+  
+  <rect width="800" height="1000" filter="url(#grain2)"/>
+  <rect x="1" y="1" width="798" height="998" fill="none" stroke="#FAF6F0" stroke-opacity="0.18"/>
+  <text x="28" y="954" font-family="ui-sans-serif, system-ui" font-size="15" letter-spacing="2" fill="#FAF6F0" fill-opacity="0.75">03 — PORTRAIT, WINDOW LIGHT</text>
+</svg>
