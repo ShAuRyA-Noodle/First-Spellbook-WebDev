@@ -1,4 +1,4 @@
-# First Spellbook: A Web Dev Journey
+﻿# First Spellbook: A Web Dev Journey
 
 My first web dev grimoire, where confusion turned into clarity, curiosity into craft, and tiny commits into real magic. These notes mark the beginning of my journey from zero to building worlds with code.
 
@@ -27,6 +27,7 @@ The work is organized as a numbered path. Follow it in order to walk the same jo
 - Strings, arrays, and the Document Object Model (DOM)
 - Events, timers, callbacks, promises, async await, and the Fetch API
 - Error handling, object oriented programming, and advanced topics
+- A Spotify style music player clone built with vanilla HTML, CSS, and JavaScript (Lec 84)
 
 ### Backend: Node and Express
 - Node.js and NPM, CommonJS vs ECMAScript modules
@@ -43,6 +44,24 @@ The work is organized as a numbered path. Follow it in order to walk the same jo
 - Intro to React, components, props, and JSX
 - Hooks and state, useEffect, and useRef
 - Conditional rendering and rendering lists
+- Handling events, designing and displaying cards from an API
+- A ToDo List app built with React and Tailwind (Lec 114)
+- React Router for client side routing
+- useContext, useMemo, and useCallback hooks
+- Handling forms and connecting React to an Express backend
+- Redux Toolkit for global state management
+
+### Full stack framework: Next.js
+- Intro to Next.js and file based routing with the App Router (Lec 121)
+- Server Components vs Client Components (Lec 122)
+- The Script, Link, and Image optimization components (Lec 123)
+- Building API route handlers inside Next.js (Lec 124)
+- Server Actions with the "use server" directive (Lec 125)
+
+### Capstone clones
+- Netflix clone with HTML and CSS (Lec 53)
+- Spotify clone with vanilla JavaScript (Lec 84)
+- X (Twitter) clone with Tailwind CSS (Lec 101)
 
 ### Practice
 - Quiz folders throughout, each paired with a solution, covering layouts, animations, calculators, generators, and dynamic builders
@@ -68,9 +87,19 @@ npm install
 node index.js
 ```
 
+The Next.js lessons (Lec 121 and later) each contain an app in a subfolder. To run one:
+
+```bash
+cd "Lec-121 NextJS/first"
+npm install
+npm run dev
+```
+
+Every lecture folder from Lec 84 onward also carries its own in-depth README with full lecture notes: concept deep-dives, file by file code walkthroughs, run instructions, pitfalls, and practice exercises.
+
 ## Tech covered
 
-HTML, CSS, Tailwind CSS, JavaScript, Node.js, Express, EJS, MongoDB, Mongoose, React, and Vite.
+HTML, CSS, Tailwind CSS, JavaScript, Node.js, Express, EJS, MongoDB, Mongoose, React, Vite, React Router, Redux Toolkit, and Next.js.
 
 ## A note on the journey
 

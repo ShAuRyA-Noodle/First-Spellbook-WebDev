@@ -1,0 +1,304 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Variables ─────────────────────────────────────────── */
+:root {
+  --pink:       #ff2d78;
+  --teal:       #00ffcc;
+  --dark:       #0a0a0f;
+  --card:       #12121f;
+  --deep:       #1a1a2e;
+  --red:        #ff1744;
+  --text:       #f0f0f0;
+  --text-dim:   rgba(240, 240, 240, 0.55);
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--dark);
+  background-image:
+    radial-gradient(ellipse at 15% 30%,  rgba(255, 45,  120, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 70%,  rgba(0,  255, 204, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(255, 45,  120, 0.04) 0%, transparent 40%);
+  min-height: 100vh;
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── Custom Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: rgba(255, 45, 120, 0.04); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pink), #a0005a);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--pink); }
+
+/* ─── Background Geometry ───────────────────────────────────── */
+.bg-geo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.geo-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid var(--pink);
+  opacity: 0.08;
+  animation: rotateSlow 30s linear infinite;
+}
+
+.geo-ring-teal {
+  border-color: var(--teal);
+  animation: rotateSlowRev 20s linear infinite;
+  opacity: 0.06;
+}
+
+.geo-tri {
+  position: absolute;
+  width: 0; height: 0;
+  border-left: 120px solid transparent;
+  border-right: 120px solid transparent;
+  border-bottom: 208px solid rgba(255, 45, 120, 0.03);
+  animation: floatY 10s ease-in-out infinite;
+}
+
+.geo-sq {
+  position: absolute;
+  border: 1.5px solid rgba(0, 255, 204, 0.06);
+  animation: floatY 12s ease-in-out infinite reverse,
+             rotateSlow 40s linear infinite;
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-24px); }
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rotateSlowRev {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* ─── Scanline overlay ──────────────────────────────────────── */
+.scanline-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255, 45, 120, 0.08) 50%,
+    transparent 100%);
+  animation: scanline 6s linear infinite;
+}
+
+@keyframes scanline {
+  0%   { top: -5%; }
+  100% { top: 105%; }
+}
+
+/* ─── Neon Glow Utilities ───────────────────────────────────── */
+.neon-text {
+  text-shadow:
+    0 0 8px  var(--pink),
+    0 0 20px var(--pink),
+    0 0 40px rgba(255, 45, 120, 0.5);
+}
+
+.neon-text-teal {
+  text-shadow:
+    0 0 8px  var(--teal),
+    0 0 20px var(--teal),
+    0 0 40px rgba(0, 255, 204, 0.5);
+}
+
+.neon-border {
+  box-shadow:
+    0 0 10px var(--pink),
+    0 0 20px rgba(255, 45, 120, 0.25),
+    inset 0 0 8px rgba(255, 45, 120, 0.04);
+}
+
+.neon-border-teal {
+  box-shadow:
+    0 0 10px var(--teal),
+    0 0 20px rgba(0, 255, 204, 0.25),
+    inset 0 0 8px rgba(0, 255, 204, 0.04);
+}
+
+/* ─── Main Card ─────────────────────────────────────────────── */
+.squid-card {
+  background: linear-gradient(145deg, #12121f 0%, #1a1a2e 60%, #0f1a30 100%);
+  border: 1px solid rgba(255, 45, 120, 0.25);
+  box-shadow:
+    0 0 60px rgba(255, 45, 120, 0.08),
+    0 0 120px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ─── Input ─────────────────────────────────────────────────── */
+.squid-input {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 45, 120, 0.3);
+  color: var(--text);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.squid-input::placeholder { color: rgba(240, 240, 240, 0.2); }
+
+.squid-input:focus {
+  border-color: var(--pink);
+  box-shadow:
+    0 0 14px rgba(255, 45, 120, 0.4),
+    0 0 28px rgba(255, 45, 120, 0.15);
+}
+
+/* ─── Buttons ───────────────────────────────────────────────── */
+.squid-btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--pink) 0%, #c4005a 100%);
+  border: 1px solid var(--pink);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.squid-btn-primary:not(:disabled):hover {
+  box-shadow: 0 0 20px var(--pink), 0 0 40px rgba(255, 45, 120, 0.3);
+  transform: translateY(-1px);
+}
+
+.squid-btn-primary:disabled {
+  background: rgba(255, 45, 120, 0.15);
+  border-color: rgba(255, 45, 120, 0.2);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.squid-btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ─── Toggle Switch ─────────────────────────────────────────── */
+.toggle-track {
+  width: 44px; height: 22px;
+  border-radius: 11px;
+  transition: background 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.toggle-track.on  { background: linear-gradient(90deg, #c4005a, var(--pink)); }
+.toggle-track.off { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,45,120,0.2); }
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.toggle-track.on  .toggle-thumb { left: 22px; box-shadow: 0 0 8px var(--pink); }
+.toggle-track.off .toggle-thumb { left: 2px; }
+
+/* ─── Todo Items ─────────────────────────────────────────────── */
+.todo-row {
+  border-radius: 10px;
+  transition: background 0.25s, border-color 0.25s, transform 0.15s;
+}
+
+.todo-row:hover {
+  transform: translateX(5px);
+}
+
+.todo-row.active-task {
+  background: rgba(255, 45, 120, 0.06);
+  border: 1px solid rgba(255, 45, 120, 0.18);
+}
+
+.todo-row.done-task {
+  background: rgba(0, 255, 204, 0.03);
+  border: 1px solid rgba(0, 255, 204, 0.1);
+}
+
+/* ─── Player Number ─────────────────────────────────────────── */
+.player-num {
+  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: rgba(0, 255, 204, 0.45);
+  min-width: 36px;
+  animation: numberBlink 4s ease-in-out infinite;
+}
+
+@keyframes numberBlink {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 0.25; }
+}
+
+/* ─── Divider ───────────────────────────────────────────────── */
+.neon-divider {
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent,
+    rgba(255, 45, 120, 0.45),
+    rgba(0, 255, 204, 0.3),
+    transparent);
+}
+
+/* ─── Section Labels ─────────────────────────────────────────── */
+.section-label {
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ─── Checkbox custom styling ───────────────────────────────── */
+input[type="checkbox"] {
+  accent-color: var(--pink);
+  cursor: pointer;
+}
+
+/* ─── Flicker animation for header ─────────────────────────── */
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93%            { opacity: 0.55; }
+  94%            { opacity: 1; }
+  96%            { opacity: 0.35; }
+  97%            { opacity: 1; }
+}

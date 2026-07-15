@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/utility.css">
+    <title>Chainsmokers — Web Player</title>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ══════════════ LEFT SIDEBAR ══════════════ -->
+        <div class="left">
+            <div class="close">
+                <img width="26" class="invert" src="img/close.svg" alt="Close">
+            </div>
+
+            <div class="home bg-grey rounded m-1 p-1">
+                <div class="logo">
+                    <img width="110" class="invert" src="img/logo.svg" alt="Logo">
+                </div>
+                <ul>
+                    <li><img class="invert" src="img/home.svg" alt="home"> Home</li>
+                    <li><img class="invert" src="img/search.svg" alt="search"> Search</li>
+                </ul>
+            </div>
+
+            <div class="library bg-grey rounded m-1 p-1">
+                <div class="heading">
+                    <img class="invert" src="img/playlist.svg" alt="">
+                    <h2>Your Library</h2>
+                </div>
+                <div class="songList"><ul></ul></div>
+                <div class="footer">
+                    <div><a href="https://www.spotify.com/jp/legal/">Legal</a></div>
+                    <div><a href="https://www.spotify.com/jp/privacy/">Privacy Center</a></div>
+                    <div><a href="https://www.spotify.com/jp/legal/privacy-policy/">Privacy Policy</a></div>
+                    <div><a href="https://www.spotify.com/jp/legal/cookies-policy/">Cookies</a></div>
+                    <div><a href="https://www.spotify.com/jp/legal/privacy-policy/#s3">About Ads</a></div>
+                    <div><a href="https://www.spotify.com/jp/accessibility/">Accessibility</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════ RIGHT PANEL ══════════════ -->
+        <div class="right bg-grey rounded">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="hamburgerContainer">
+                    <img width="34" class="invert hamburger" src="img/hamburger.svg" alt="Menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 6L9.707 11.293C9.374 11.626 9.207 11.793 9.207 12C9.207 12.207 9.374 12.374 9.707 12.707L15 18"
+                              stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18L14.293 12.707C14.626 12.374 14.793 12.207 14.793 12C14.793 11.793 14.626 11.626 14.293 11.293L9 6"
+                              stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="buttons">
+                    <button class="signupbtn">Sign up</button>
+                    <button class="loginbtn">Log in</button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="mainContent">
+
+                <!-- Hero Banner -->
+                <div class="hero">
+                    <div class="hero-orb orb1"></div>
+                    <div class="hero-orb orb2"></div>
+                    <div class="hero-orb orb3"></div>
+                    <div class="hero-text">
+                        <span class="hero-label">&#9679; NOW STREAMING</span>
+                        <h1>Chainsmokers<br>Playlists</h1>
+                        <p>Drew Taggart & Alex Pall &mdash; electric beats, infinite vibes</p>
+                    </div>
+                </div>
+
+                <!-- Section heading -->
+                <div class="section-head">
+                    <h2>All Playlists</h2>
+                    <span>Select a playlist to start listening</span>
+                </div>
+
+                <!-- Album Cards -->
+                <div class="cardContainer"></div>
+
+            </div>
+
+            <!-- ══════════════ PLAYBAR ══════════════ -->
+            <div class="playbar">
+
+                <!-- Now Playing -->
+                <div class="now-playing">
+                    <img class="now-playing-art" src="img/music.svg" alt="cover">
+                    <div class="now-playing-text">
+                        <div class="songinfo">Select a playlist</div>
+                        <div class="now-playing-label">The Chainsmokers</div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <div class="songbuttons">
+                        <img width="26" id="previous" src="img/prevsong.svg" alt="Previous">
+
+                        <!-- PLAY BUTTON — button wrapper for proper centering -->
+                        <button class="play-circle" id="play">
+                            <img class="play-icon" src="img/play.svg" alt="Play / Pause">
+                        </button>
+
+                        <img width="26" id="next" src="img/nextsong.svg" alt="Next">
+                    </div>
+                    <div class="songtime"></div>
+                </div>
+
+                <!-- Volume + Equalizer -->
+                <div class="right-controls">
+                    <div class="equalizer">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="volume">
+                        <img width="20" src="img/volume.svg" alt="Volume">
+                        <div class="range">
+                            <input type="range" name="volume" min="0" max="100" value="70">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seekbar -->
+                <div class="seekbar">
+                    <div class="circle"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

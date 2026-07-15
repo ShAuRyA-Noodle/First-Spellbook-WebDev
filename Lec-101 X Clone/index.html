@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home / X</title>
+    <link rel="shortcut icon" href="https://abs.twimg.com/favicons/twitter-pip.3.ico">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="./css/output.css">
+
+    <style>
+        /* ===== KEYFRAMES ===== */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes heartPop {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.6); }
+            60%  { transform: scale(0.85); }
+            100% { transform: scale(1); }
+        }
+        @keyframes retweetSpin {
+            0%   { transform: rotate(0deg)   scale(1);   }
+            50%  { transform: rotate(200deg) scale(1.25);}
+            100% { transform: rotate(360deg) scale(1);   }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0px  rgba(29,155,240,0);   }
+            50%       { box-shadow: 0 0 22px rgba(29,155,240,0.55),
+                                   0 0 44px rgba(29,155,240,0.2); }
+        }
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1);   opacity: 1;   }
+            50%       { transform: scale(1.6); opacity: 0.6; }
+        }
+        @keyframes notifShake {
+            0%,100% { transform: rotate(0); }
+            15%     { transform: rotate(-18deg); }
+            30%     { transform: rotate(18deg);  }
+            45%     { transform: rotate(-10deg); }
+            60%     { transform: rotate(10deg);  }
+            75%     { transform: rotate(-5deg);  }
+            90%     { transform: rotate(5deg);   }
+        }
+        @keyframes rippleEffect {
+            0%   { transform: scale(0);   opacity: 0.6; }
+            100% { transform: scale(4);   opacity: 0;   }
+        }
+        @keyframes toastDrop {
+            0%   { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0)     scale(1);   }
+        }
+        @keyframes borderGlow {
+            0%, 100% { border-color: rgba(255,255,255,0.05); }
+            50%       { border-color: rgba(29,155,240,0.25);  }
+        }
+        @keyframes gradientShift {
+            0%   { background-position: 0%   50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0%   50%; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0);    }
+            50%       { transform: translateY(-4px); }
+        }
+        @keyframes countBounce {
+            0%   { opacity: 0; transform: translateY(6px);  }
+            100% { opacity: 1; transform: translateY(0);    }
+        }
+
+        /* ===== GLOBALS ===== */
+        html { scroll-behavior: smooth; }
+
+        ::-webkit-scrollbar           { width: 3px; }
+        ::-webkit-scrollbar-track     { background: #000; }
+        ::-webkit-scrollbar-thumb     { background: #222; border-radius: 3px; transition: background .2s; }
+        ::-webkit-scrollbar-thumb:hover { background: #1d9bf0; }
+
+        /* Subtle dot-grid background */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: radial-gradient(rgba(29,155,240,.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body > div { position: relative; z-index: 1; }
+
+        /* ===== SCROLL PROGRESS BAR ===== */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0;
+            height: 2px; width: 0%;
+            background: linear-gradient(90deg, #1d9bf0, #9b59b6, #1d9bf0);
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease infinite;
+            z-index: 9999;
+            transition: width .1s ease;
+        }
+
+        /* ===== NEW TWEETS TOAST ===== */
+        #new-tweets-toast {
+            animation: toastDrop .5s cubic-bezier(.34,1.56,.64,1) forwards;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar { animation: slideInLeft .6s cubic-bezier(.34,1.2,.64,1) both; }
+
+        .logo-container {
+            cursor: pointer;
+            transition: transform .3s ease;
+        }
+        .logo-container:hover { transform: scale(1.12); }
+        .logo-container:hover svg {
+            filter: drop-shadow(0 0 10px rgba(29,155,240,.9))
+                    drop-shadow(0 0 24px rgba(29,155,240,.4));
+            transition: filter .3s ease;
+        }
+
+        /* Nav items — radial sweep on hover */
+        .nav-item {
+            transition: all .2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-item::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at left center,
+                rgba(29,155,240,.14) 0%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform .35s ease;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+        .nav-item:hover::before { transform: translateX(0); }
+
+        /* Active nav — floating icon */
+        .nav-active .material-symbols-outlined {
+            animation: float 3s ease-in-out infinite;
+            color: white;
+        }
+
+        /* Post button */
+        .post-btn-main {
+            transition: all .25s cubic-bezier(.34,1.56,.64,1);
+            animation: pulseGlow 4s ease-in-out infinite;
+            position: relative; overflow: hidden;
+        }
+        .post-btn-main:hover {
+            transform: scale(1.07) translateY(-1px);
+            box-shadow: 0 8px 28px rgba(29,155,240,.55);
+            background: #1a8cd8;
+        }
+        .post-btn-main:active { transform: scale(.97); }
+
+        /* Ripple */
+        .ripple {
+            position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,.3);
+            animation: rippleEffect .6s linear forwards;
+            pointer-events: none;
+        }
+
+        /* User profile card */
+        .userprofile .item {
+            transition: all .25s ease;
+        }
+        .userprofile .item:hover {
+            background: rgba(255,255,255,.08) !important;
+            transform: scale(1.02);
+        }
+
+        /* ===== FEED HEADER ===== */
+        .glass-header {
+            background: rgba(0,0,0,.72) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+
+        /* Tabs */
+        .tab-btn {
+            transition: all .2s ease;
+            cursor: pointer;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,.06); }
+        .tab-active   { color: white; }
+        .tab-inactive { color: #6b7280; }
+
+        #tab-indicator {
+            transition: left .35s cubic-bezier(.34,1.56,.64,1);
+            background: linear-gradient(90deg, #1d9bf0, #0ea5e9);
+            box-shadow: 0 0 8px rgba(29,155,240,.7);
+        }
+
+        /* Settings icon hover */
+        .settings-icon {
+            transition: color .2s ease, transform .2s ease;
+            cursor: pointer;
+        }
+        .settings-icon:hover { color: #1d9bf0; transform: rotate(30deg); }
+
+        /* ===== POSTS ===== */
+        .post {
+            transition: background-color .2s ease;
+            cursor: pointer;
+        }
+        .post:hover { background: rgba(255,255,255,.025); }
+
+        /* Scroll-triggered entrance */
+        .post-anim {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .5s ease,
+                        transform .55s cubic-bezier(.34,1.2,.64,1);
+        }
+        .post-anim.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Post image zoom */
+        .post-img-wrap          { overflow: hidden; border-radius: .75rem; }
+        .post-img-wrap img      { transition: transform .4s ease; }
+        .post-img-wrap:hover img{ transform: scale(1.04); }
+
+        /* Avatars */
+        .avatar {
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 2px #1d9bf0, 0 0 18px rgba(29,155,240,.45);
+        }
+
+        /* Action icons */
+        .action-icon {
+            display: flex; align-items: center; gap: 4px;
+            padding: 6px 8px; border-radius: 9999px;
+            cursor: pointer;
+            transition: all .2s cubic-bezier(.34,1.56,.64,1);
+        }
+        .action-icon:hover { transform: scale(1.12); }
+
+        .action-icon.comment:hover { color: #1d9bf0;  background: rgba(29,155,240,.12); }
+        .action-icon.retweet:hover { color: #00ba7c;  background: rgba(0,186,124,.12);  }
+        .action-icon.like:hover    { color: #f91880;  background: rgba(249,24,128,.12); }
+        .action-icon.views:hover   { color: #1d9bf0;  background: rgba(29,155,240,.12); }
+
+        /* Liked / retweeted states */
+        .action-icon.like.liked         { color: #f91880; }
+        .action-icon.like.liked .material-symbols-outlined {
+            animation: heartPop .45s cubic-bezier(.34,1.56,.64,1);
+        }
+        .action-icon.retweet.retweeted  { color: #00ba7c; }
+        .action-icon.retweet.retweeted .material-symbols-outlined {
+            animation: retweetSpin .5s cubic-bezier(.34,1.2,.64,1);
+        }
+
+        /* Count bounce */
+        .count-val.updated { animation: countBounce .3s ease both; }
+
+        /* ===== COMPOSER ===== */
+        .composer-input {
+            caret-color: #1d9bf0;
+        }
+        .composer-input::placeholder { color: #4b5563; }
+        .composer-wrap { transition: box-shadow .3s ease; }
+        .composer-wrap:focus-within {
+            box-shadow: inset 0 -1px 0 rgba(29,155,240,.25);
+        }
+
+        .composer-tool {
+            padding: 6px; border-radius: 50%;
+            transition: all .2s cubic-bezier(.34,1.56,.64,1);
+        }
+        .composer-tool:hover {
+            background: rgba(29,155,240,.15);
+            transform: scale(1.22);
+            color: #1d9bf0;
+        }
+
+        /* ===== NOTIFICATION DOT ===== */
+        .notif-dot {
+            position: absolute; top: 8px; right: 8px;
+            width: 8px; height: 8px;
+            background: #1d9bf0; border-radius: 50%;
+            border: 1.5px solid black;
+            animation: dotPulse 1.8s ease-in-out infinite;
+        }
+
+        /* ===== RIGHT SIDEBAR ===== */
+        .third { animation: slideInRight .6s cubic-bezier(.34,1.2,.64,1) both; }
+
+        /* Search bar */
+        .search-bar {
+            transition: all .3s ease;
+            border: 1.5px solid transparent;
+            outline: none;
+        }
+        .search-bar:focus {
+            border-color: #1d9bf0;
+            box-shadow: 0 0 14px rgba(29,155,240,.28);
+            background: #000;
+            width: 90%;
+        }
+
+        /* Widget cards */
+        .widget-card {
+            border: 1px solid rgba(255,255,255,.05) !important;
+            animation: borderGlow 5s ease-in-out infinite;
+            transition: box-shadow .3s ease, border-color .3s ease;
+        }
+        .widget-card:hover {
+            border-color: rgba(29,155,240,.22) !important;
+            box-shadow: 0 0 24px rgba(29,155,240,.08);
+        }
+
+        /* Trend items */
+        .trend-item {
+            transition: all .25s ease;
+            border-left: 2.5px solid transparent;
+        }
+        .trend-item:hover {
+            background: rgba(255,255,255,.05) !important;
+            border-left-color: #1d9bf0;
+        }
+        .trend-item .trend-tag { transition: color .2s ease; }
+        .trend-item:hover .trend-tag { color: #1d9bf0; }
+
+        /* Follow items */
+        .follow-item { transition: background .2s ease; }
+        .follow-item:hover { background: rgba(255,255,255,.05) !important; }
+
+        /* Follow button */
+        .follow-btn {
+            transition: all .25s cubic-bezier(.34,1.56,.64,1);
+            position: relative; overflow: hidden;
+        }
+        .follow-btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 4px 16px rgba(255,255,255,.25);
+        }
+        .follow-btn.following {
+            background: transparent !important;
+            color: white !important;
+            border: 1.5px solid #555 !important;
+        }
+        .follow-btn.following:hover {
+            border-color: #f91880 !important;
+            color: #f91880 !important;
+            background: rgba(249,24,128,.1) !important;
+        }
+
+        /* Staggered entry for sidebar items */
+        .trend-item:nth-child(2) { animation: slideInRight .5s .08s both; }
+        .trend-item:nth-child(3) { animation: slideInRight .5s .16s both; }
+        .trend-item:nth-child(4) { animation: slideInRight .5s .24s both; }
+        .trend-item:nth-child(5) { animation: slideInRight .5s .32s both; }
+
+        .follow-item:nth-child(2) { animation: slideInRight .5s .12s both; }
+        .follow-item:nth-child(3) { animation: slideInRight .5s .24s both; }
+        .follow-item:nth-child(4) { animation: slideInRight .5s .36s both; }
+
+        /* Sidebar nav stagger */
+        .sidebar ul li:nth-child(1)  { animation: slideInLeft .4s .05s both; }
+        .sidebar ul li:nth-child(2)  { animation: slideInLeft .4s .10s both; }
+        .sidebar ul li:nth-child(3)  { animation: slideInLeft .4s .15s both; }
+        .sidebar ul li:nth-child(4)  { animation: slideInLeft .4s .20s both; }
+        .sidebar ul li:nth-child(5)  { animation: slideInLeft .4s .25s both; }
+        .sidebar ul li:nth-child(6)  { animation: slideInLeft .4s .30s both; }
+        .sidebar ul li:nth-child(7)  { animation: slideInLeft .4s .35s both; }
+        .sidebar ul li:nth-child(8)  { animation: slideInLeft .4s .40s both; }
+        .sidebar ul li:nth-child(9)  { animation: slideInLeft .4s .45s both; }
+        .sidebar ul li:nth-child(10) { animation: slideInLeft .4s .50s both; }
+        .sidebar ul li:nth-child(11) { animation: slideInLeft .4s .55s both; }
+    </style>
+</head>
+
+<body class="bg-black text-white">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- New Tweets Toast -->
+    <div id="new-tweets-toast"
+         class="hidden fixed z-50 bg-[#1d9bf0] text-white px-5 py-2 rounded-full text-sm font-bold cursor-pointer shadow-lg hover:bg-[#1a8cd8] transition-all select-none"
+         style="top:4rem; left:50%; transform:translateX(-50%);">
+        ↑ 5 new posts
+    </div>
+
+    <div class="flex md:container mx-auto my-4">
+
+        <!-- ===== LEFT SIDEBAR ===== -->
+        <div class="first w-16 md:w-[70%]">
+            <div class="sidebar flex md:items-end flex-col sticky top-0">
+
+                <!-- Logo -->
+                <div class="logo logo-container invert my-4 self-start mx-2 md:mx-16">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"
+                         class="logo-svg w-8 m-auto">
+                        <g>
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <ul class="flex flex-col text-2xl space-y-3 md:px-11 font-bold w-full">
+                    <li class="nav-item nav-active flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">home</span>
+                        <span class="hidden md:block">Home</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">search</span>
+                        <span class="hidden md:block">Explore</span>
+                    </li>
+                    <li class="nav-item notif-item relative flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined notif-bell">notifications</span>
+                        <span class="hidden md:block">Notifications</span>
+                        <span class="notif-dot hidden md:block"></span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">message</span>
+                        <span class="hidden md:block">Grok</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">lists</span>
+                        <span class="hidden md:block">Lists</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">bookmarks</span>
+                        <span class="hidden md:block">Bookmarks</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">Group</span>
+                        <span class="hidden md:block">Communities</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">box</span>
+                        <span class="hidden md:block">Premium</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">person</span>
+                        <span class="hidden md:block">Profile</span>
+                    </li>
+                    <li class="nav-item flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
+                        <span class="text-3xl material-symbols-outlined">pending</span>
+                        <span class="hidden md:block">More</span>
+                    </li>
+                    <li>
+                        <div class="button w-full text-center my-4">
+                            <button class="post-btn-main hidden md:block bg-[#1d9bf0] px-20 text-xl rounded-full py-3 text-white font-bold">Post</button>
+                            <button class="post-btn-main md:hidden bg-[#1d9bf0] px-2 text-xl rounded-full py-1 text-white">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- User profile card -->
+                <div class="userprofile w-full mt-10 justify-end mx-10 hidden md:flex">
+                    <div class="item p-3 items-center gap-5 justify-end mx-5 flex hover:bg-gray-800 cursor-pointer rounded-full w-fit">
+                        <div class="p1">
+                            <img class="avatar w-12 h-12 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/1522060025854066688/IZs_lylH_bigger.png" alt="user">
+                        </div>
+                        <div class="p2">
+                            <div>Haris Ali Khan</div>
+                            <div class="text-gray-500">@CodeWithHarry</div>
+                        </div>
+                        <div class="p3 text-2xl">...</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== MAIN FEED ===== -->
+        <div class="second w-full border-[1px] border-x-gray-600 border-y-black">
+
+            <!-- Sticky Header -->
+            <div class="top flex p-3 sticky top-0 glass-header z-20">
+                <div id="tab-indicator" class="absolute w-16 h-1 rounded-full bottom-0 left-[19%] z-10"></div>
+                <div id="for-you-tab"   class="tab-btn tab-active   left  w-1/2 flex justify-center font-bold text-lg py-1 rounded-t-lg">For You</div>
+                <div id="following-tab" class="tab-btn tab-inactive  right w-1/2 flex justify-center font-bold text-lg py-1 rounded-t-lg">Following</div>
+                <div class="settings-icon mx-2">
+                    <span class="material-symbols-outlined">settings</span>
+                </div>
+            </div>
+
+            <div class="h-[1px] w-full bg-gray-800"></div>
+
+            <!-- Post Composer -->
+            <div class="composer-wrap flex gap-4 my-3 px-2">
+                <div class="m-2 flex-shrink-0">
+                    <img class="avatar w-12 h-12 rounded-full"
+                         src="https://pbs.twimg.com/profile_images/1522060025854066688/IZs_lylH_bigger.png" alt="">
+                </div>
+                <div class="w-full">
+                    <input class="composer-input w-full h-7 my-2 text-xl bg-black outline-none text-white"
+                           type="text" placeholder="What is happening?!">
+                    <div class="text-blue-400 flex items-center gap-1 w-full my-4">
+                        <span class="material-symbols-outlined">globe_asia</span>
+                        <span class="font-bold text-sm">Everyone can reply</span>
+                    </div>
+                    <div class="w-[90%] h-[0.2px] bg-gray-700 my-3"></div>
+                    <div class="flex justify-between items-center">
+                        <div class="blueicons flex gap-1 text-blue-400 items-center">
+                            <span class="composer-tool material-symbols-outlined cursor-pointer">image</span>
+                            <span class="composer-tool material-symbols-outlined cursor-pointer">gif</span>
+                            <span class="composer-tool material-symbols-outlined cursor-pointer">ballot</span>
+                            <span class="composer-tool material-symbols-outlined cursor-pointer">sentiment_satisfied</span>
+                            <span class="composer-tool material-symbols-outlined cursor-pointer">calendar_month</span>
+                            <span class="composer-tool material-symbols-outlined cursor-pointer">pin_drop</span>
+                        </div>
+                        <div class="postbtn">
+                            <button class="post-btn-main bg-[#1d9bf0] px-6 mx-5 text-sm rounded-full py-2 text-white font-bold">Post</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== POSTS ===== -->
+            <div class="posts">
+
+                <!-- Post 1 — Elon -->
+                <div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
+                    <div class="flex">
+                        <div class="image m-4 flex-shrink-0">
+                            <img class="avatar w-12 h-12 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/1697299503198646273/GTnwCVUC_x96.jpg" alt="">
+                        </div>
+                        <div class="content my-3 flex-1 pr-4">
+                            <div>
+                                <span class="font-bold hover:underline cursor-pointer">Elon Musk</span>
+                                <span class="text-gray-500 text-sm"> @ElonMusk · 6h</span>
+                            </div>
+                            <div class="my-2 leading-relaxed text-gray-100">
+                                I spent $44 billion for this app and now Lizard boy just decided to hit copy and paste.<br><br>
+                                It's personal now.<br><br>
+                                See you in the cage, Zuck.
+                            </div>
+                            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
+                                <div class="action-icon comment">
+                                    <span class="material-symbols-outlined text-xl">chat_bubble</span>
+                                    <span class="count-val">1k</span>
+                                </div>
+                                <div class="action-icon retweet">
+                                    <span class="material-symbols-outlined text-xl">repeat</span>
+                                    <span class="count-val">1k</span>
+                                </div>
+                                <div class="action-icon like">
+                                    <span class="material-symbols-outlined text-xl">Favorite</span>
+                                    <span class="count-val">44k</span>
+                                </div>
+                                <div class="action-icon views">
+                                    <span class="material-symbols-outlined text-xl">bar_chart</span>
+                                    <span class="count-val">2.1M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 2 — CodeWithHarry -->
+                <div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
+                    <div class="flex">
+                        <div class="image m-4 flex-shrink-0">
+                            <img class="avatar w-12 h-12 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/1522060025854066688/IZs_lylH_bigger.png" alt="">
+                        </div>
+                        <div class="content my-3 flex-1 pr-4">
+                            <div>
+                                <span class="font-bold hover:underline cursor-pointer">CodeWithHarry</span>
+                                <span class="text-gray-500 text-sm"> @CodeWithHarry · 6h</span>
+                            </div>
+                            <div class="my-2 text-gray-100">Living legend 🔥</div>
+                            <div class="post-img-wrap m-2 ml-0">
+                                <img class="w-full"
+                                     src="https://pbs.twimg.com/media/GEGqnodacAAoyCO?format=jpg&name=900x900" alt="">
+                            </div>
+                            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
+                                <div class="action-icon comment">
+                                    <span class="material-symbols-outlined text-xl">chat_bubble</span>
+                                    <span class="count-val">856</span>
+                                </div>
+                                <div class="action-icon retweet">
+                                    <span class="material-symbols-outlined text-xl">repeat</span>
+                                    <span class="count-val">2.3k</span>
+                                </div>
+                                <div class="action-icon like">
+                                    <span class="material-symbols-outlined text-xl">Favorite</span>
+                                    <span class="count-val">18.4k</span>
+                                </div>
+                                <div class="action-icon views">
+                                    <span class="material-symbols-outlined text-xl">bar_chart</span>
+                                    <span class="count-val">890k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 3 — CodeMeme -->
+                <div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
+                    <div class="flex">
+                        <div class="image m-4 flex-shrink-0">
+                            <img class="avatar w-10 h-10 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/1724504100136439808/J8k8HnSD_bigger.png" alt="">
+                        </div>
+                        <div class="content my-3 flex-1 pr-4">
+                            <div>
+                                <span class="font-bold hover:underline cursor-pointer">non aesthetic things</span>
+                                <span class="text-gray-500 text-sm"> @CodeMeme · 6h</span>
+                            </div>
+                            <div class="my-2 text-gray-100">This is the most accurate coding meme 😂</div>
+                            <div class="post-img-wrap m-2 ml-0">
+                                <img class="rounded-xl w-full"
+                                     src="https://s3.amazonaws.com/rails-camp-tutorials/blog/programming+memes/works-doesnt-work.jpg" alt="">
+                            </div>
+                            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
+                                <div class="action-icon comment">
+                                    <span class="material-symbols-outlined text-xl">chat_bubble</span>
+                                    <span class="count-val">1.2k</span>
+                                </div>
+                                <div class="action-icon retweet">
+                                    <span class="material-symbols-outlined text-xl">repeat</span>
+                                    <span class="count-val">5.6k</span>
+                                </div>
+                                <div class="action-icon like">
+                                    <span class="material-symbols-outlined text-xl">Favorite</span>
+                                    <span class="count-val">32.1k</span>
+                                </div>
+                                <div class="action-icon views">
+                                    <span class="material-symbols-outlined text-xl">bar_chart</span>
+                                    <span class="count-val">1.4M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 4 — PicturesFoIder -->
+                <div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
+                    <div class="flex">
+                        <div class="image m-4 flex-shrink-0">
+                            <img class="avatar w-12 h-12 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/1522060025854066688/IZs_lylH_bigger.png" alt="">
+                        </div>
+                        <div class="content my-3 flex-1 pr-4">
+                            <div>
+                                <span class="font-bold hover:underline cursor-pointer">non aesthetic things</span>
+                                <span class="text-gray-500 text-sm"> @PicturesFoIder · 6h</span>
+                            </div>
+                            <div class="my-2 text-gray-100">legend 👑</div>
+                            <div class="post-img-wrap m-2 ml-0">
+                                <img class="rounded-xl"
+                                     src="https://pbs.twimg.com/media/GEGqnodacAAoyCO?format=jpg&name=900x900" alt="">
+                            </div>
+                            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
+                                <div class="action-icon comment">
+                                    <span class="material-symbols-outlined text-xl">chat_bubble</span>
+                                    <span class="count-val">432</span>
+                                </div>
+                                <div class="action-icon retweet">
+                                    <span class="material-symbols-outlined text-xl">repeat</span>
+                                    <span class="count-val">1.1k</span>
+                                </div>
+                                <div class="action-icon like">
+                                    <span class="material-symbols-outlined text-xl">Favorite</span>
+                                    <span class="count-val">9.8k</span>
+                                </div>
+                                <div class="action-icon views">
+                                    <span class="material-symbols-outlined text-xl">bar_chart</span>
+                                    <span class="count-val">512k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 5 — Vercel -->
+                <div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
+                    <div class="flex">
+                        <div class="image m-4 flex-shrink-0">
+                            <img class="avatar w-12 h-12 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/1652878800311427073/j0-3owJd_bigger.jpg" alt="">
+                        </div>
+                        <div class="content my-3 flex-1 pr-4">
+                            <div>
+                                <span class="font-bold hover:underline cursor-pointer">Vercel</span>
+                                <span class="text-gray-500 text-sm"> @vercel · 3h</span>
+                            </div>
+                            <div class="my-2 leading-relaxed text-gray-100">
+                                Shipping fast is the competitive advantage.<br>
+                                The best developers don't just write code — they deploy it. ⚡
+                            </div>
+                            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
+                                <div class="action-icon comment">
+                                    <span class="material-symbols-outlined text-xl">chat_bubble</span>
+                                    <span class="count-val">287</span>
+                                </div>
+                                <div class="action-icon retweet">
+                                    <span class="material-symbols-outlined text-xl">repeat</span>
+                                    <span class="count-val">3.4k</span>
+                                </div>
+                                <div class="action-icon like">
+                                    <span class="material-symbols-outlined text-xl">Favorite</span>
+                                    <span class="count-val">21.7k</span>
+                                </div>
+                                <div class="action-icon views">
+                                    <span class="material-symbols-outlined text-xl">bar_chart</span>
+                                    <span class="count-val">743k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 6 — React -->
+                <div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
+                    <div class="flex">
+                        <div class="image m-4 flex-shrink-0">
+                            <img class="avatar w-12 h-12 rounded-full"
+                                 src="https://pbs.twimg.com/profile_images/446356636710363136/OYIaJ1KK_bigger.png" alt="">
+                        </div>
+                        <div class="content my-3 flex-1 pr-4">
+                            <div>
+                                <span class="font-bold hover:underline cursor-pointer">React</span>
+                                <span class="text-gray-500 text-sm"> @react · 1h</span>
+                            </div>
+                            <div class="my-2 leading-relaxed text-gray-100">
+                                React 19 is here and it's everything.<br>
+                                Server Components · Actions · <span style="color:#1d9bf0">use()</span> hook · and so much more 🚀
+                            </div>
+                            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
+                                <div class="action-icon comment">
+                                    <span class="material-symbols-outlined text-xl">chat_bubble</span>
+                                    <span class="count-val">4.2k</span>
+                                </div>
+                                <div class="action-icon retweet">
+                                    <span class="material-symbols-outlined text-xl">repeat</span>
+                                    <span class="count-val">12.8k</span>
+                                </div>
+                                <div class="action-icon like">
+                                    <span class="material-symbols-outlined text-xl">Favorite</span>
+                                    <span class="count-val">89.3k</span>
+                                </div>
+                                <div class="action-icon views">
+                                    <span class="material-symbols-outlined text-xl">bar_chart</span>
+                                    <span class="count-val">5.2M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /posts -->
+        </div><!-- /second -->
+
+        <!-- ===== RIGHT SIDEBAR ===== -->
+        <div class="third w-full hidden md:block">
+
+            <!-- Search -->
+            <div class="search m-3">
+                <input type="text" class="search-bar w-1/2 rounded-full bg-[#16181c] text-white px-4 py-2 text-sm"
+                       placeholder="🔍  Search">
+            </div>
+
+            <!-- What's Happening -->
+            <div class="whats widget-card sticky top-0 m-3 bg-[#16181c] w-1/2 py-5 rounded-2xl space-y-1">
+                <h1 class="text-xl font-bold px-4 mb-3">What's Happening</h1>
+
+                <div class="trend-item item p-3 hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="text-xs text-gray-400">Trending in India</div>
+                    <div class="trend-tag font-bold text-sm">#Orry</div>
+                    <div class="text-xs text-gray-400">40.2k Posts</div>
+                </div>
+                <div class="trend-item item p-3 hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="text-xs text-gray-400">Trending in India</div>
+                    <div class="trend-tag font-bold text-sm">#Harry</div>
+                    <div class="text-xs text-gray-400">40.2k Posts</div>
+                </div>
+                <div class="trend-item item p-3 hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="text-xs text-gray-400">Trending in India</div>
+                    <div class="trend-tag font-bold text-sm">#Sigma Course</div>
+                    <div class="text-xs text-gray-400">40.2k Posts</div>
+                </div>
+                <div class="trend-item item p-3 hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="text-xs text-gray-400">Trending in India</div>
+                    <div class="trend-tag font-bold text-sm">#CodeWithHarry</div>
+                    <div class="text-xs text-gray-400">40.2k Posts</div>
+                </div>
+                <div class="text-[#1d9bf0] px-4 py-2 cursor-pointer hover:text-blue-300 text-sm transition-colors">Show more</div>
+            </div>
+
+            <!-- Who To Follow -->
+            <div class="who widget-card sticky top-[50vh] m-3 bg-[#16181c] w-1/2 py-5 rounded-2xl space-y-1">
+                <h1 class="text-xl font-bold px-4 mb-3">Who To Follow</h1>
+
+                <div class="follow-item item p-3 items-center gap-2 flex justify-between hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="flex gap-3 items-center">
+                        <img class="avatar w-10 h-10 rounded-full"
+                             src="https://pbs.twimg.com/profile_images/1652878800311427073/j0-3owJd_bigger.jpg" alt="vercel">
+                        <div>
+                            <div class="font-bold text-sm">Vercel</div>
+                            <div class="text-gray-500 text-xs">@vercel</div>
+                        </div>
+                    </div>
+                    <button class="follow-btn bg-white text-black px-4 py-1 rounded-full font-bold text-sm">Follow</button>
+                </div>
+
+                <div class="follow-item item p-3 items-center gap-2 flex justify-between hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="flex gap-3 items-center">
+                        <img class="avatar w-10 h-10 rounded-full"
+                             src="https://pbs.twimg.com/profile_images/446356636710363136/OYIaJ1KK_bigger.png" alt="react">
+                        <div>
+                            <div class="font-bold text-sm">React</div>
+                            <div class="text-gray-500 text-xs">@react</div>
+                        </div>
+                    </div>
+                    <button class="follow-btn bg-white text-black px-4 py-1 rounded-full font-bold text-sm">Follow</button>
+                </div>
+
+                <div class="follow-item item p-3 items-center gap-2 flex justify-between hover:bg-gray-800 cursor-pointer px-4">
+                    <div class="flex gap-3 items-center">
+                        <img class="avatar w-10 h-10 rounded-full"
+                             src="https://pbs.twimg.com/profile_images/989513875124117504/UNMIb20k_bigger.jpg" alt="shad">
+                        <div>
+                            <div class="font-bold text-sm">Shad.js</div>
+                            <div class="text-gray-500 text-xs">@shad</div>
+                        </div>
+                    </div>
+                    <button class="follow-btn bg-white text-black px-4 py-1 rounded-full font-bold text-sm">Follow</button>
+                </div>
+
+                <div class="text-[#1d9bf0] px-4 py-2 cursor-pointer hover:text-blue-300 text-sm transition-colors">Show more</div>
+            </div>
+
+            <!-- Footer -->
+            <div class="terms sticky top-[84vh] m-3 text-xs text-gray-600 px-4 w-1/2 py-3 space-y-1 leading-relaxed">
+                <span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">Terms of Service</span>
+                <span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">Privacy Policy</span>
+                <span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">Cookie Policy</span>
+                <span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">Accessibility</span>
+                <span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">Ads info</span>
+                <span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">More</span>
+                <span class="block mt-1 text-gray-700">© 2024 X Corp.</span>
+            </div>
+
+        </div><!-- /third -->
+
+    </div><!-- /flex container -->
+
+    <script>
+        // ===== SCROLL PROGRESS BAR =====
+        const scrollBar = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docH = document.documentElement.scrollHeight - window.innerHeight;
+            scrollBar.style.width = ((scrollTop / docH) * 100) + '%';
+        });
+
+        // ===== POST ENTRANCE (IntersectionObserver) =====
+        const postObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 90);
+                    postObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.post-anim').forEach(p => postObserver.observe(p));
+
+        // ===== LIKE BUTTON =====
+        document.querySelectorAll('.action-icon.like').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                btn.classList.toggle('liked');
+                const countEl = btn.querySelector('.count-val');
+                countEl.classList.remove('updated');
+                void countEl.offsetWidth; // force reflow
+                countEl.classList.add('updated');
+                setTimeout(() => countEl.classList.remove('updated'), 400);
+            });
+        });
+
+        // ===== RETWEET BUTTON =====
+        document.querySelectorAll('.action-icon.retweet').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                btn.classList.toggle('retweeted');
+            });
+        });
+
+        // ===== TAB SWITCHING =====
+        const forYouTab   = document.getElementById('for-you-tab');
+        const followingTab = document.getElementById('following-tab');
+        const tabIndicator = document.getElementById('tab-indicator');
+
+        forYouTab.addEventListener('click', () => {
+            forYouTab.classList.replace('tab-inactive', 'tab-active');
+            followingTab.classList.replace('tab-active', 'tab-inactive');
+            tabIndicator.style.left = '19%';
+        });
+        followingTab.addEventListener('click', () => {
+            followingTab.classList.replace('tab-inactive', 'tab-active');
+            forYouTab.classList.replace('tab-active', 'tab-inactive');
+            tabIndicator.style.left = '62%';
+        });
+
+        // ===== FOLLOW BUTTON TOGGLE =====
+        document.querySelectorAll('.follow-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const isFollowing = btn.classList.contains('following');
+                btn.classList.toggle('following');
+                btn.textContent = isFollowing ? 'Follow' : 'Following';
+            });
+        });
+
+        // ===== RIPPLE EFFECT =====
+        function addRipple(e) {
+            const btn  = e.currentTarget;
+            const rect = btn.getBoundingClientRect();
+            const d    = Math.max(btn.clientWidth, btn.clientHeight);
+            const r    = document.createElement('span');
+            r.className = 'ripple';
+            r.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - rect.left - d/2}px;top:${e.clientY - rect.top - d/2}px;`;
+            btn.querySelector('.ripple')?.remove();
+            btn.appendChild(r);
+        }
+        document.querySelectorAll('.post-btn-main').forEach(b => b.addEventListener('click', addRipple));
+
+        // ===== NEW TWEETS TOAST =====
+        const toast = document.getElementById('new-tweets-toast');
+        setTimeout(() => {
+            toast.classList.remove('hidden');
+            toast.addEventListener('click', () => {
+                toast.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            setTimeout(() => {
+                toast.style.transition = 'opacity .5s ease, transform .5s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(-12px) scale(.95)';
+                setTimeout(() => toast.classList.add('hidden'), 500);
+            }, 5000);
+        }, 4000);
+
+        // ===== LOGO DOUBLE-CLICK SPIN =====
+        const logoEl = document.querySelector('.logo-svg');
+        if (logoEl) {
+            logoEl.closest('.logo-container').addEventListener('dblclick', () => {
+                logoEl.style.transition = 'transform .6s cubic-bezier(.34,1.56,.64,1)';
+                logoEl.style.transform  = 'rotate(360deg) scale(1.2)';
+                setTimeout(() => {
+                    logoEl.style.transform  = '';
+                    setTimeout(() => logoEl.style.transition = '', 600);
+                }, 600);
+            });
+        }
+
+        // ===== NAV ACTIVE STATE =====
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
+                item.classList.add('nav-active');
+            });
+        });
+
+        // ===== NOTIFICATION ICON PERIODIC SHAKE =====
+        const notifBell = document.querySelector('.notif-bell');
+        if (notifBell) {
+            setInterval(() => {
+                notifBell.style.animation = 'notifShake .6s ease-in-out';
+                setTimeout(() => notifBell.style.animation = '', 600);
+            }, 8000);
+        }
+
+        // ===== SEARCH BAR EXPAND =====
+        const searchBar = document.querySelector('.search-bar');
+        if (searchBar) {
+            searchBar.addEventListener('focus', () => { searchBar.style.width = '90%'; });
+            searchBar.addEventListener('blur',  () => { searchBar.style.width = '';    });
+        }
+    </script>
+
+</body>
+</html>
