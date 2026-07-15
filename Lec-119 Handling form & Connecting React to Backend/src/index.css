@@ -1,11 +1,66 @@
+/* ------------------------------------------------------------------
+   Design tokens
+   Domain: this app is about a "wire" connecting a React form to an
+   Express API. --wire is the single accent color (links, focus rings,
+   the primary button). --signal-* colors read like network status
+   lights (success/error/pending). The console panel below is styled
+   like a fixed-dark terminal screen, independent of light/dark theme,
+   because that's the one place in the UI meant to feel like a device.
+   ------------------------------------------------------------------ */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* brand / accent */
+  --wire: #4f5bd8;
+  --wire-hover: #3f4ac2;
+  --wire-soft: rgba(79, 91, 216, 0.1);
+  --focus-ring: rgba(79, 91, 216, 0.35);
+
+  /* status signals */
+  --signal-success: #16875a;
+  --signal-success-bg: rgba(22, 135, 90, 0.1);
+  --signal-danger: #c8324a;
+  --signal-danger-bg: rgba(200, 50, 74, 0.1);
+  --signal-warning: #b6791f;
+
+  /* surfaces */
+  --bg: #f4f5fa;
+  --surface: #ffffff;
+  --surface-inset: #eef0f6;
+  --border: rgba(16, 20, 40, 0.1);
+  --border-strong: rgba(16, 20, 40, 0.18);
+
+  /* text hierarchy */
+  --text-primary: #14161f;
+  --text-secondary: #4c5166;
+  --text-tertiary: #767c94;
+  --text-muted: #9aa0b4;
+
+  /* the console is always dark, on purpose (see comment above) */
+  --console-bg: #0b0f1c;
+  --console-surface: #121729;
+  --console-border: rgba(255, 255, 255, 0.08);
+  --console-text: #d7dcf5;
+  --console-muted: #6b7394;
+  --console-key: #8ab4f8;
+  --console-string: #f3c78a;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,56 +68,60 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1016;
+    --surface: #161a24;
+    --surface-inset: #10131b;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+
+    --text-primary: #f2f3f7;
+    --text-secondary: #b7bccb;
+    --text-tertiary: #868da3;
+    --text-muted: #5c6377;
+
+    --wire: #7b85f0;
+    --wire-hover: #939cf5;
+    --wire-soft: rgba(123, 133, 240, 0.18);
+    --focus-ring: rgba(123, 133, 240, 0.4);
+
+    --signal-success: #3ecf8e;
+    --signal-success-bg: rgba(62, 207, 142, 0.14);
+    --signal-danger: #f26c7d;
+    --signal-danger-bg: rgba(242, 108, 125, 0.16);
+  }
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-primary);
+  background: var(--bg);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+::selection {
+  background: var(--wire-soft);
+}
+
+a {
+  color: var(--wire);
 }

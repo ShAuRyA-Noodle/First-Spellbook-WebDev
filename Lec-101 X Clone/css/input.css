@@ -1,3 +1,376 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+/* =======================================================================
+   BASE — resets, global texture, keyframes
+   ======================================================================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    position: relative;
+  }
+
+  /* Thin, unobtrusive scrollbar that only announces itself on hover */
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 3px;
+    transition: background 0.2s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1d9bf0;
+  }
+
+  /* Subtle dot-grid texture behind the whole app — a quiet nod to a night
+     sky / circuit board, never loud enough to compete with content. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(
+      rgba(29, 155, 240, 0.05) 1px,
+      transparent 1px
+    );
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #page-root {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- Keyframes: each one backs exactly one meaningful interaction ---- */
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes heartPop {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.4); }
+    60%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+  @keyframes retweetSpin {
+    0%   { transform: rotate(0deg) scale(1); }
+    50%  { transform: rotate(180deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+  @keyframes dotPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.5); opacity: 0.6; }
+  }
+  @keyframes rippleEffect {
+    0%   { transform: scale(0); opacity: 0.55; }
+    100% { transform: scale(4); opacity: 0; }
+  }
+  @keyframes toastDrop {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(-16px) scale(0.94); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  }
+  @keyframes countBounce {
+    0%   { opacity: 0.4; transform: translateY(4px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes notifShake {
+    0%, 100% { transform: rotate(0); }
+    20%      { transform: rotate(-14deg); }
+    40%      { transform: rotate(12deg); }
+    60%      { transform: rotate(-8deg); }
+    80%      { transform: rotate(6deg); }
+  }
+}
+
+/* =======================================================================
+   COMPONENTS — reusable UI pieces
+   ======================================================================= */
+@layer components {
+  /* ---------- Column entrances ---------- */
+  .col-left {
+    animation: slideInLeft 0.5s cubic-bezier(0.34, 1, 0.64, 1) both;
+  }
+  .col-right {
+    animation: slideInRight 0.5s cubic-bezier(0.34, 1, 0.64, 1) both;
+  }
+
+  /* ---------- Logo ---------- */
+  .logo-mark {
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  .logo-mark:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 10px rgba(29, 155, 240, 0.55));
+  }
+
+  /* ---------- Sidebar navigation ---------- */
+  .nav-link {
+    position: relative;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .nav-link:hover {
+    background-color: rgba(231, 233, 234, 0.1);
+  }
+  .nav-link.is-active .nav-icon {
+    font-variation-settings: "FILL" 1;
+  }
+
+  /* Composer / post CTA button */
+  .btn-post {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s cubic-bezier(0.34, 1.4, 0.64, 1),
+      box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+  .btn-post:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background-color: #1a8cd8;
+    box-shadow: 0 6px 18px rgba(29, 155, 240, 0.35);
+  }
+  .btn-post:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+  .btn-post:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ripple {
+    position: absolute;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.35);
+    animation: rippleEffect 0.6s linear forwards;
+    pointer-events: none;
+  }
+
+  /* Account switcher pinned to the bottom of the sidebar */
+  .account-switcher {
+    transition: background-color 0.15s ease;
+  }
+  .account-switcher:hover {
+    background-color: rgba(231, 233, 234, 0.1);
+  }
+
+  /* ---------- Feed header ---------- */
+  .feed-header {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+  }
+
+  .tab-btn {
+    position: relative;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .tab-btn:hover {
+    background-color: rgba(231, 233, 234, 0.06);
+  }
+  .tab-btn.is-active {
+    color: #e7e9ea;
+  }
+  .tab-btn.is-inactive {
+    color: #71767b;
+  }
+
+  #tab-indicator {
+    background: #1d9bf0;
+    transition: left 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+
+  .icon-btn {
+    transition: color 0.15s ease, background-color 0.15s ease,
+      transform 0.15s ease;
+  }
+  .icon-btn:hover {
+    color: #1d9bf0;
+    background-color: rgba(29, 155, 240, 0.1);
+  }
+  .icon-btn.is-shaking {
+    animation: notifShake 0.6s ease-in-out;
+  }
+
+  /* ---------- Composer ---------- */
+  .composer-input {
+    caret-color: #1d9bf0;
+  }
+  .composer-input::placeholder {
+    color: #71767b;
+  }
+
+  .composer-tool {
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+  .composer-tool:hover {
+    background-color: rgba(29, 155, 240, 0.12);
+    transform: scale(1.1);
+  }
+
+  /* ---------- Posts ---------- */
+  .post {
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+  }
+  .post:hover {
+    background-color: rgba(231, 233, 234, 0.03);
+  }
+
+  .post-anim {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1, 0.64, 1);
+  }
+  .post-anim.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .post-media {
+    overflow: hidden;
+  }
+  .post-media img {
+    transition: transform 0.35s ease;
+  }
+  .post-media:hover img {
+    transform: scale(1.03);
+  }
+
+  .avatar {
+    transition: box-shadow 0.15s ease;
+  }
+  .avatar:hover {
+    box-shadow: 0 0 0 2px rgba(29, 155, 240, 0.6);
+  }
+
+  /* Engagement row: reply / repost / like / views / share */
+  .action-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8px;
+    border-radius: 9999px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .action-icon.comment:hover { color: #1d9bf0; background-color: rgba(29, 155, 240, 0.1); }
+  .action-icon.retweet:hover { color: #00ba7c; background-color: rgba(0, 186, 124, 0.1); }
+  .action-icon.like:hover    { color: #f91880; background-color: rgba(249, 24, 128, 0.1); }
+  .action-icon.views:hover   { color: #1d9bf0; background-color: rgba(29, 155, 240, 0.1); }
+  .action-icon.share:hover   { color: #1d9bf0; background-color: rgba(29, 155, 240, 0.1); }
+
+  .action-icon.like.is-liked {
+    color: #f91880;
+  }
+  .action-icon.like.is-liked .action-icon-glyph {
+    animation: heartPop 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  .action-icon.retweet.is-retweeted {
+    color: #00ba7c;
+  }
+  .action-icon.retweet.is-retweeted .action-icon-glyph {
+    animation: retweetSpin 0.45s cubic-bezier(0.34, 1, 0.64, 1);
+  }
+
+  .count-val.is-updated {
+    animation: countBounce 0.25s ease both;
+  }
+
+  /* ---------- Notification dot ---------- */
+  .notif-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    border: 2px solid #000;
+    animation: dotPulse 2.2s ease-in-out infinite;
+  }
+
+  /* ---------- Toast ---------- */
+  #new-tweets-toast {
+    animation: toastDrop 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+  }
+
+  /* ---------- Right column ---------- */
+  .search-field {
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .search-field:focus-within {
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 4px rgba(29, 155, 240, 0.15);
+    background-color: #000;
+  }
+
+  .panel-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .trend-row {
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .trend-row:hover {
+    background-color: rgba(231, 233, 234, 0.06);
+    border-left-color: #1d9bf0;
+  }
+
+  .follow-row {
+    transition: background-color 0.15s ease;
+  }
+  .follow-row:hover {
+    background-color: rgba(231, 233, 234, 0.06);
+  }
+
+  .btn-follow {
+    transition: transform 0.15s ease, background-color 0.15s ease,
+      color 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-follow:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Staggered right-rail reveal (nth-child counts the <h2> as item 1) */
+  .trend-row:nth-child(2) { animation: slideInRight 0.4s 0.05s both; }
+  .trend-row:nth-child(3) { animation: slideInRight 0.4s 0.1s both; }
+  .trend-row:nth-child(4) { animation: slideInRight 0.4s 0.15s both; }
+  .trend-row:nth-child(5) { animation: slideInRight 0.4s 0.2s both; }
+
+  .follow-row:nth-child(2) { animation: slideInRight 0.4s 0.08s both; }
+  .follow-row:nth-child(3) { animation: slideInRight 0.4s 0.16s both; }
+  .follow-row:nth-child(4) { animation: slideInRight 0.4s 0.24s both; }
+
+  /* ---------- Accessible focus ring, used on every interactive element ---------- */
+  .focus-ring {
+    outline: none;
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid #1d9bf0;
+    outline-offset: 2px;
+  }
+}
+
+/* =======================================================================
+   UTILITIES
+   ======================================================================= */
+@layer utilities {
+  #scroll-progress {
+    transition: width 0.1s ease;
+  }
+}

@@ -1,37 +1,30 @@
-import './App.css'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import Login from './components/Login'
-import About from './components/About'
-import User from './components/User'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './components/Home'
+import About from './components/About'
+import Login from './components/Login'
+import User from './components/User'
+import NotFound from './components/NotFound'
+
+// Defined once at module scope, not inside App() — otherwise a fresh router
+// (and a fresh history listener) would be created on every render.
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'about', element: <About /> },
+      { path: 'login', element: <Login /> },
+      { path: 'user/:username', element: <User /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+])
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <><Navbar /><Home /></>
-    },
-    {
-      path: "/login",
-      element: <><Navbar /><Login /></>
-    },
-    {
-      path: "/about",
-      element: <><Navbar /><About /></>
-    },
-    {
-      path: "/user/:username",
-      element: <><Navbar /><User /></>
-    },
-  ])
-  return (
-    <>
-      
-      <RouterProvider router={router} />
-
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

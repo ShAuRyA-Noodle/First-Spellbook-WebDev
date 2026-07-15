@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/utility.css">
     <title>Chainsmokers — Web Player</title>
@@ -12,17 +13,17 @@
 
         <!-- ══════════════ LEFT SIDEBAR ══════════════ -->
         <div class="left">
-            <div class="close">
-                <img width="26" class="invert" src="img/close.svg" alt="Close">
-            </div>
+            <button type="button" class="close" aria-label="Close menu">
+                <img width="26" class="invert" src="img/close.svg" alt="">
+            </button>
 
             <div class="home bg-grey rounded m-1 p-1">
                 <div class="logo">
-                    <img width="110" class="invert" src="img/logo.svg" alt="Logo">
+                    <img width="110" class="invert" src="img/logo.svg" alt="Chainsmokers Web Player logo">
                 </div>
                 <ul>
-                    <li><img class="invert" src="img/home.svg" alt="home"> Home</li>
-                    <li><img class="invert" src="img/search.svg" alt="search"> Search</li>
+                    <li><button type="button" class="nav-btn"><img class="invert" src="img/home.svg" alt="">Home</button></li>
+                    <li><button type="button" class="nav-btn"><img class="invert" src="img/search.svg" alt="">Search</button></li>
                 </ul>
             </div>
 
@@ -49,12 +50,14 @@
             <!-- Header -->
             <div class="header">
                 <div class="hamburgerContainer">
-                    <img width="34" class="invert hamburger" src="img/hamburger.svg" alt="Menu">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <button type="button" class="hamburger-btn" aria-label="Open menu">
+                        <img width="34" class="invert hamburger" src="img/hamburger.svg" alt="">
+                    </button>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
                         <path d="M15 6L9.707 11.293C9.374 11.626 9.207 11.793 9.207 12C9.207 12.207 9.374 12.374 9.707 12.707L15 18"
                               stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
                         <path d="M9 18L14.293 12.707C14.626 12.374 14.793 12.207 14.793 12C14.793 11.793 14.626 11.626 14.293 11.293L9 6"
                               stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -95,8 +98,8 @@
             <div class="playbar">
 
                 <!-- Now Playing -->
-                <div class="now-playing">
-                    <img class="now-playing-art" src="img/music.svg" alt="cover">
+                <div class="now-playing" aria-live="polite">
+                    <img class="now-playing-art" src="img/music.svg" alt="">
                     <div class="now-playing-text">
                         <div class="songinfo">Select a playlist</div>
                         <div class="now-playing-label">The Chainsmokers</div>
@@ -106,34 +109,56 @@
                 <!-- Controls -->
                 <div class="controls">
                     <div class="songbuttons">
-                        <img width="26" id="previous" src="img/prevsong.svg" alt="Previous">
-
-                        <!-- PLAY BUTTON — button wrapper for proper centering -->
-                        <button class="play-circle" id="play">
-                            <img class="play-icon" src="img/play.svg" alt="Play / Pause">
+                        <button type="button" class="icon-btn" id="shuffle" aria-label="Shuffle: off" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true" focusable="false">
+                                <path d="M3 6.5h3.2c1.4 0 2.3.55 3.05 1.6L15 17.9h3.5M3 17.5h3.2c1.4 0 2.3-.55 3.05-1.6L11 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15 6.5h3.5M16.6 4l2.4 2.5-2.4 2.5M16.6 15.4l2.4 2.5-2.4 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </button>
 
-                        <img width="26" id="next" src="img/nextsong.svg" alt="Next">
+                        <button type="button" class="icon-btn" id="previous" aria-label="Previous track">
+                            <img width="26" src="img/prevsong.svg" alt="">
+                        </button>
+
+                        <!-- PLAY BUTTON — button wrapper for proper centering -->
+                        <button class="play-circle" id="play" aria-label="Play" aria-pressed="false">
+                            <img class="play-icon" src="img/play.svg" alt="">
+                        </button>
+
+                        <button type="button" class="icon-btn" id="next" aria-label="Next track">
+                            <img width="26" src="img/nextsong.svg" alt="">
+                        </button>
+
+                        <button type="button" class="icon-btn" id="loop" aria-label="Loop: off" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true" focusable="false">
+                                <path d="M4 7.5h11a4 4 0 0 1 4 4v1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                <path d="M20 16.5H9a4 4 0 0 1-4-4v-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                <path d="M7.2 4.3 4 7.5l3.2 3.2M16.8 19.7l3.2-3.2-3.2-3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="songtime"></div>
+                    <div class="songtime" aria-live="off">00:00 / 00:00</div>
                 </div>
 
                 <!-- Volume + Equalizer -->
                 <div class="right-controls">
-                    <div class="equalizer">
+                    <div class="equalizer" aria-hidden="true">
                         <span></span><span></span><span></span><span></span><span></span>
                     </div>
                     <div class="volume">
-                        <img width="20" src="img/volume.svg" alt="Volume">
+                        <button type="button" class="icon-btn volume-btn" id="volumeBtn" aria-label="Mute" aria-pressed="false">
+                            <img width="20" src="img/volume.svg" alt="">
+                        </button>
                         <div class="range">
-                            <input type="range" name="volume" min="0" max="100" value="70">
+                            <input type="range" id="volumeSlider" name="volume" min="0" max="100" value="70" aria-label="Volume">
                         </div>
                     </div>
                 </div>
 
                 <!-- Seekbar -->
-                <div class="seekbar">
-                    <div class="circle"></div>
+                <div class="seekbar" id="seekbar" role="slider" tabindex="0"
+                     aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="circle" id="seekKnob"></div>
                 </div>
 
             </div>

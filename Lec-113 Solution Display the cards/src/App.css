@@ -1,0 +1,284 @@
+/* ==========================================================================
+   The Placeholder Dispatch — page layout, post grid, cards, skeleton and
+   error state. Global tokens/reset/navbar live in src/index.css; this file
+   holds everything specific to the <App> page body.
+   ========================================================================== */
+
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 32px 96px;
+}
+
+.page__intro {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.page__heading {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.page__count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-tertiary);
+  text-transform: uppercase;
+}
+
+/* ---------- Post grid ---------- */
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+/* ---------- Post card ---------- */
+
+.post-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  padding: 22px 22px 18px 26px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  animation: rise-in 420ms var(--ease-out) both;
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out),
+    border-color 220ms var(--ease-out);
+}
+
+.post-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--accent-color, var(--accent));
+  transition: width 220ms var(--ease-out);
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--rule-strong);
+}
+
+.post-card:hover::before {
+  width: 6px;
+}
+
+.post-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-card__author-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-color, var(--accent));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--accent)) 18%, transparent);
+}
+
+.post-card__number {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+}
+
+.post-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  line-height: 1.32;
+  font-weight: 700;
+  color: var(--ink-primary);
+  text-transform: capitalize;
+  text-wrap: balance;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-card__body {
+  flex: 1;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Skeleton (loading state) ---------- */
+
+.post-card--skeleton {
+  animation: none;
+  gap: 12px;
+}
+
+.post-card--skeleton::before {
+  background: var(--rule);
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--paper-sunken) 25%, var(--rule-soft) 50%, var(--paper-sunken) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.skeleton-line--tag {
+  width: 30%;
+  height: 8px;
+}
+
+.skeleton-line--title {
+  width: 90%;
+  height: 18px;
+  margin-top: 4px;
+}
+
+.skeleton-line--title.is-short {
+  width: 60%;
+}
+
+.skeleton-line--body.is-short {
+  width: 70%;
+}
+
+.skeleton-line--footer {
+  width: 40%;
+  height: 8px;
+  margin-top: 10px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------- Empty state ---------- */
+
+.empty-state {
+  max-width: 480px;
+  margin: 24px auto;
+  text-align: center;
+  padding: 32px;
+  color: var(--ink-tertiary);
+  font-size: 0.95rem;
+  background: var(--paper-raised);
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Error state ---------- */
+
+.error-state {
+  max-width: 560px;
+  margin: 24px auto;
+  text-align: center;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 40px 32px;
+  box-shadow: var(--shadow-card);
+}
+
+.error-state__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.error-state__title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--ink-primary);
+  margin-bottom: 10px;
+}
+
+.error-state__message {
+  font-size: 0.9rem;
+  color: var(--ink-tertiary);
+  margin-bottom: 22px;
+}
+
+.error-state__retry {
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 11px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 160ms var(--ease-out), transform 160ms var(--ease-out);
+}
+
+.error-state__retry:hover {
+  background: var(--accent-dark);
+}
+
+.error-state__retry:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 28px 18px 64px;
+  }
+}

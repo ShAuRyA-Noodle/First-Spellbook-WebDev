@@ -1,23 +1,24 @@
-# Lec-101 — Building an X (Twitter) Clone with Tailwind CSS
+# Lec-101 — Building a Premium X (Twitter) Clone with Tailwind CSS
 
 ## Overview
 
-In this lecture we build a pixel-faithful, dark-themed clone of the **X (formerly Twitter) home page** as a single static `index.html`, styled almost entirely with **Tailwind CSS v3.4** compiled through the **Tailwind CLI**. Tailwind is chosen because it lets us compose complex, production-grade interfaces directly in the markup using small, single-purpose utility classes (`flex`, `w-12`, `rounded-full`, `hover:bg-gray-900`) instead of writing and naming hundreds of custom CSS rules — which is exactly how modern product teams ship UI quickly. The X layout is a superb teaching vehicle: it forces us to master the classic **three-column application shell** (navigation sidebar, scrollable feed, discovery panel), **sticky positioning**, **responsive collapse** of columns on small screens, **dark-theme color composition** on a pure black canvas, and **hover/interaction states** on virtually every element. On top of the Tailwind utilities, the project layers a substantial block of hand-written CSS keyframe animations and a vanilla JavaScript layer (IntersectionObserver entrance animations, like/retweet toggles, tab switching, ripple effects), so you also see where utility classes end and custom CSS/JS begins.
+In this lecture we build a pixel-polished, dark-themed clone of the **X (formerly Twitter) home page** as a single static `index.html`, styled almost entirely with **Tailwind CSS v3.4** compiled through the **Tailwind CLI**. Tailwind is chosen because it lets us compose complex, production-grade interfaces directly in the markup using small, single-purpose utility classes (`flex`, `w-12`, `rounded-full`, `hover:bg-white/10`) instead of writing and naming hundreds of custom CSS rules — which is exactly how modern product teams ship UI quickly. The X layout is a superb teaching vehicle: it forces us to master the classic **three-column application shell** (`<nav>` sidebar, scrollable `<main>` feed, `<aside>` discovery panel), **sticky positioning**, **responsive collapse** of columns across breakpoints, **dark-theme color composition** on a pure black canvas, and **hover/focus/interaction states** on virtually every element. On top of the Tailwind utilities, the project layers a small, purposeful set of hand-written CSS keyframe animations (organized inside `css/input.css` under `@layer base`/`@layer components` — not a rogue `<style>` block in the HTML) and a vanilla JavaScript layer (IntersectionObserver entrance animations, like/retweet toggles, tab switching, ripple effects), so you also see where utility classes end and custom CSS/JS begins, and where each one belongs.
 
 ---
 
 ## What You'll Learn
 
 - The **utility-first workflow**: styling elements by composing Tailwind classes directly in HTML.
-- How the **Tailwind CLI build pipeline** turns a 3-line `input.css` into a full stylesheet (`output.css`) — and why you never edit the output.
-- The purpose of the three **`@tailwind` directives** (`base`, `components`, `utilities`).
-- Configuring `tailwind.config.js`: the **`content`** array (which files Tailwind scans for class names) and the `theme.extend` escape hatch.
-- Building the **three-column X layout** with Flexbox utilities (`flex`, fractional/arbitrary widths, `sticky top-0`).
-- **Responsive design** with the `md:` breakpoint prefix — collapsing the sidebar to icons and hiding the right panel on mobile.
-- **Dark theme styling**: `bg-black text-white`, gray scales (`text-gray-500`, `border-y-gray-700`), and arbitrary brand colors like `bg-[#1d9bf0]`.
-- **Hover and state utilities**: `hover:bg-gray-900`, `hover:rounded-full`, `hover:underline`, plus custom CSS hover effects.
-- **Arbitrary values** in Tailwind: `w-[70%]`, `border-[1px]`, `h-[0.2px]`, `top-[50vh]`, `bg-[#16181c]`.
-- Where Tailwind stops: custom `@keyframes` animations, `::before` overlays, and a vanilla-JS interactivity layer (IntersectionObserver, class toggling, ripple effect).
+- How the **Tailwind CLI build pipeline** turns a small `input.css` into a full stylesheet (`output.css`) — and why you never edit the output.
+- The purpose of the three **`@tailwind` directives** (`base`, `components`, `utilities`) and the matching `@layer` blocks used to organize custom CSS.
+- Configuring `tailwind.config.js`: the **`content`** array (which files Tailwind scans for class names) and the `theme.extend` escape hatch for real design tokens (brand colors, font stacks).
+- Building the **three-column X layout** with semantic elements (`<nav>`, `<main>`, `<aside>`) and Flexbox utilities (`flex-1`, `min-w-0`, arbitrary widths, `sticky top-0`).
+- **Responsive design** with `sm:` / `lg:` / `xl:` breakpoint prefixes — collapsing the right column first, then the left-nav labels, as the viewport narrows.
+- **Dark theme styling**: `bg-black text-white`, gray scales (`text-gray-500`, `border-white/10`), and semantic brand tokens like `bg-brand`.
+- **Hover, focus, and disabled states**: `hover:bg-white/10`, `focus-visible` rings via a shared `.focus-ring` component class, and a real `disabled` state on the compose button.
+- **Accessibility basics**: `aria-label` on every icon-only control, `aria-pressed` on toggle buttons, `aria-current="page"` for the active nav item, and semantic landmarks (`nav`, `main`, `aside`, `section`, `article`).
+- **Material Symbols icon ligatures** — and why case and spelling matter (`Favorite` ≠ `favorite`).
+- Where Tailwind stops: custom `@keyframes` animations, a dot-grid `::before` overlay, and a vanilla-JS interactivity layer (IntersectionObserver, class toggling, ripple effect) — all deliberately housed inside the Tailwind pipeline instead of an inline `<style>` block.
 
 ---
 
@@ -25,33 +26,33 @@ In this lecture we build a pixel-faithful, dark-themed clone of the **X (formerl
 
 ```
 Lec-101 X Clone/
-├── index.html          # The entire UI: markup + a <style> block of custom animations + inline <script> interactivity
-├── package.json        # npm metadata; the "build" script runs the Tailwind CLI in --watch mode
+├── index.html          # The entire UI: semantic markup + an inline <script> interactivity layer
+├── package.json        # npm metadata; "dev" watches, "build" produces a one-off minified stylesheet
 ├── package-lock.json   # Locked dependency tree (auto-generated by npm)
 ├── tailwind.config.js  # Tailwind configuration: which files to scan (content), theme extensions, plugins
 ├── css/
-│   ├── input.css       # SOURCE stylesheet — just the three @tailwind directives (this is what YOU edit)
+│   ├── input.css       # SOURCE stylesheet — @tailwind directives + @layer base/components/utilities (this is what YOU edit)
 │   └── output.css      # GENERATED stylesheet — compiled by the Tailwind CLI (NEVER edit by hand)
-└── node_modules/       # Installed dependencies (tailwindcss, vite) — never committed, never edited
+└── node_modules/       # Installed dependencies (tailwindcss only) — never committed, never edited
 ```
 
 ### `input.css` vs `output.css` — the Tailwind build pipeline
 
 This is the single most important mental model of the lecture:
 
-1. **You write** `css/input.css`. It contains only the three `@tailwind` directives — placeholders that say "inject Tailwind's generated CSS here."
-2. **You run** the Tailwind CLI (the `build` script in `package.json`). The CLI:
+1. **You write** `css/input.css`. It contains the three `@tailwind` directives plus our own custom CSS, organized into `@layer base` (resets, global texture, `@keyframes`), `@layer components` (every reusable class like `.nav-link`, `.action-icon`, `.btn-follow`), and `@layer utilities` (small one-off utilities).
+2. **You run** the Tailwind CLI (the `build` or `dev` script in `package.json`). The CLI:
    - reads `tailwind.config.js`,
-   - scans every file matched by the `content` globs (our HTML) and collects **every class name it finds** (`flex`, `bg-black`, `md:w-[70%]`, …),
-   - generates real CSS rules for exactly those classes (plus the base reset), and
-   - writes the result to `css/output.css` (about 1,200+ lines in this project, headed by the banner `! tailwindcss v3.4.1 | MIT License`).
+   - scans every file matched by the `content` globs (our HTML) and collects **every class name it finds** (`flex`, `bg-black`, `lg:w-[275px]`, …),
+   - generates real CSS rules for exactly those classes (plus the base reset and our own layers), and
+   - writes the result to `css/output.css` (a single minified line when built with `--minify`, headed by the banner `/*! tailwindcss v3.4.1 | MIT License */`).
 3. **The browser loads** only the generated file — `index.html` links it directly:
 
 ```html
 <link rel="stylesheet" href="./css/output.css">
 ```
 
-So the flow is: `index.html` (class names) + `tailwind.config.js` (settings) + `input.css` (directives) → **Tailwind CLI** → `output.css` → browser. Because output.css is regenerated on every build, any manual edit to it is wiped out — all changes belong in the HTML, the config, or `input.css`.
+So the flow is: `index.html` (class names) + `tailwind.config.js` (settings) + `input.css` (directives + custom CSS) → **Tailwind CLI** → `output.css` → browser. Because `output.css` is regenerated on every build, any manual edit to it is wiped out — all changes belong in the HTML, the config, or `input.css`.
 
 ---
 
@@ -59,41 +60,53 @@ So the flow is: `index.html` (class names) + `tailwind.config.js` (settings) + `
 
 ### 1. The utility-first workflow
 
-Instead of inventing class names (`.profile-avatar`) and writing separate CSS, every element is styled inline by stacking utilities. A real example — the user avatar:
+Instead of inventing class names (`.profile-avatar`) and writing separate CSS, every element is styled inline by stacking utilities. A real example — the composer avatar:
 
 ```html
-<img class="avatar w-12 h-12 rounded-full"
-     src="https://pbs.twimg.com/profile_images/1522060025854066688/IZs_lylH_bigger.png" alt="user">
+<img class="avatar h-11 w-11 shrink-0 rounded-full"
+    src="https://pbs.twimg.com/profile_images/1522060025854066688/IZs_lylH_bigger.png" alt="Your avatar">
 ```
 
-- `w-12 h-12` → width/height of `3rem` (48px). Tailwind's spacing scale is in 0.25rem steps, so `12 × 0.25rem = 3rem`.
+- `h-11 w-11` → height/width of `2.75rem` (44px). Tailwind's spacing scale is in 0.25rem steps, so `11 × 0.25rem = 2.75rem`.
 - `rounded-full` → `border-radius: 9999px`, producing a perfect circle.
-- `avatar` is **not** a Tailwind class — it's a hook for the custom hover-glow CSS defined in the `<style>` block. Mixing the two is a common and legitimate pattern.
+- `avatar` is **not** a Tailwind class — it's a hook for the custom hover-ring CSS defined in `input.css`'s `@layer components`. Mixing the two is a common and legitimate pattern.
 
 The payoff: you can read an element's complete visual behavior at the point of use, and you never fight naming or specificity wars.
 
-### 2. The CLI build command (`package.json`)
+### 2. The CLI build commands (`package.json`)
+
+The full file, verbatim:
 
 ```json
-"scripts": {
+{
+  "name": "x-clone",
+  "version": "1.0.0",
+  "description": "A pixel-polished X (Twitter) home-feed clone built with Tailwind CSS.",
+  "main": "index.html",
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tailwindcss -i ./css/input.css -o ./css/output.css --watch",
-    "dev": "vite" 
+    "dev": "npx tailwindcss -i ./css/input.css -o ./css/output.css --watch",
+    "build": "npx tailwindcss -i ./css/input.css -o ./css/output.css --minify"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
 ```
 
-Dissecting the `build` script:
+Two clearly named scripts, each with one job:
 
-- `npx tailwindcss` — runs the Tailwind CLI from the local `node_modules` (installed as a devDependency: `"tailwindcss": "^3.4.1"`).
-- `-i ./css/input.css` — the **input** file containing the directives.
-- `-o ./css/output.css` — the **output** file the browser will load.
-- `--watch` — keeps the process running and **recompiles automatically** every time you save the HTML or config. Despite being named `build`, this script is really a *watch/dev* command; a true one-off production build would omit `--watch` (and typically add `--minify`).
+- **`npm run dev`** — `npx tailwindcss -i ./css/input.css -o ./css/output.css --watch`. Keeps a process running and **recompiles automatically** every time you save the HTML, config, or `input.css`. Use this while you work.
+- **`npm run build`** — `npx tailwindcss -i ./css/input.css -o ./css/output.css --minify`. A **one-off** production build: compiles once and minifies the result (whitespace, comments, and duplicate rules stripped). This is what you'd run before committing or deploying.
 
-The project also declares `"vite": "^5.0.11"` as a dependency with a `"dev": "vite"` script — Vite can serve the folder as a local dev server with hot reload, but it is optional here; the page works by simply opening `index.html`.
+Earlier drafts of this project named the watch command `build` (misleading — it never stopped running and never minified) and pulled in an unused `vite` dependency with a `"dev": "vite"` script that had nothing to do with the actual Tailwind pipeline. Both are gone: there is exactly one devDependency (`tailwindcss`), and the script names now say what they do.
 
-### 3. The `@tailwind` directives (`css/input.css`)
+### 3. The `@tailwind` directives and `@layer` blocks (`css/input.css`)
 
-The entire source stylesheet, verbatim:
+The file starts with the three standard directives, then organizes all custom CSS into layers instead of a stray `<style>` tag in the HTML:
 
 ```css
 @tailwind base;
@@ -101,15 +114,14 @@ The entire source stylesheet, verbatim:
 @tailwind utilities;
 ```
 
-Each directive is replaced at build time by one layer of generated CSS:
-
-| Directive | What it injects |
+| Directive / Layer | What it injects |
 |---|---|
-| `@tailwind base` | Preflight — Tailwind's opinionated CSS reset (border-box sizing, margin zeroing, `line-height: 1.5`, system font stack). You can see it at the top of `output.css`. |
-| `@tailwind components` | Component-layer classes (empty by default; populated by plugins or your own `@layer components` rules). |
-| `@tailwind utilities` | Every utility class actually detected in your `content` files — the bulk of `output.css`. |
+| `@tailwind base` | Preflight — Tailwind's opinionated CSS reset (border-box sizing, margin zeroing, `line-height: 1.5`, system font stack). |
+| `@layer base { ... }` | Our own global rules that behave like resets: `html { scroll-behavior: smooth; }`, the thin scrollbar styling, the fixed dot-grid texture behind the app, and all nine `@keyframes` definitions. |
+| `@tailwind components` / `@layer components { ... }` | Every reusable custom class used in the markup — `.nav-link`, `.btn-post`, `.tab-btn`, `.action-icon`, `.trend-row`, `.btn-follow`, `.focus-ring`, and friends. |
+| `@tailwind utilities` / `@layer utilities { ... }` | Every utility class actually detected in your `content` files (the bulk of `output.css`), plus our own tiny one-off utility for `#scroll-progress`. |
 
-The order matters: utilities come last so they win specificity battles against base and component styles.
+The order matters: utilities come last so they win specificity battles against base and component styles — which is exactly why the "Following" follow-button state is implemented by swapping real Tailwind utility classes in JavaScript (`bg-white text-black` ↔ `border border-gray-600 bg-transparent text-white`) instead of fighting the cascade with `!important`.
 
 ### 4. The config file (`tailwind.config.js`)
 
@@ -118,134 +130,183 @@ The full file, verbatim:
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["*html"],
+  content: ["./*.html"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brand: {
+          DEFAULT: "#1d9bf0",
+          hover: "#1a8cd8",
+        },
+        like: "#f91880",
+        retweet: "#00ba7c",
+        panel: "#16181c",
+      },
+      fontFamily: {
+        sans: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
+      },
+    },
   },
   plugins: [],
 }
 ```
 
-- **`content: ["*html"]`** — the glob patterns Tailwind scans for class names. This is the most critical setting: if a file isn't matched here, none of its classes are generated and your page renders unstyled. The pattern `"*html"` happens to match `index.html` in the project root (the `*` wildcard covers `index.`), but it is unusually loose — the conventional, safer form is `"./*.html"` or `"./**/*.{html,js}"`. See *Common Pitfalls* below.
-- **`theme.extend: {}`** — empty in this project, meaning we use Tailwind's default design system unchanged. Anything placed inside `extend` (custom colors, fonts, spacing) is *added to* the defaults; placing it directly under `theme` would *replace* them. Because `extend` is empty, brand colors are done with arbitrary values in the markup instead — e.g. `bg-[#1d9bf0]` (X blue) and `bg-[#16181c]` (widget-card charcoal).
+- **`content: ["./*.html"]`** — the glob patterns Tailwind scans for class names. This is the most critical setting: if a file isn't matched here, none of its classes are generated and your page renders unstyled. The previous config used `"*html"`, a loose pattern that happened to work for a root-level `index.html` but is fragile (it would match unrelated files like `notes.html.bak` and miss anything in a subfolder). `"./*.html"` is the explicit, conventional form for "every HTML file in this project root."
+- **`theme.extend.colors`** — real design tokens instead of scattering raw hex values through the markup: `brand` (X blue `#1d9bf0`, plus a `brand-hover` shade for hover states), `like` (heart pink `#f91880`), `retweet` (repost green `#00ba7c`), and `panel` (the `#16181c` charcoal used for widget cards and the search field). Because these live in `extend`, they're *added to* Tailwind's default palette, not a replacement for it — `bg-brand`, `text-like`, `hover:bg-like/10` now sit alongside every default color utility.
+- **`theme.extend.fontFamily.sans`** — the system-font stack X itself uses (`-apple-system, BlinkMacSystemFont, "Segoe UI", …`), overriding Tailwind's default `sans` stack project-wide via the plain `font-sans`/default body font.
 - **`plugins: []`** — no plugins used.
-- The JSDoc comment on line 1 gives editors IntelliSense for the config object.
 
 ### 5. The three-column X layout
 
-The whole app shell is one flex row:
+The whole app shell is one flex row of semantic landmarks:
 
 ```html
-<div class="flex md:container mx-auto my-4">
+<div id="page-root" class="mx-auto flex w-full max-w-[1280px] justify-center">
 ```
 
-- `flex` makes the three direct children sit side by side.
-- `md:container` caps the max-width to the current breakpoint **only from `md` (768px) upward**; below that the row spans the full viewport.
-- `mx-auto` centers the capped container; `my-4` adds vertical breathing room.
+- `flex` makes the three direct children sit side by side; `justify-center` keeps the group centered as columns disappear at narrower widths.
+- `max-w-[1280px]` caps the total shell width; `mx-auto` centers it in the viewport.
 
 The three children:
 
 ```html
-<!-- ===== LEFT SIDEBAR ===== -->
-<div class="first w-16 md:w-[70%]">
+<nav aria-label="Primary" class="col-left w-[56px] shrink-0 sm:w-[72px] lg:w-[275px]">
 ```
 
 ```html
-<!-- ===== MAIN FEED ===== -->
-<div class="second w-full border-[1px] border-x-gray-600 border-y-black">
+<main class="min-h-screen min-w-0 flex-1 max-w-[600px] border-x border-white/10">
 ```
 
 ```html
-<!-- ===== RIGHT SIDEBAR ===== -->
-<div class="third w-full hidden md:block">
+<aside aria-label="Search and trends" class="col-right hidden w-[350px] shrink-0 xl:block">
 ```
 
 Key observations:
 
-- The left column is a slim `w-16` (4rem — icons only) on mobile and widens to the arbitrary value `md:w-[70%]` on desktop. Because all three columns are flex items, these widths act like flexible bases that the flex algorithm negotiates — the feed's `w-full` lets it absorb the remaining space.
-- The feed distinguishes itself with a hairline vertical border on each side: `border-[1px] border-x-gray-600 border-y-black` — the top/bottom borders are painted black so they vanish against the background, leaving only the two vertical rails, exactly like real X.
-- The right column is `hidden md:block`: it simply does not exist on phones.
+- The left column is a real `<nav>`, not a generic `<div>` — assistive tech announces it as "Primary navigation." It's a slim `w-[56px]` icon rail by default, widens slightly at `sm:`, and only becomes the full `lg:w-[275px]` labeled sidebar at the `lg` breakpoint (1024px+).
+- The feed is `<main>`, `flex-1 min-w-0` so it fills whatever space remains between the fixed-width nav and (when visible) the fixed-width aside, capped at `max-w-[600px]` to match X's real column width. `min-w-0` is what stops a long image or count from forcing the whole shell to overflow horizontally on narrow viewports.
+- `border-x border-white/10` paints two low-opacity hairline rails around the feed — quiet enough to disappear when you're not looking for them, exactly like real X.
+- The right column is a real `<aside>`, `hidden` by default and only `xl:block` (1280px+) — the widest breakpoint, so it is the *first* thing to go as the viewport shrinks.
 
 **Sticky positioning** keeps each column's content in view while the feed scrolls:
 
 ```html
-<div class="sidebar flex md:items-end flex-col sticky top-0">
+<div class="sticky top-0 flex h-screen flex-col justify-between overflow-y-auto py-2">
 ```
 
-The right panel goes further and stacks *multiple* sticky widgets at different offsets, so they park one below another as you scroll — note the arbitrary viewport offsets:
+The right panel's search field, trends card, and who-to-follow card scroll together as one `sticky top-0` flex column instead of three independently-offset stacks:
 
 ```html
-<div class="whats widget-card sticky top-0 m-3 bg-[#16181c] w-1/2 py-5 rounded-2xl space-y-1">
-```
-
-```html
-<div class="who widget-card sticky top-[50vh] m-3 bg-[#16181c] w-1/2 py-5 rounded-2xl space-y-1">
-```
-
-```html
-<div class="terms sticky top-[84vh] m-3 text-xs text-gray-600 px-4 w-1/2 py-3 space-y-1 leading-relaxed">
+<div class="sticky top-0 flex max-h-screen flex-col gap-4 overflow-y-auto px-4 py-2">
 ```
 
 The sticky feed header uses `sticky top-0` plus a `z-20` stacking order so posts slide underneath it:
 
 ```html
-<div class="top flex p-3 sticky top-0 glass-header z-20">
+<div class="feed-header sticky top-0 z-20 flex border-b border-white/10">
 ```
 
-### 6. Responsive utilities (`md:` prefix)
+### 6. Responsive utilities (`sm:` / `lg:` / `xl:` prefixes) — collapse order
 
-Tailwind is **mobile-first**: unprefixed classes apply everywhere, and `md:` overrides kick in at ≥768px. The nav items are the flagship example — on mobile each item is a centered icon; on desktop it left-aligns and reveals its label:
+Tailwind is **mobile-first**: unprefixed classes apply everywhere, and prefixed ones override at increasing widths. The spec for this project is deliberately staged so **the right column disappears first, then the left-nav labels** as the screen narrows:
+
+1. **≥1280px (`xl`)** — everything visible: labeled 275px sidebar, 600px feed, 350px right column.
+2. **1024–1279px (`lg` to just under `xl`)** — the right `<aside>` is hidden (it only appears at `xl:block`); the left nav is still labeled (`lg:w-[275px]`, labels shown via `lg:inline`).
+3. **&lt;1024px** — the left nav also collapses to an icon-only rail (`w-[56px] sm:w-[72px]`), and every label is hidden.
+
+The nav link markup is the flagship example — icon-only and centered by default, left-aligned with a visible label from `lg:` up:
 
 ```html
-<li class="nav-item nav-active flex md:justify-start items-center gap-3 justify-center mr-4 md:w-fit hover:bg-gray-900 hover:cursor-pointer px-5 py-3 hover:rounded-full">
-    <span class="text-3xl material-symbols-outlined">home</span>
-    <span class="hidden md:block">Home</span>
-</li>
+<a href="#" aria-label="Home" aria-current="page"
+    class="nav-link is-active focus-ring flex items-center justify-center gap-4 rounded-full px-3 py-3 lg:justify-start lg:px-4">
+    <span class="nav-icon material-symbols-outlined text-[26px]" aria-hidden="true">home</span>
+    <span class="hidden lg:inline">Home</span>
+</a>
 ```
 
-- `justify-center` (mobile) vs `md:justify-start` (desktop).
-- `hidden md:block` on the text label — the words "Home", "Explore", etc. only exist on desktop.
+- `justify-center` (default) vs `lg:justify-start` (desktop nav).
+- `hidden lg:inline` on the text label — the word "Home" only exists once the sidebar is wide enough to hold it. Because the label is `display:none` (not just visually hidden), the `<a>` still needs its own `aria-label="Home"` so screen-reader users get the same information at every width.
 
-Even the Post button responds — a wide labeled pill on desktop, a compact icon button on mobile:
+The Post button responds the same way — an icon-only circle by default, a full labeled pill from `lg:` up:
 
 ```html
-<button class="post-btn-main hidden md:block bg-[#1d9bf0] px-20 text-xl rounded-full py-3 text-white font-bold">Post</button>
-<button class="post-btn-main md:hidden bg-[#1d9bf0] px-2 text-xl rounded-full py-1 text-white">
-    <span class="material-symbols-outlined">edit</span>
+<button type="button" aria-label="Post"
+    class="btn-post focus-ring flex w-12 h-12 items-center justify-center rounded-full bg-brand text-xl font-bold text-white lg:w-full lg:px-0 lg:py-3">
+    <span class="material-symbols-outlined lg:hidden" aria-hidden="true">edit</span>
+    <span class="hidden lg:inline">Post</span>
 </button>
 ```
 
-Notice the mirrored pattern: `hidden md:block` on one element, `md:hidden` on its sibling — exactly one of the two renders at any width.
-
-The user profile card at the bottom of the sidebar is desktop-only via `hidden md:flex`:
+The account switcher at the bottom of the sidebar shows only the avatar below `lg:` and the full name/handle card from `lg:` up:
 
 ```html
-<div class="userprofile w-full mt-10 justify-end mx-10 hidden md:flex">
+<span class="hidden min-w-0 flex-1 lg:block">
 ```
 
-### 7. Hover states
+### 7. Hover, focus, and disabled states
 
-Tailwind hover variants appear throughout. The nav item above uses three at once: `hover:bg-gray-900 hover:cursor-pointer ... hover:rounded-full` — the background, cursor, *and* border-radius all change on hover, producing X's signature pill highlight. Other verbatim examples:
-
-```html
-<span class="font-bold hover:underline cursor-pointer">Elon Musk</span>
-```
-
-```html
-<div class="text-[#1d9bf0] px-4 py-2 cursor-pointer hover:text-blue-300 text-sm transition-colors">Show more</div>
-```
-
-```html
-<span class="hover:underline cursor-pointer mr-2 hover:text-gray-400 transition-colors">Terms of Service</span>
-```
-
-Where hovers need effects Tailwind can't express inline (colored glows, transforms, per-action tinting), the project drops into the custom `<style>` block. The per-action tweet-toolbar colors are a great example — comment turns blue, retweet green, like pink, matching real X:
+Tailwind hover/focus variants appear throughout, always paired with a shared `.focus-ring` component class so keyboard users get a visible outline everywhere a mouse user gets a hover effect:
 
 ```css
-.action-icon.comment:hover { color: #1d9bf0;  background: rgba(29,155,240,.12); }
-.action-icon.retweet:hover { color: #00ba7c;  background: rgba(0,186,124,.12);  }
-.action-icon.like:hover    { color: #f91880;  background: rgba(249,24,128,.12); }
-.action-icon.views:hover   { color: #1d9bf0;  background: rgba(29,155,240,.12); }
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid #1d9bf0;
+  outline-offset: 2px;
+}
+```
+
+Verbatim examples from the markup:
+
+```html
+<span class="truncate font-bold hover:underline">Elon Musk</span>
+```
+
+```html
+<a href="#" class="focus-ring block rounded-b-2xl px-4 py-3 text-[15px] text-brand hover:bg-white/5">Show more</a>
+```
+
+Where hovers need effects Tailwind can't express inline (per-action tinting on the engagement row), the project drops into `input.css`'s `@layer components`. The per-action tweet-toolbar colors are a great example — comment turns blue, retweet green, like pink, matching real X:
+
+```css
+.action-icon.comment:hover { color: #1d9bf0; background-color: rgba(29, 155, 240, 0.1); }
+.action-icon.retweet:hover { color: #00ba7c; background-color: rgba(0, 186, 124, 0.1); }
+.action-icon.like:hover    { color: #f91880; background-color: rgba(249, 24, 128, 0.1); }
+.action-icon.views:hover   { color: #1d9bf0; background-color: rgba(29, 155, 240, 0.1); }
+.action-icon.share:hover   { color: #1d9bf0; background-color: rgba(29, 155, 240, 0.1); }
+```
+
+The compose button demonstrates a real **disabled state**, not just a visual one — it starts `disabled` and only becomes clickable once you type:
+
+```html
+<button id="composer-post-btn" type="button" disabled
+    class="btn-post focus-ring rounded-full bg-brand px-5 py-1.5 text-[15px] font-bold text-white">
+    Post
+</button>
+```
+
+```js
+const composerInput = document.getElementById('composer-input');
+const composerPostBtn = document.getElementById('composer-post-btn');
+composerInput.addEventListener('input', () => {
+    composerPostBtn.disabled = composerInput.value.trim().length === 0;
+});
+```
+
+```css
+.btn-post:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 ```
 
 ### 8. Dark theme styling
@@ -253,55 +314,60 @@ Where hovers need effects Tailwind can't express inline (colored glows, transfor
 The entire theme hangs off two utilities on `<body>`:
 
 ```html
-<body class="bg-black text-white">
+<body class="bg-black text-white antialiased">
 ```
 
-From there, depth is created not with shadows but with **graduated grays and translucent whites**:
+From there, depth is created not with shadows but with **graduated grays, translucent whites, and one consistent brand hue**:
 
-- Secondary text: `text-gray-500` (handles, timestamps), `text-gray-400`/`text-gray-600` (metadata, footer).
-- Surfaces: widget cards sit on `bg-[#16181c]` — a near-black charcoal that reads as "raised" against pure black.
-- Hairlines: `border-y-gray-700`, and a divider built literally as a colored div: `<div class="h-[1px] w-full bg-gray-800"></div>`.
-- Brand color: X blue `#1d9bf0` is used as an arbitrary value everywhere — `bg-[#1d9bf0]` on buttons, `text-[#1d9bf0]` on links.
-- The sticky feed header gets a frosted-glass treatment via custom CSS:
+- Text hierarchy: primary `text-white`/`text-gray-100` (names, body copy), secondary `text-gray-400`/`text-gray-500` (handles, timestamps, trend metadata), muted `text-gray-600`/`text-gray-700` (footer links, copyright).
+- Surfaces: widget cards and the search field sit on `bg-[#16181c]` (aliased to the `panel` token in `tailwind.config.js`) — a near-black charcoal that reads as "raised" against pure black, exactly the way real X elevates its inset surfaces.
+- Hairlines: a single low-opacity border token, `border-white/10`, used consistently for the feed rails, the header underline, the composer divider, and every card border — quiet enough to vanish until you look for it.
+- Brand color: X blue lives in one place — `theme.extend.colors.brand` — and is used everywhere via `bg-brand`, `text-brand`, `hover:bg-brand-hover`, never as a repeated raw hex value.
+- The sticky feed header gets a frosted-glass treatment via a component class:
 
 ```css
-.glass-header {
-    background: rgba(0,0,0,.72) !important;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border-bottom: 1px solid rgba(255,255,255,.06);
+.feed-header {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
 }
 ```
 
-- Fun detail: the X logo SVG is drawn in its default (black) fill and flipped to white with Tailwind's `invert` filter utility: `<div class="logo logo-container invert my-4 self-start mx-2 md:mx-16">`.
+- Fun detail: active nav icons switch to their **filled** Material Symbols variant instead of the outlined one, exactly like real X, using the icon font's variable `FILL` axis:
+
+```css
+.nav-link.is-active .nav-icon {
+  font-variation-settings: "FILL" 1;
+}
+```
 
 ### 9. Beyond Tailwind: animations and JavaScript
 
-The `<style>` block in `index.html` defines 15 `@keyframes` (e.g. `slideInLeft`, `heartPop`, `retweetSpin`, `pulseGlow`, `rippleEffect`, `toastDrop`) plus scroll-progress, dot-grid-background, staggered `nth-child` entrance delays, and custom scrollbar styling. Example — the like-button pop:
+`css/input.css`'s `@layer base` defines exactly **nine** `@keyframes` — down from the previous draft's fifteen, because every remaining one now backs one specific, meaningful interaction (no ambient/infinite motion left over): `slideInLeft`/`slideInRight` (column and card entrances), `heartPop` (like feedback), `retweetSpin` (repost feedback), `dotPulse` (the notification badge), `rippleEffect` (button ripple), `toastDrop` (the new-posts toast), `countBounce` (engagement-count update), and `notifShake` (the bell, now triggered once on click instead of looping automatically every few seconds — motion should respond to intent, not nag). Example — the like-button pop:
 
 ```css
 @keyframes heartPop {
-    0%   { transform: scale(1); }
-    30%  { transform: scale(1.6); }
-    60%  { transform: scale(0.85); }
-    100% { transform: scale(1); }
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.4); }
+  60%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
 }
 ```
 
-The inline `<script>` wires interactivity: a scroll progress bar, IntersectionObserver-driven post entrances, like/retweet toggling, For You / Following tab switching (moving `#tab-indicator` between `left: 19%` and `62%`), follow-button toggling, a ripple effect on Post buttons, a timed "new posts" toast, a logo double-click spin, nav active-state switching, a periodic notification-bell shake, and a focus-expanding search bar. Representative snippet:
+The inline `<script>` wires interactivity: a scroll progress bar, IntersectionObserver-driven post entrances, like/retweet toggling (with `aria-pressed` kept in sync), For You / Following tab switching (moving `#tab-indicator` between `left: 25%` and `left: 75%`, centered under each tab), follow-button toggling (swapping real Tailwind utility classes instead of relying on `!important`), a ripple effect on `.btn-post` buttons, a timed "new posts" toast, a logo double-click spin, nav active-state switching (`aria-current` included), a click-triggered notification-bell shake, and a compose-button enable/disable listener. Representative snippet:
 
 ```js
 const postObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
-            setTimeout(() => entry.target.classList.add('visible'), i * 90);
+            setTimeout(() => entry.target.classList.add('is-visible'), i * 80);
             postObserver.unobserve(entry.target);
         }
     });
 }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
 ```
 
-Lesson: Tailwind covers layout, spacing, color, and simple states superbly; bespoke motion design still lives in plain CSS/JS. (In a larger project you would move these rules into `input.css` under `@layer components` so everything flows through one pipeline.)
+Lesson: Tailwind covers layout, spacing, color, and simple states superbly; bespoke motion design still lives in plain CSS/JS — but it belongs inside the same pipeline (`input.css`, under `@layer`), not bolted onto the HTML as a giant inline `<style>` block.
 
 ---
 
@@ -309,66 +375,69 @@ Lesson: Tailwind covers layout, spacing, color, and simple states superbly; besp
 
 ### `<head>`
 
-Loads the favicon from X's CDN, the **Material Symbols Outlined** icon font from Google Fonts (every icon on the page — `home`, `search`, `chat_bubble`, `repeat` — is just text inside a `<span class="material-symbols-outlined">`), the compiled `./css/output.css`, and then the large custom `<style>` block of keyframes and hover effects described above.
+Loads the favicon from X's CDN, `preconnect` hints for Google Fonts, the **Material Symbols Outlined** icon font (every icon on the page — `home`, `search`, `chat_bubble`, `repeat` — is just text inside a `<span class="material-symbols-outlined">`), and the compiled `./css/output.css`. There is no inline `<style>` block — all custom CSS now lives in `css/input.css`.
 
 ### Global overlays
 
-Two absolutely/fixed-positioned elements sit outside the layout: `#scroll-progress` (the animated gradient bar driven by the scroll listener) and `#new-tweets-toast`, which starts `hidden` and is revealed by a `setTimeout` after 4 seconds:
+Two fixed-positioned elements sit outside the three-column layout: `#scroll-progress` (a slim brand-colored bar driven by the scroll listener) and `#new-tweets-toast` — now a real `<button>` instead of a clickable `<div>` — which starts `hidden` and is revealed by a `setTimeout` after 4 seconds:
 
 ```html
-<div id="new-tweets-toast"
-     class="hidden fixed z-50 bg-[#1d9bf0] text-white px-5 py-2 rounded-full text-sm font-bold cursor-pointer shadow-lg hover:bg-[#1a8cd8] transition-all select-none"
-     style="top:4rem; left:50%; transform:translateX(-50%);">
+<button id="new-tweets-toast" type="button"
+    class="focus-ring hidden fixed z-50 top-16 left-1/2 -translate-x-1/2 select-none rounded-full bg-brand px-5 py-2 text-sm font-bold text-white shadow-lg transition-colors hover:bg-brand-hover">
     ↑ 5 new posts
-</div>
+</button>
 ```
 
-### Left sidebar (`.first` → `.sidebar`)
+### Left sidebar (`<nav aria-label="Primary">`)
 
 A `sticky top-0` flex column containing:
 
-1. **Logo** — the inline X SVG, white via `invert`, with hover-scale and glow from `.logo-container` CSS.
-2. **Navigation `<ul>`** — `flex flex-col text-2xl space-y-3 md:px-11 font-bold w-full`; eleven `<li>` items (Home, Explore, Notifications, Grok, Lists, Bookmarks, Communities, Premium, Profile, More, and the Post button `<li>`). Each pairs an icon with a `hidden md:block` label; the Notifications item additionally carries a pulsing `notif-dot`. `nav-active` marks the current page (Home) and floats its icon via the `float` keyframe.
-3. **Post button(s)** — the responsive desktop/mobile pair shown earlier, both with `pulseGlow` and JS ripple.
-4. **User profile card** (`hidden md:flex`) — avatar, display name "Haris Ali Khan", handle `@CodeWithHarry`, and a `...` overflow affordance, wrapped in a hoverable `rounded-full` pill.
+1. **Logo** — the inline X SVG (drawn directly in white via `fill-white`, no `invert` filter hack needed), with hover-scale and glow from `.logo-mark` CSS.
+2. **Navigation `<ul>`** — nine `<a class="nav-link">` items (Home, Explore, Notifications, Messages, Lists, Bookmarks, Communities, Premium, Profile, More) plus the Post button `<li>`. Every icon uses a **valid, correctly-cased Material Symbols ligature** — see the icon-fix table below. Each link carries its own `aria-label` so the accessible name survives even when the text label is `hidden` below `lg:`. The Notifications item additionally carries a pulsing `.notif-dot` badge and shakes once (`notifShake`) when clicked.
+3. **Post button(s)** — a circular icon button by default, a full labeled pill from `lg:` up, both wired to the JS ripple effect via the shared `.btn-post` class.
+4. **Account switcher** — now a real `<button aria-label="Account menu for …">` (not a bare styled `<div>`), avatar + display name "Haris Ali Khan" + handle `@CodeWithHarry`, avatar-only below `lg:`.
 
-### Main feed (`.second`)
+### Main feed (`<main>`)
 
-The center column with vertical gray rails. Inside:
+The center column with hairline vertical rails (`border-x border-white/10`). Inside:
 
-1. **Sticky header** — the frosted `glass-header` with two half-width tab buttons ("For You" / "Following"), an animated `#tab-indicator` underline, and a rotating-on-hover `settings` icon:
+1. **Sticky header** — the frosted `.feed-header` with two half-width tab buttons ("For you" / "Following") and an animated `#tab-indicator` pill that centers itself under whichever tab is active:
 
 ```html
-<div id="for-you-tab"   class="tab-btn tab-active   left  w-1/2 flex justify-center font-bold text-lg py-1 rounded-t-lg">For You</div>
-<div id="following-tab" class="tab-btn tab-inactive  right w-1/2 flex justify-center font-bold text-lg py-1 rounded-t-lg">Following</div>
+<button type="button" id="for-you-tab"
+    class="tab-btn is-active focus-ring w-1/2 py-4 text-center text-[15px] font-bold">
+    For you
+</button>
 ```
 
-2. **Post composer** — avatar + borderless input (`bg-black outline-none`) with the placeholder `What is happening?!`, the blue "Everyone can reply" row, an ultra-thin divider (`w-[90%] h-[0.2px] bg-gray-700 my-3`), a row of six blue composer-tool icons (`image`, `gif`, `ballot`, `sentiment_satisfied`, `calendar_month`, `pin_drop`), and a small Post pill.
+2. **Post composer** — avatar + borderless input (`bg-transparent outline-none`) with the placeholder `What is happening?!`, the "Everyone can reply" row using the `public` globe icon, a divider (`border-t border-white/10`), a row of six blue composer-tool icons (`image`, `gif`, `poll`, `sentiment_satisfied`, `calendar_month`, `pin_drop` — each an `aria-label`-ed `<button>`, not a bare `<span>`), and a Post pill that starts `disabled` until you type.
 
-3. **Posts** — six hard-coded tweets (Elon Musk, CodeWithHarry, @CodeMeme, @PicturesFoIder, Vercel, React) all sharing one card anatomy:
+3. **Posts** — six hard-coded posts (Elon Musk, CodeWithHarry, @CodeMeme, **@PicturesFolder** — the handle typo `@PicturesFoIder` is fixed, Vercel, React) as semantic `<article>` elements sharing one card anatomy:
 
 ```html
-<div class="post post-anim border-[1px] border-y-gray-700 border-x-0">
-    <div class="flex">
-        <div class="image m-4 flex-shrink-0"> … avatar … </div>
-        <div class="content my-3 flex-1 pr-4">
-            … name / handle / time · body text · optional post-img-wrap image …
-            <div class="icons flex justify-between mx-2 my-3 text-sm text-gray-500">
-                … four .action-icon groups: comment / retweet / like / views with counts …
+<article class="post post-anim border-b border-white/10 px-4 py-3">
+    <div class="flex gap-3">
+        <img class="avatar h-11 w-11 shrink-0 rounded-full" … >
+        <div class="min-w-0 flex-1">
+            … name / verified badge / handle / time · body text · optional .post-media image …
+            <div class="-ml-2 mt-2 flex max-w-[425px] items-center justify-between text-gray-500">
+                … five action-icon buttons: reply / repost / like / views / share, each aria-labeled with its live count …
             </div>
         </div>
     </div>
-</div>
+</article>
 ```
 
-Structure notes: `flex-shrink-0` stops the avatar column from being squeezed; `flex-1` lets the content column fill the rest; `border-y-gray-700 border-x-0` draws only the horizontal separators between posts; `justify-between` spreads the four action icons across the full width exactly like X. `post-anim` starts each card invisible and shifted down until the IntersectionObserver adds `.visible`.
+Structure notes: `shrink-0` stops the avatar from being squeezed; `min-w-0 flex-1` lets the content column fill the rest while still allowing `truncate` to work on long names; `border-b border-white/10` draws only the horizontal separators between posts; `justify-between` spreads the engagement icons across a `max-w-[425px]` row exactly like X. Verified accounts (Elon Musk, Vercel, React) get a small `verified` badge next to their name. `post-anim` starts each card invisible and shifted down until the IntersectionObserver adds `.is-visible`. Every engagement button is now a real `<button>` with a descriptive `aria-label` (e.g. `"Like, 44,000 likes"`) and, for the two toggleable ones, `aria-pressed`.
 
-### Right sidebar (`.third`, desktop-only)
+### Right column (`<aside aria-label="Search and trends">`, `xl:`-only)
 
-1. **Search bar** — `w-1/2 rounded-full bg-[#16181c]`, expanding to 90% width on focus via CSS `:focus` plus the JS focus/blur handlers.
-2. **"What's Happening" widget** — `sticky top-0`, a `bg-[#16181c] rounded-2xl` card with four `trend-item` rows (category / bold `#hashtag` / post count) and a blue "Show more" link.
-3. **"Who To Follow" widget** — `sticky top-[50vh]`, three `follow-item` rows (avatar + name/handle on the left, a white `follow-btn` pill on the right) for Vercel, React, and Shad.js. Clicking toggles the button to an outlined "Following" state via JS.
-4. **Footer/terms** — `sticky top-[84vh]`, tiny gray legal links and "© 2024 X Corp."
+1. **Search field** — a `<label class="search-field">` wrapping a leading `search` icon and a real `<input aria-label="Search X">`, replacing the old placeholder emoji with a proper icon and expanding its focus ring via CSS `:focus-within` instead of a JS-driven inline width hack.
+2. **"What's happening" card** — `<section aria-labelledby="whats-happening-heading">`, a `bg-[#16181c] rounded-2xl` panel with four `.trend-row` `<li>` items (category / bold `#hashtag` / post count) and a `text-brand` "Show more" link.
+3. **"Who to follow" card** — `<section aria-labelledby="who-to-follow-heading">`, three `.follow-row` `<li>` items (avatar + name/handle on the left, a white `.btn-follow` pill on the right) for Vercel, React, and Shad.js. Clicking toggles the button between a filled "Follow" state and an outlined "Following" state by swapping real Tailwind utility classes in JS — no `!important` required.
+4. **Footer** — `<nav aria-label="Legal">`, tiny gray legal links and "© 2026 X Corp."
+
+All three widgets now scroll together inside one `sticky top-0` flex column instead of three independently `top-[Nvh]`-offset elements, so they never overlap or drift out of alignment at unusual viewport heights.
 
 ### `<script>`
 
@@ -376,9 +445,26 @@ All the behaviors enumerated in deep-dive #9 — pure vanilla JS, no framework, 
 
 ---
 
+## Icon Fixes (Material Symbols)
+
+Material Symbols ligatures must match the icon name **exactly**, including case. The previous draft shipped several icons that silently rendered as raw text. All are now fixed, and a few were also swapped for more semantically correct icons while we were in there:
+
+| Location | Before | After | Why |
+|---|---|---|---|
+| Like button (×6) | `Favorite` | `favorite` | Ligatures are lowercase; the capitalized name doesn't exist. |
+| Communities nav item | `Group` | `group` | Same casing bug. |
+| Premium nav item | `box` | `workspace_premium` | `box` isn't a real Material Symbols name; `workspace_premium` is the correct "Premium" glyph. |
+| More nav item | `pending` | `more_horiz` | `pending` renders a completely different glyph; `more_horiz` is the real "More options" icon. |
+| Messages nav item | `message` (labeled "Grok") | `mail` (labeled "Messages") | The icon and label didn't match; `mail` is the correct DM icon and the label now agrees with it. |
+| Lists nav item | `lists` | `list_alt` | `list_alt` is the verified, standard "Lists" glyph. |
+| Composer "reply audience" | `globe_asia` | `public` | `public` is the exact icon real X uses for "Everyone can reply." |
+| Composer poll tool | `ballot` | `poll` | `poll` is the correct, purpose-built icon for adding a poll. |
+
+---
+
 ## How to Run
 
-1. **Install dependencies** (installs the Tailwind CLI and Vite into `node_modules`):
+1. **Install dependencies** (installs the Tailwind CLI into `node_modules`):
 
    ```
    npm install
@@ -387,12 +473,20 @@ All the behaviors enumerated in deep-dive #9 — pure vanilla JS, no framework, 
 2. **Start the Tailwind compiler in watch mode** (regenerates `css/output.css` on every save — leave this terminal running while you work):
 
    ```
-   npm run build
+   npm run dev
    ```
 
    This executes: `npx tailwindcss -i ./css/input.css -o ./css/output.css --watch`
 
-3. **Open the page.** Simply double-click `index.html` (or use "Open with Live Server" in VS Code). Optionally, since Vite is included, you can instead run `npm run dev` and open the printed localhost URL for a hot-reloading dev server.
+3. **Or produce a one-off production build** (minified, no watcher):
+
+   ```
+   npm run build
+   ```
+
+   This executes: `npx tailwindcss -i ./css/input.css -o ./css/output.css --minify`
+
+4. **Open the page.** Simply double-click `index.html` (or use "Open with Live Server" in VS Code) — it's a static file with no server-side dependency.
 
 Edit → save → the watcher rebuilds `output.css` → refresh the browser. That's the whole loop.
 
@@ -401,28 +495,31 @@ Edit → save → the watcher rebuilds `output.css` → refresh the browser. Tha
 ## Key Takeaways
 
 - **Tailwind generates only what you use.** The `content` globs drive everything; `output.css` contains a rule for a class only if that class string literally appears in a scanned file.
-- **The three-column shell is just `flex` + widths + `sticky`.** No grid framework, no absolute positioning heroics.
-- **Mobile-first responsive design is subtractive on small screens**: `hidden md:block` / `md:hidden` pairs let one markup tree serve both a labeled desktop nav and an icon-only mobile rail.
-- **Dark UIs are built from graduated grays**, not shadows — `bg-black` canvas, `#16181c` surfaces, `gray-700` hairlines, `gray-500` secondary text.
-- **Arbitrary values (`w-[70%]`, `bg-[#1d9bf0]`, `top-[50vh]`) bridge the gap** between Tailwind's scale and pixel-perfect cloning — but if a value repeats a lot, it belongs in `theme.extend`.
-- **Tailwind and custom CSS/JS coexist**: utilities for structure and state, keyframes and `classList` toggling for motion and interactivity.
+- **The three-column shell is semantic HTML + `flex` + widths + `sticky`.** `<nav>` / `<main>` / `<aside>`, no grid framework, no absolute positioning heroics.
+- **Responsive collapse is staged, not all-or-nothing**: the right `<aside>` disappears first (`xl:block`), and only then do the left-nav labels collapse (`lg:inline`) — matching how much real screen real estate each column actually needs.
+- **Dark UIs are built from graduated grays and one brand hue**, not shadows — `bg-black` canvas, the `panel` (`#16181c`) surface token, `border-white/10` hairlines, a tiered `text-white`/`gray-400`/`gray-600` text hierarchy.
+- **Design tokens belong in `theme.extend`, not scattered as arbitrary hex values.** `bg-brand`, `text-like`, `bg-panel` read as intent; `bg-[#1d9bf0]` repeated forty times does not.
+- **Every icon-only control needs an `aria-label`,** and toggle buttons need `aria-pressed` — icons communicate to sighted mouse users only.
+- **Custom CSS and JS coexist with Tailwind, on purpose and in one place**: `@layer base`/`@layer components` in `input.css` for structure and motion, `classList` toggling in the `<script>` for interactivity — never a giant inline `<style>` block in the HTML.
 
 ## Common Pitfalls
 
-1. **Editing `css/output.css` directly.** It is generated; the next build (especially with `--watch` running) silently overwrites your changes. Always edit the HTML, `input.css`, or the config.
-2. **Wrong or missing `content` paths.** If the glob doesn't match your files, Tailwind emits almost nothing and the page looks unstyled. This project's `content: ["*html"]` works for a root-level `index.html` but is fragile — it would miss HTML files in subfolders and JS files containing class strings. Prefer explicit patterns like `"./**/*.{html,js}"`.
-3. **Forgetting the watcher is running (or not running).** If classes you add "do nothing," first check that `npm run build` is still alive and rebuilding.
-4. **Dynamically constructing class names** (e.g. `text-${color}-500` in JS). Tailwind's scanner only finds complete, literal class strings — composed names are never generated.
-5. **Putting customizations under `theme` instead of `theme.extend`**, which replaces Tailwind's entire default scale for that key instead of adding to it.
-6. **Icon-name typos in Material Symbols.** The ligature must match the icon name exactly (lowercase); e.g. this file uses `Favorite` and `Group` with capital letters, and a non-standard `box` name — if an icon renders as raw text, check its spelling and case.
+1. **Editing `css/output.css` directly.** It is generated; the next build (especially with `npm run dev` running) silently overwrites your changes. Always edit the HTML, `input.css`, or the config.
+2. **Wrong or missing `content` paths.** If the glob doesn't match your files, Tailwind emits almost nothing and the page looks unstyled. This project's `content: ["./*.html"]` is explicit and safe for a root-level `index.html`; if you add HTML files in subfolders or start generating class names in JS, widen it to something like `"./**/*.{html,js}"`.
+3. **Forgetting the watcher is running (or not running).** If classes you add "do nothing," first check that `npm run dev` is still alive and rebuilding.
+4. **Confusing `dev` and `build`.** `dev` watches and never minifies; `build` runs once and minifies. Shipping the `--watch` output as "the build" (as the previous `package.json` did) means you never actually get a minified production file.
+5. **Dynamically constructing class names** (e.g. `` `text-${color}-500` `` in JS). Tailwind's scanner only finds complete, literal class strings — composed names are never generated.
+6. **Putting customizations under `theme` instead of `theme.extend`**, which replaces Tailwind's entire default scale for that key instead of adding to it.
+7. **Icon-name typos in Material Symbols.** The ligature must match the icon name exactly (lowercase, underscores); see the *Icon Fixes* table above for real examples that used to silently fail.
+8. **Fighting the cascade with `!important`.** Because `@tailwind utilities` always compiles after `@layer components`, a component class can never out-rank a utility class on the same element without `!important`. The clean fix (used for the follow button here) is to toggle the utility classes themselves in JS, not to fight them with a component override.
 
 ## Practice Exercises
 
-1. **Add a fourth trending topic and a fourth "Who to follow" suggestion**, reusing the existing `trend-item` / `follow-item` markup. Verify the staggered `nth-child` entrance animations still cover the new rows (extend the CSS if not).
-2. **Move the X brand blue into the config**: add `colors: { xblue: "#1d9bf0" }` under `theme.extend` in `tailwind.config.js`, then replace every `bg-[#1d9bf0]` / `text-[#1d9bf0]` with `bg-xblue` / `text-xblue` and rebuild.
-3. **Build a seventh post card from scratch** (without copy-pasting): avatar, name/handle/time row, body text, an image with the `post-img-wrap` zoom effect, and the four-action toolbar with `justify-between`.
-4. **Improve the mobile experience**: give the feed a fixed bottom navigation bar (`fixed bottom-0 ... md:hidden`) containing Home/Search/Notifications/Messages icons, like the real X app.
-5. **Migrate the custom styles into the pipeline**: move the `<style>` block's rules into `css/input.css` under `@layer components`, rebuild, and confirm the page behaves identically. Bonus: register one of the keyframes (e.g. `heartPop`) in `theme.extend.animation` and apply it as a Tailwind utility.
+1. **Add a fourth "Who to follow" suggestion**, reusing the existing `.follow-row` markup. Verify the staggered `nth-child` entrance animation still covers the new row (extend the CSS selector list in `input.css` if not).
+2. **Add a fourth breakpoint tier**: introduce a `2xl:` step that widens the feed's `max-w-[600px]` cap slightly and adds extra right-column padding, without breaking the `xl:`/`lg:` collapse order described above.
+3. **Build a seventh post `<article>` from scratch** (without copy-pasting): avatar, name/handle/time row, body text, an image with the `.post-media` zoom effect, and the five-action toolbar with `justify-between` and full `aria-label`s.
+4. **Give the composer a live character counter**: show remaining characters out of 280 next to the Post button, and keep the existing disabled-until-non-empty behavior working alongside it.
+5. **Audit tab-order and focus rings**: tab through the entire page with the mouse untouched and confirm every interactive element (including the trend rows and follow buttons) gets a visible `.focus-ring` outline in a sensible order.
 
 ---
 

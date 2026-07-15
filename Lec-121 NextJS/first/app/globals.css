@@ -2,32 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Color tokens for the whole site.
+  Everything downstream (tailwind.config.js) reads these as `rgb(var(--color-x) / <alpha>)`,
+  so a component never hardcodes a hex value -- it just says `bg-paper` or `text-ink-soft`
+  and gets the right shade for light or dark automatically.
+*/
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --color-paper: 250 246 236; /* warm notebook paper */
+  --color-paper-dim: 243 236 219; /* slightly inset surface, e.g. inputs */
+  --color-ink: 32 28 23; /* primary text */
+  --color-ink-soft: 82 74 61; /* secondary text */
+  --color-ink-faint: 140 130 111; /* tertiary / muted text */
+  --color-accent: 217 87 24; /* highlighter orange */
+  --color-accent-soft: 250 227 204; /* accent tint, e.g. badge backgrounds */
+  --color-line: 32 28 23; /* used at low opacity for borders */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-paper: 20 18 15;
+    --color-paper-dim: 28 25 21;
+    --color-ink: 240 234 222;
+    --color-ink-soft: 196 186 168;
+    --color-ink-faint: 128 119 103;
+    --color-accent: 245 141 79;
+    --color-accent-soft: 61 39 20;
+    --color-line: 240 234 222;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    @apply border-line/10;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-paper text-ink;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-accent) / 0.25);
+    color: rgb(var(--color-ink));
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* A highlighter-style underline mark, used on a handful of key words. */
+  .mark-accent {
+    background-image: linear-gradient(
+      transparent 62%,
+      rgb(var(--color-accent) / 0.32) 0
+    );
+    background-repeat: no-repeat;
+  }
+
+  /* Skip link: hidden until keyboard-focused. */
+  .skip-link {
+    @apply absolute left-4 top-4 -translate-y-16 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper transition-transform focus:translate-y-0;
+    z-index: 100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink {
+    animation: none;
+    opacity: 1;
+  }
+
+  * {
+    scroll-behavior: auto !important;
   }
 }

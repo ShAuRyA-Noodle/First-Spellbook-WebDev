@@ -15,6 +15,22 @@
     --bh:       rgba(139,92,246,0.55);   /* border hover */
     --text:     #E8E8F0;
     --muted:    #6B7280;
+
+    /* ── text hierarchy (four levels, not just "text" + "muted") ── */
+    --text-primary:   #E8E8F0;
+    --text-secondary: rgba(232,232,240,0.68);
+    --text-tertiary:  rgba(232,232,240,0.44);
+    --text-muted:     #6B7280;
+
+    /* ── border progression — intensity matched to importance ── */
+    --border-subtle: rgba(139,92,246,0.10);
+    --border-strong: rgba(139,92,246,0.45);
+    --border-focus:  var(--pink);
+
+    /* ── control tokens — independent from layout surfaces ── */
+    --control-bg:     rgba(255,255,255,0.04);
+    --control-hover:  rgba(139,92,246,0.14);
+    --focus-ring:     0 0 0 3px rgba(236,72,153,0.30);
 }
 
 /* ═══════════════════════════════════════════
@@ -22,6 +38,30 @@
 ═══════════════════════════════════════════ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:'Inter','Roboto',sans-serif; overflow-x:hidden; }
+button { font-family:inherit; color:inherit; }
+
+/* ═══════════════════════════════════════════
+   ACCESSIBILITY — focus states + reduced motion
+═══════════════════════════════════════════ */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+.seekbar:focus-visible { outline-offset: 6px; }
+.card:focus-visible { outline-offset: -2px; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
 
 /* ═══════════════════════════════════════════
    AURORA — more vivid now
@@ -64,7 +104,12 @@ body::after {
    LEFT SIDEBAR
 ═══════════════════════════════════════════ */
 .left { width:25vw; padding:10px; flex-shrink:0; }
-.close { display:none; cursor:pointer; }
+.close {
+    display:none; cursor:pointer;
+    background:none; border:none; padding:6px;
+    border-radius:8px; transition:background .2s;
+}
+.close:hover { background:rgba(139,92,246,.14); }
 
 .home {
     background:var(--glass);
@@ -81,15 +126,16 @@ body::after {
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
 
 .home ul { list-style:none; margin-top:8px; }
-.home ul li {
-    display:flex; align-items:center; gap:12px;
+.nav-btn {
+    width:100%; display:flex; align-items:center; gap:12px;
     padding:10px 8px; border-radius:8px;
     font-size:14px; font-weight:600; color:var(--muted);
+    background:none; border:none; text-align:left;
     cursor:pointer; transition:all .22s;
 }
-.home ul li:hover { background:rgba(139,92,246,.1); color:var(--text); padding-left:14px; }
-.home ul li img { width:19px; filter:invert(.5); transition:filter .22s; }
-.home ul li:hover img { filter:invert(1) sepia(1) saturate(5) hue-rotate(240deg); }
+.nav-btn:hover { background:rgba(139,92,246,.1); color:var(--text); padding-left:14px; }
+.nav-btn img { width:19px; filter:invert(.5); transition:filter .22s; }
+.nav-btn:hover img { filter:invert(1) sepia(1) saturate(5) hue-rotate(240deg); }
 
 /* LIBRARY */
 .library {
@@ -154,6 +200,17 @@ body::after {
 .songList ul li:hover .playnow span { opacity:1; transform:translateX(0); }
 .playnow img { filter:invert(1) sepia(1) saturate(5) hue-rotate(280deg); }
 
+/* ── EMPTY PLAYLIST STATE ── */
+.songList ul li.empty-state {
+    flex-direction:column; align-items:center; text-align:center;
+    gap:10px; padding:34px 14px; cursor:default;
+    border-style:dashed; border-color:var(--border-subtle);
+    background:transparent;
+}
+.songList ul li.empty-state:hover { transform:none; box-shadow:none; }
+.empty-state img { width:26px; filter:invert(.4); }
+.empty-state p { font-size:12px; color:var(--text-tertiary); line-height:1.5; max-width:180px; }
+
 .footer {
     position:absolute; bottom:0; padding:8px;
     display:flex; flex-wrap:wrap; gap:8px; font-size:10px;
@@ -182,7 +239,12 @@ body::after {
     position:sticky; top:0; z-index:10;
 }
 .hamburgerContainer { display:flex; align-items:center; gap:12px; padding:18px 0; }
-.hamburger { display:none; cursor:pointer; }
+.hamburger-btn {
+    display:none; cursor:pointer;
+    background:none; border:none; padding:4px;
+    border-radius:8px; transition:background .2s;
+}
+.hamburger-btn:hover { background:rgba(139,92,246,.14); }
 .hamburgerContainer svg { cursor:pointer; opacity:.5; transition:all .2s; }
 .hamburgerContainer svg:hover { opacity:1; transform:scale(1.2); }
 
@@ -429,15 +491,42 @@ body::after {
 }
 
 .songbuttons {
-    display:flex; align-items:center; gap:18px;
+    display:flex; align-items:center; gap:14px;
 }
-.songbuttons img {
+
+/* ── ICON BUTTON — shared base for shuffle / prev / next / loop / mute ── */
+.icon-btn {
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    background:none; border:none; padding:7px;
+    border-radius:10px; cursor:pointer;
+    color:var(--text-secondary);
+    transition:background .2s;
+}
+.icon-btn:hover { background:var(--control-hover); }
+.icon-btn img {
     cursor:pointer; filter:invert(1); opacity:.70;
-    transition:all .2s; width:26px;
+    transition:all .2s; width:26px; display:block;
 }
-.songbuttons img:hover {
-    opacity:1; transform:scale(1.18);
+.icon-btn svg { opacity:.70; transition:all .2s; }
+.icon-btn:hover img {
+    opacity:1; transform:scale(1.14);
     filter:invert(1) drop-shadow(0 0 8px rgba(139,92,246,.90));
+}
+.icon-btn:hover svg { opacity:1; color:#fff; transform:scale(1.10); }
+
+/* shuffle / loop — engaged state persists visually, mirroring the mute icon swap */
+.icon-btn.active { color:var(--purple); }
+.icon-btn.active svg {
+    opacity:1; color:var(--purple);
+    filter:drop-shadow(0 0 6px rgba(139,92,246,.75));
+}
+.icon-btn.active::after {
+    content:''; position:absolute; bottom:2px; left:50%;
+    transform:translateX(-50%);
+    width:4px; height:4px; border-radius:50%;
+    background:var(--purple);
+    box-shadow:0 0 6px rgba(139,92,246,.9);
 }
 
 /* ── PLAY CIRCLE BUTTON — perfect centering ── */
@@ -499,12 +588,8 @@ body::after {
 .equalizer span:nth-child(5) { height:16px; animation-duration:1.0s; animation-delay:.05s; }
 @keyframes eqBar { from{transform:scaleY(.2)} to{transform:scaleY(1.15)} }
 
-.volume { display:flex; align-items:center; gap:8px; }
-.volume img {
-    width:20px; filter:invert(1); opacity:.70;
-    cursor:pointer; transition:all .2s;
-}
-.volume img:hover { opacity:1; filter:invert(1) drop-shadow(0 0 6px rgba(139,92,246,.85)); }
+.volume { display:flex; align-items:center; gap:4px; }
+.volume-btn img { width:20px; }
 .range input {
     cursor:pointer; accent-color:var(--purple);
     width:86px;
@@ -535,7 +620,18 @@ body::after {
     width:13px; height:13px; border-radius:50%;
     background:white; box-shadow:0 0 10px rgba(139,92,246,.90);
     position:absolute; top:50%; transform:translateY(-50%);
-    left:0%; transition:left .28s; z-index:2;
+    left:0%; transition:left .28s, transform .18s;
+    z-index:2; cursor:grab; touch-action:none;
+}
+/* generous invisible hit area — the knob itself stays small and precise */
+.circle::before {
+    content:''; position:absolute; inset:-8px; border-radius:50%;
+}
+.seekbar.dragging { height:6px; }
+.seekbar.dragging::before { transition:none; }
+.seekbar.dragging .circle {
+    transition:transform .18s; transform:translateY(-50%) scale(1.5);
+    cursor:grabbing;
 }
 
 /* ═══════════════════════════════════════════
@@ -564,7 +660,7 @@ scrollbar-color:rgba(139,92,246,.45) transparent;
     .left .close { position:absolute; right:18px; top:18px; display:block; }
 
     .right { width:100vw; margin:0; border-radius:0; border:none; }
-    .hamburger { display:block; }
+    .hamburger-btn { display:flex; }
 
     .playbar {
         left:auto; right:20px; transform:none;

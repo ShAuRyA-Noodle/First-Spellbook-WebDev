@@ -1,37 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Navbar from './components/Navbar'
+import PostFeed from './components/PostFeed'
 import './App.css'
 
 function App() {
-  const [cards, setCards] = useState([])
+  // Bumping this number gives <PostFeed> a new `key`, which forces React to
+  // unmount the old instance and mount a brand-new one — a clean way to
+  // "retry" a failed fetch without threading extra dependencies through
+  // useEffect.
+  const [feedAttempt, setFeedAttempt] = useState(0)
 
-  const fetchData = async () => {
-    let a = await fetch("https://jsonplaceholder.typicode.com/posts")
-    let data = await a.json()
-    setCards(data)
-    console.log(data)
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
+  const handleRetry = () => setFeedAttempt((previousAttempt) => previousAttempt + 1)
 
   return (
     <>
-    <Navbar/> 
-      <div className="container">
-       {cards.map((card)=>{
-        return <div key={card.id} className="card">
-          <h1>{card.title}</h1>
-          <p>{card.body}</p>
-          <span>By: UserId: {card.userId} </span>
+      <Navbar />
+      <main className="page">
+        <div className="page__intro">
+          <h2 className="page__heading">Front Page</h2>
+          <span className="page__count">jsonplaceholder.typicode.com/posts</span>
         </div>
-
-       })}
-        
-      </div>
-
+        <PostFeed key={feedAttempt} onRetry={handleRetry} />
+      </main>
     </>
   )
 }

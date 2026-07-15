@@ -1,47 +1,401 @@
-#root {
-  max-width: 1280px;
+.page {
+  max-width: 1040px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: var(--space-10) var(--space-6) var(--space-12);
 }
 
-.red{
-  color: red;
-  font-size: 12px;
+.page__eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--wire);
+  margin-bottom: var(--space-3);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.page__title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+  color: var(--text-primary);
+  text-wrap: balance;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.page__lede {
+  max-width: 640px;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-8);
+}
+
+.page__lede code {
+  color: var(--text-primary);
+  background: var(--surface-inset);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* ------------------------------------------------------------------
+   Layout: form card on the left, live request console on the right.
+   Stacks on narrow viewports.
+   ------------------------------------------------------------------ */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
   }
+}
+
+/* ------------------------------------------------------------------
+   Form card
+   ------------------------------------------------------------------ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: 0 1px 2px rgba(16, 20, 40, 0.04), 0 8px 24px rgba(16, 20, 40, 0.05);
+}
+
+.card__heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-6);
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-5);
+  line-height: 1.4;
+}
+
+.banner--success {
+  background: var(--signal-success-bg);
+  color: var(--signal-success);
+}
+
+.banner--error {
+  background: var(--signal-danger-bg);
+  color: var(--signal-danger);
+}
+
+.banner__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: currentColor;
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.field {
+  margin-bottom: var(--space-5);
+}
+
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.field input {
+  width: 100%;
+  font: inherit;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.65em 0.85em;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.field input::placeholder {
+  color: var(--text-muted);
+}
+
+.field input:hover {
+  border-color: var(--border-strong);
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--wire);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: var(--signal-danger);
+}
+
+.field input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px var(--signal-danger-bg);
+}
+
+.field-error {
+  margin: var(--space-2) 0 0;
+  font-size: 0.82rem;
+  color: var(--signal-danger);
+}
+
+.submit-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  background: var(--wire);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.75em 1em;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 120ms ease, transform 60ms ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--wire-hover);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submit-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.spinner {
+  animation: spin 0.7s linear infinite;
+}
+
+.spinner__track {
+  stroke: rgba(255, 255, 255, 0.35);
+}
+
+.spinner__head {
+  stroke: #fff;
+}
+
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+.hint {
+  margin: var(--space-5) 0 0;
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+}
+
+.hint code {
+  color: var(--text-secondary);
+  background: var(--surface-inset);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* ------------------------------------------------------------------
+   Console: the signature element. A fixed-dark "terminal" panel that
+   mirrors the literal request/response traffic, so the frontend<->
+   backend contract in this lecture is something students can *see*,
+   not just read in devtools.
+   ------------------------------------------------------------------ */
+.console {
+  background: var(--console-bg);
+  border: 1px solid var(--console-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  font-family: var(--font-mono);
+  color: var(--console-text);
+  min-height: 100%;
+}
+
+.console__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-size: 0.8rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--console-muted);
+}
+
+.status-dot--idle {
+  background: var(--console-muted);
+}
+
+.status-dot--sending {
+  background: var(--signal-warning);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.status-dot--success {
+  background: var(--signal-success);
+}
+
+.status-dot--error {
+  background: var(--signal-danger);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
   }
 }
 
-.card {
-  padding: 2em;
+.console__status-label {
+  color: var(--console-text);
 }
 
-.read-the-docs {
-  color: #888;
+.console__latency {
+  margin-left: auto;
+  color: var(--console-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.console__prompt {
+  font-size: 0.85rem;
+  color: var(--console-muted);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--console-border);
+}
+
+.console__method {
+  color: var(--signal-success);
+  font-weight: 700;
+}
+
+.console__empty {
+  color: var(--console-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.console__cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  background: var(--console-muted);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.console__block + .console__block {
+  margin-top: var(--space-5);
+}
+
+.console__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--console-muted);
+  margin-bottom: var(--space-2);
+}
+
+.console__pre {
+  margin: 0;
+  background: var(--console-surface);
+  border: 1px solid var(--console-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+.console__key {
+  color: var(--console-key);
+}
+
+.console__string {
+  color: var(--console-string);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.05em 0.5em;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge--success {
+  background: var(--signal-success-bg);
+  color: var(--signal-success);
+}
+
+.badge--error {
+  background: var(--signal-danger-bg);
+  color: var(--signal-danger);
+}
+
+/* ------------------------------------------------------------------
+   Motion: every animation above only touches transform/opacity (cheap,
+   compositor-only). This still turns them off for anyone who has asked
+   the OS for reduced motion.
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .spinner,
+  .status-dot--sending,
+  .console__cursor {
+    animation: none;
+  }
 }
