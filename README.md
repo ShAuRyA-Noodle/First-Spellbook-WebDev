@@ -74,7 +74,7 @@ Most of the early lessons are plain HTML, CSS, and JavaScript: open the `index.h
 The React lessons (Lec 105 and later) are full projects. To run one:
 
 ```bash
-cd "Lec-106 Components, Props and JSX in React /shaurya-project"
+cd "Lec-106 Components, Props and JSX in React/shaurya-project"
 npm install
 npm run dev
 ```
