@@ -11,7 +11,7 @@ function App() {
   //The below one will run when certain value will change 
   useEffect(() => {
     alert("Cutie Count was Changed!!!")
-    setColor(color + 1)
+    setColor((currentColor) => currentColor + 1)
   }, [count])
 
 
