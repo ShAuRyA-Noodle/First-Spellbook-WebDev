@@ -10,7 +10,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.3.3"
   },
   "overrides": {
     "follow-redirects": "^1.16.0",
